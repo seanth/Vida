@@ -1,0 +1,71 @@
+nameSpecies: Ginny the Gymnosperm
+creator: Ginny the Gymnosperm
+comments: Hparty 2009
+
+###Basic
+densityStem: 712.0
+densityLeaf: 940.0
+densitySeed: 479.0
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 29.0
+youngsModulusStem: 7.4
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.099
+reproductionExponent: 1.098
+numYearsGrowthMemory: 2
+massSeedMax:  0.09
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [277.0, 0.97, 1.0] #black
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 0.5
+photoExponent: -0.46
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.00057
+fractionCarbonToStem: 0.99
+
+speciesConstant1: 0.69
+speciesExponent1: 1.06
+
+speciesConstant2: 0.29
+speciesExponent2: 0.975
+
+speciesConstant3: 0.30
+speciesExponent3: 0.755
+
+speciesConstant20: 0.03
+speciesExponent20: 0.40
+
+speciesConstant6: 0.0 #0.15
+speciesConstant7: 70.0
+speciesExponent7: 0.92
+speciesConstant8: 8.49
+
+
+###Evolution
+status: Currently unimplemented

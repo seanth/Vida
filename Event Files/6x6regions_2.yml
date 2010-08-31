@@ -1,0 +1,254 @@
+#6x6world 09.02.05
+0:
+   - Region:
+     - name: reg1
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: 41.67
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: 41.67
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: 41.67
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: 41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: reg5
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: 41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: reg6
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: 41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: reg7
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: 25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: reg8
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: 25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: reg9
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: 25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: reg10
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: 25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: reg11
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: 25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: reg12
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: 25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: reg13
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: 8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: reg14
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: 8.33
+       lightIntensity: 0.25
+   - Region:
+     - name: reg15
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: 8.33
+       lightIntensity: 0.5
+   - Region:
+     - name: reg16
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: 8.33
+       lightIntensity: 0.25
+   - Region:
+     - name: reg17
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: 8.33
+       lightIntensity: 0.5
+   - Region:
+     - name: reg18
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: 8.33
+       lightIntensity: 0.5
+   - Region:
+     - name: reg19
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: -8.33
+       lightIntensity: 0.25
+   - Region:
+     - name: reg20
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: -8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: reg21
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: -8.33
+       lightIntensity: 0.75
+   - Region:
+     - name: reg22
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: -8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: reg23
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: -8.33
+       lightIntensity: 0.75
+   - Region:
+     - name: reg24
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: -8.33
+       lightIntensity: 0.75
+   - Region:
+     - name: reg25
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: -25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: reg26
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: -25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: reg27
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: -25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: reg28
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: -25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: reg29
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: -25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: reg30
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: -25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: reg31
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: -41.67
+       lightIntensity: 0.25
+   - Region:
+     - name: reg32
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: -41.67
+       lightIntensity: 0.25
+   - Region:
+     - name: reg33
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: -41.67
+       lightIntensity: 0.25
+   - Region:
+     - name: reg34
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: -41.67
+       lightIntensity: 0.75
+   - Region:
+     - name: reg35
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: -41.67
+       lightIntensity: 0.75
+   - Region:
+     - name: reg36
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: -41.67
+       lightIntensity: 0.75

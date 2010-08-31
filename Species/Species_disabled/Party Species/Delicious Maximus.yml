@@ -1,0 +1,71 @@
+nameSpecies: Decidious Maximus
+creator: Decidious Maximus
+comments: hparty 2009
+
+###Basic
+densityStem: 600.0
+densityLeaf: 900.0
+densitySeed: 400.0
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 48.0
+youngsModulusStem: 6.0
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.07
+reproductionExponent: 1.08
+numYearsGrowthMemory: 2
+massSeedMax:  1.0
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [240.0, 1.0, 1.0]
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.5
+photoExponent: -0.4
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000009
+fractionCarbonToStem: 0.99
+
+speciesConstant1: 0.9
+speciesExponent1: 1.0
+
+speciesConstant2: 0.02
+speciesExponent2: 1.0
+
+speciesConstant3: 0.1
+speciesExponent3: 0.7
+
+speciesConstant20: 0.02
+speciesExponent20: 0.39
+
+speciesConstant6: 0.0 #0.15
+speciesConstant7: 100.0
+speciesExponent7: 1.0
+speciesConstant8: 15.0
+
+
+###Evolution
+status: Currently unimplemented

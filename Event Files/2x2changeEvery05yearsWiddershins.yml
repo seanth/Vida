@@ -1,0 +1,680 @@
+0:
+   - Region:
+     - name: reg1
+       size: 50.0
+       shape: square #circle or square
+       x: -25.0
+       y: 25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       size: 50.0
+       shape: square #circle or square
+       x: 25.0
+       y: 25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       size: 50.0
+       shape: square #circle or square
+       x: 25.0
+       y: -25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       size: 50.0
+       shape: square #circle or square
+       x: -25.0
+       y: -25.0
+       lightIntensity: 0.25
+5:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+10:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+15:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+20:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+25:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+30:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+35:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+40:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+45:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+50:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+55:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+60:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+65:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+70:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+75:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+80:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+85:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+90:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+95:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+100:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+105:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+110:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+115:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+120:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+125:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+130:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+135:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+140:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+145:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+150:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+155:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+160:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+165:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+170:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+175:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+180:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+185:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+190:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+195:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+200:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+205:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+210:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+215:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+220:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+225:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+230:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+235:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.25
+   - Region:
+     - name: reg2
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       lightIntensity: 0.5
+240:
+   - Region:
+     - name: reg1
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       lightIntensity: 0.25
+245:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.75
+   - Region:
+     - name: reg2
+       lightIntensity: 0.5
+   - Region:
+     - name: reg3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg4
+       lightIntensity: 1.0
+250:
+   - Region:
+     - name: reg1
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       lightIntensity: 0.75
+

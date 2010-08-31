@@ -1,0 +1,449 @@
+0:
+   - Region:
+     - name: quad1
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: 43.75
+       lightIntensity: .5
+   - Region:
+     - name: quad2
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: 43.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad3
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: 43.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad4
+       size: 12.5
+       shape: square #circle or square
+       x: -6.26
+       y: 43.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad5
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: 43.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad6
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: 43.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad7
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: 43.75
+       lightIntensity: 0.25
+   - Region:
+     - name: quad8
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: 43.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad9
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: 31.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad10
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: 31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad11
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: 31.25
+       lightIntensity: 0.75
+   - Region:
+     - name: quad12
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: 31.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad13
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: 31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad14
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: 31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad15
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: 31.25
+       lightIntensity: 0.25
+   - Region:
+     - name: quad16
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: 31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad17
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: 18.75
+       lightIntensity: 1.0
+   - Region:
+     - name: quad18
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: 18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad19
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: 18.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad20
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: 18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad21
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: 18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad22
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: 18.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad23
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: 18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad24
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: 18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad25
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: 6.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad26
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: 6.25
+       lightIntensity: 0.75
+   - Region:
+     - name: quad27
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: 6.25
+       lightIntensity: 0.75
+   - Region:
+     - name: quad28
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: 6.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad29
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: 6.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad30
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: 6.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad31
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: 6.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad32
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: 6.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad33
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: -6.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad34
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: -6.25
+       lightIntensity: 0.75
+   - Region:
+     - name: quad35
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: -6.25
+       lightIntensity: 0.25
+   - Region:
+     - name: quad36
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: -6.25
+       lightIntensity: 0.25
+   - Region:
+     - name: quad37
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: -6.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad38
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: -6.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad39
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: -6.25
+       lightIntensity: 0.75
+   - Region:
+     - name: quad40
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: -6.25
+       lightIntensity: 0.75
+   - Region:
+     - name: quad41
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: -18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad42
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: -18.75
+       lightIntensity: 0.25
+   - Region:
+     - name: quad43
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: -18.75
+       lightIntensity: 0.25
+   - Region:
+     - name: quad44
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: -18.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad45
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: -18.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad46
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: -18.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad47
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: -18.75
+       lightIntensity: 1.0
+   - Region:
+     - name: quad48
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: -18.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad49
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: -31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad50
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: -31.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad51
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: -31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad52
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: -31.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad53
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: -31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad54
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: -31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad55
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: -31.25
+       lightIntensity: 0.5
+   - Region:
+     - name: quad56
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: -31.25
+       lightIntensity: 1.0
+   - Region:
+     - name: quad57
+       size: 12.5
+       shape: square #circle or square
+       x: -43.75
+       y: -43.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad58
+       size: 12.5
+       shape: square #circle or square
+       x: -31.25
+       y: -43.75
+       lightIntensity: 0.25
+   - Region:
+     - name: quad59
+       size: 12.5
+       shape: square #circle or square
+       x: -18.75
+       y: -43.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad60
+       size: 12.5
+       shape: square #circle or square
+       x: -6.25
+       y: -43.75
+       lightIntensity: 0.25
+   - Region:
+     - name: quad61
+       size: 12.5
+       shape: square #circle or square
+       x: 6.25
+       y: -43.75
+       lightIntensity: 0.75
+   - Region:
+     - name: quad62
+       size: 12.5
+       shape: square #circle or square
+       x: 18.75
+       y: -43.75
+       lightIntensity: 0.25
+   - Region:
+     - name: quad63
+       size: 12.5
+       shape: square #circle or square
+       x: 31.25
+       y: -43.75
+       lightIntensity: 0.5
+   - Region:
+     - name: quad64
+       size: 12.5
+       shape: square #circle or square
+       x: 43.75
+       y: -43.75
+       lightIntensity: 0.5

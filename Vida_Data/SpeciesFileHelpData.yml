@@ -1,0 +1,60 @@
+nameSpecies: The name you would like your species to have.
+creator: While not necessary, it is nice to know who created what species. We recommend putting your email here.
+comments: Any remarks you'd like to make about your species.
+
+###Basic
+densityStem: Density of the stem in kg/m^3.densityLeaf: Density of the leaf in kg/m^3.
+densitySeed: Density of the seeds in kg/m^3canopyTransmittance: The fraction of light which passes through the canopy.fractionMinimumSurvival: The fraction of light which the species needs to survive.
+heightLeafMax: The height of an individual leaf in meters.heightStemMax: DEPRECIATED. The maximum height of the stem of the species.
+youngsModulusStem: The stiffness of the stem of the species in Pa.specificWeightStem: WHY DO I NEED THIS? N/m^3. Specific weight=density*gravity, so should be calculated.
+
+###Reproduction
+makeSeeds: Should the species be allowed to make seeds.
+startMakingSeedsAge: Age at which the species will start attempting to make seeds
+startMakingSeedsHeight: Height at which the species will start attempting to make seeds.
+reproductionConstant: Y intercept. Needs to be expanded.
+reproductionExponent: Slope. Needs to be expanded
+seedsPerLeafArea: WILL BE PHASED OUT. 
+massSeedMax: Maximum mass of a seed will reach before it is dispursed.
+locSeedFormation: Location seeds form on the canopy. THIS WILL NEED TO BE EXPANDED IN DETAIL.
+seedDispersalMethod: How is a seed dispursed. THIS WILL NEED TO BE EXPANDED IN DETAIL.
+delayInGermination: How many cycles to delay germination.
+minimumLightForGermination: UNUSED. What is the minimum fraction of light required for the seed to germinate.
+fractionFailGerminate: What fraction of seeds fail to germinate.
+
+###Graphics
+leafIsHemisphere: DEPRECIATED. Is the canopy a hemisphere or a disc.radiusStemMultiplier: By how much should the radius of the stem be multiplied by. This does not impact plant growth. It only impacts the graphics.radiusLeafMultiplier: By how much should the radius of the canopy be multiplied by. This does not impact plant growth. It only impacts the graphics.radiusSeedMultiplier: By how much should the radius of the seeds be multiplied by. This does not impact plant growth. It only impacts the graphics.
+borderImagePercent: What percentage of the entire image will consist of a border in the identifing colour of the species.colourSpecies: Species colour in HSB. item 0=hue; item 1=saturation; item 2=brightness. NEEDS TO BE EXPANDED.colourLeaf: Leaf colour in HSB. item 0=hue; item 1=saturation; item 2=brightness. NEEDS TO BE EXPANDED.colourStem: Stem colour in HSB. item 0=hue; item 1=saturation; item 2=brightness. NEEDS TO BE EXPANDED.
+colourSeedDispersed: Colour of seeds attached to the tree in HSB. item 0=hue; item 1=saturation; item 2=brightness. NEEDS TO BE EXPANDED.colourSeedAttached: Colour of dispursed seeds in HSB. NEEDS TO BE EXPANDED.
+
+###Photosynthesis
+photoConstant: Y intercept. NEEDS TO BE EXPANDED.
+photoExponent: Slope of the line. NEEDS TO BE EXPANDED.
+canopyTransmittanceImpactsConversion: Does the transmittance of the canopy impact the ability of the canopy to carry out photosynthesis. NEEDS TO BE EXPANDED.
+
+###Allometry
+fractionCarbonToSeeds: What fraction of carbon from photosynthesis will be diverted into making seeds.
+fractMassSeedMaxToGerm: What is the minimum fraction of mass a seed must have to successfully germinate. EXPAND TO EXPLAIN MOTTHER PLANT DYING PREMATURELY AND DROPPING IMMATURE SEEDS.
+fractionSeedMassToPlant: What fraction of the mass of the seed mass goes into the new plant.
+fractionCarbonToStem: DEPRECIATED. This is the maternal effect. At germination, how much of the seed mass goes to the stem. The remainder goes into canopy.
+
+speciesConstant1: Y intercept for massStem=B1(massTotal^a1)speciesExponent1: Slope for massStem=B1(massTotal^a1)
+
+speciesConstant2: Y intercept for for MassLeavesYoung=B(MassStem^a)
+speciesExponent2: Slope for massStem=B1(massTotal^a1)
+
+speciesConstant3: Y intercept for for MassLeavesMature=B(MassStem^a)
+speciesExponent3: Slope for massStem=B1(massTotal^a1)
+
+speciesConstant4: This is the maternal effect. At germination, how much of the seed mass goes to the stem. The remainder goes into canopy.
+
+
+speciesConstant6: 0.0 #for lengthStem=(constant7*diameterStem^2/3)-speciesConstant6
+
+speciesConstant7: Y intercept for for Hs=B7(Ds^a7)-B6
+speciesExponent7: Slope for massStem=B1(massTotal^a1)
+
+speciesConstant20: Y intercept for for Ds=B(Ms^a)speciesExponent20: Slope for massStem=B1(massTotal^a1)
+
+###Evolution
+status: Evolution of traits is currently not implemented.

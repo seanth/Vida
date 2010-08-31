@@ -1,0 +1,29 @@
+0:
+   - Region:
+     - name: reg1
+       size: 50.0
+       shape: square #circle or square
+       x: -25.0
+       y: 25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       size: 50.0
+       shape: square #circle or square
+       x: 25.0
+       y: 25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: reg3
+       size: 50.0
+       shape: square #circle or square
+       x: 25.0
+       y: -25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: reg4
+       size: 50.0
+       shape: square #circle or square
+       x: -25.0
+       y: -25.0
+       lightIntensity: 0.25

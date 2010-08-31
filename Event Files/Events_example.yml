@@ -1,0 +1,49 @@
+2:
+   - Region:
+     - name: test1
+       size: 100
+       shape: circle #circle or square
+       x: 0.0
+       y: 0.0
+       light: 14
+       gravity: 15
+       atmosphere: 16
+3:
+   - Region:
+     - name: test1
+       size: 1
+       shape: square #circle or square
+       x: 22
+       y: 23
+       light: 24
+       gravity: 25
+       atmosphere: 26
+       
+10:
+   - Seed:
+     - species: Abies alba.yml
+       placement: hex
+       number: 100
+20:
+   - Seed:
+     - species: Abies alba.yml
+       placement: random
+       number: 1000
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 5
+       target: seeds
+50:
+   - Seed:
+     - species: random
+       placement: random
+       number: 100
+100:
+   - Garden:
+     - gravity: 9.9
+       atmosphere: 1.1
+       light: 0.5
+
+

@@ -1,0 +1,64 @@
+nameSpecies: Generic Gymnosperm with Abies photo constant
+creator: seanth@gmail.com
+comments: Species generated using Cannell data set. Revised 08.08.23
+
+###Basic
+densityStem: 764.30 #Lavers 1967 Wood properties
+densityLeaf: 923.43
+densitySeed: 479.0 #assume density is half as stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 30.112785
+youngsModulusStem: 7.3263158 #GPa- Lavers 1967 Wood properties
+
+###Reproduction
+makeSeeds: TRUE
+fractionCarbonToSeeds: 1.0
+fractionSelfishness: 0.5
+reproductionConstant: 0.08543487
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+
+massSeedMax:  0.21 #0.085
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 10
+borderImagePercent: 25
+colourSpecies: [0.0, 0.0, 0.5] #grey
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.531 #0.58408
+photoExponent: -0.45767
+canopyTransmittanceImpactsConversion: FALSE
+
+
+###Allometry
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000128571428571 #seedling should avg 0.000027kg
+fractionCarbonToStem: 0.99
+speciesConstant1: 0.72400752
+speciesExponent1: 1.04357385
+speciesConstant2: 0.29023803
+speciesExponent2: 0.97153097
+speciesConstant3: 0.38547077
+speciesExponent3: 0.7092191
+speciesConstant20: 0.03034632
+speciesExponent20: 0.4030135
+speciesConstant6: 0.0
+speciesConstant7: 80.2588695
+speciesExponent7: 0.92930453
+speciesConstant8: 8.4941704

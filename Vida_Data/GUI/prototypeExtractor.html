@@ -1,0 +1,240 @@
+<html>
+<title>Prototype extractor interface</title>
+<body onLoad=preloadImages()>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+
+function preloadImages(path,pics,width,height) {
+	var thePath="interfaceGraphics/icon_";
+	var thePics=new Array();
+	thePics[0]="cfdg.jpg";
+	thePics[1]="csv.jpg";
+	thePics[2]="pickle.jpg";
+	thePics[3]="png.jpg";
+	thePics[4]="blank.jpg";
+	var theWidth = 111;
+	var theHeight = 129;	
+        var theImages = new Array();
+        for (var picIndex=0; picIndex< thePics.length; picIndex=picIndex+1) {
+		theImages[picIndex] = new Image(theWidth,theHeight);
+		theImages[picIndex].src = (thePath + thePics[picIndex]);
+        }
+}
+
+function showCheckBoxes() {
+	document.onlyOne.selectedAll.value="0"
+	var selectedItem=document.onlyOne.n.selectedIndex;
+	var selectedFile = document.onlyOne.n.options[selectedItem].value;
+	theSuffix=whatsTheFileSuffix(selectedFile);
+	if (theSuffix=="cfdg"){
+		$("#pngOpt").show('slow');
+		$("#movOpt").show('slow');
+	}
+	else if (theSuffix=="png"){
+		$("#movOpt").show('slow');
+	}
+	else if (theSuffix=="csv"){
+		$("#summaryOpt").show('slow');
+	}
+	else if (theSuffix=="pickle"){
+		$("#cfdgOpt").show('slow');
+		$("#pngOpt").show('slow');
+		$("#movOpt").show('slow');
+		$("#csvOpt").show('slow');
+		$("#summaryOpt").show('slow');
+	}
+}
+
+function hideCheckBoxes() {
+	$("#cfdgOpt").hide('slow');
+	$("#pngOpt").hide('slow');
+	$("#movOpt").hide('slow');
+	$("#csvOpt").hide('slow');
+	$("#summaryOpt").hide('slow');
+}
+
+function poplisting( sel, dir ) {
+	sel.load('listdir', {directory: dir});
+}
+
+function init() {
+	//$('fieldset').show('slow');
+	$("#loadedFileImage").hide("fast");
+	$("#controls").hide("fast");
+	$("#controlButtons").hide("fast");
+	$("#fileListField").hide("fast");
+	$("#cfdgOpt").hide("fast");
+	$("#pngOpt").hide("fast");
+	$("#movOpt").hide("fast");
+	$("#csvOpt").hide("fast");
+	$("#summaryOpt").hide("fast");
+	$("#submit").hide("fast");
+	//poplisting($("select.folderNavigation"),".");
+}
+$(document).ready(init)
+
+function fadeOutFileMenu(){
+	$("#controls").fadeOut("slow");
+	$("#controlButtons").hide("fast");
+	$("#fileListField").hide("fast");
+	$("#cfdgOpt").hide("fast");
+	$("#pngOpt").hide("fast");
+	$("#movOpt").hide("fast");
+	$("#csvOpt").hide("fast");
+	$("#summaryOpt").hide("fast");
+	document.onlyOne.c.checked=false;
+	document.onlyOne.g.checked=false;
+	document.onlyOne.v.checked=false;
+	document.onlyOne.fa.checked=false;
+	document.onlyOne.fs.checked=false;
+}
+
+function directorySelect(){
+	//activated when user chooses a file
+	fadeOutFileMenu();
+	var theSelectedFile= document.onlyOne.folderSelectButton.value;
+	theSuffix= whatsTheFileSuffix(theSelectedFile);
+	basePath="interfaceGraphics/icon_";
+	if(theSuffix=="cfdg" || theSuffix=="png" || theSuffix=="csv" || theSuffix=="pickle"){
+		$("img#loadedFileImage").attr("src", basePath+ theSuffix+".jpg");
+		poplisting($("select.fileListField"), theSelectedFile);
+		document.onlyOne.filePath.value=theSelectedFile;
+		$("#loadedFileImage").show("slow");
+		fadeInFileMenu();
+	}
+
+}
+
+function whatsTheFileSuffix(theFilePath){
+	theSuffix= theFilePath.split(".")[1];
+	document.onlyOne.fileSuffix.value=theSuffix;
+	return theSuffix;
+}
+
+function fadeInFileMenu(){
+	$("#controls").fadeIn("slow");
+	$("#fileListField").slideDown(500);
+	//$("#cfdgOpt").show();
+	$("#controlButtons").show("slow");
+}
+
+function selectAll(selectBox,selectAll) {
+	// have we been passed an ID
+	if (typeof selectBox == "string") {
+		selectBox = document.getElementById(selectBox);
+	}
+	// is the select box a multiple select box?
+	if (selectBox.type == "select-multiple") {
+		for (var i = 0; i < selectBox.options.length; i++) {
+			selectBox.options[i].selected = selectAll;
+		}
+	}
+	if (selectAll==true){
+		showCheckBoxes()
+		document.onlyOne.selectedAll.value="1"
+	}
+	else{
+		hideCheckBoxes()
+		document.onlyOne.selectedAll.value="0"
+	}
+}
+
+function cfdgClick(){
+	if (document.onlyOne.c.checked){
+		$("#submit").show("fast");
+	}else{
+		$("#submit").hide("fast");
+		document.onlyOne.g.checked=false;
+		document.onlyOne.v.checked=false;
+	}
+}
+
+function pngClick(){
+	if (document.onlyOne.g.checked){
+		$("#submit").show("fast");
+		if (document.onlyOne.fileSuffix.value=="png" || document.onlyOne.fileSuffix.value=="pickle"){
+			document.onlyOne.c.checked=true;
+		}
+	}else{
+		$("#submit").hide("fast");
+		document.onlyOne.v.checked=false;
+	}
+}
+
+function movClick(){
+	if (document.onlyOne.v.checked){
+		$("#submit").show("fast");
+		if (document.onlyOne.fileSuffix.value=="pickle"){
+			document.onlyOne.c.checked=true;
+			document.onlyOne.g.checked=true;
+		}
+		if (document.onlyOne.fileSuffix.value=="cfdg"){
+			document.onlyOne.g.checked=true;
+		}
+	}else{
+		$("#submit").hide("fast");
+		//document.onlyOne.c.checked=false;
+		//document.onlyOne.g.checked=false;
+	}
+}
+
+function summaryClick(){
+	if (document.onlyOne.fs.checked){
+		$("#submit").show("fast");
+	}else{
+		$("#submit").hide("fast");
+	}
+}
+			
+
+</script>
+
+
+
+
+
+
+
+Data Extractor-mockup1
+<br/>
+<form name="onlyOne" action="submitCommands">
+<p>
+<table border=0 width=100%>
+<tr>
+<td width=33.3%>
+	<input type="file" name="folderSelectButton" enctype="multipart/form-data" onChange="directorySelect()">
+	<center><img id="loadedFileImage" src="interfaceGraphics/blank.jpg" width="111" height="129"></center>
+</td>
+<td width=33.3%>
+	<center>
+	<div id="fileListField">
+	<input id="filePath" name="filePath" value="">
+	<input id="fileSuffix" name="fileSuffix" value="">
+	<input type=hidden id="selectedAll" name="selectedAll" value="0">
+	<SELECT class="fileListField" NAME="n" id="fileListField1" multiple SIZE=10 onChange="showCheckBoxes()">
+		<option>Loading. Please wait...
+	</SELECT><br>
+	<input type="button" name="Button" value="Clear" onclick="selectAll(document.getElementById('fileListField1'),false)" />
+	<input type="button" name="Button" value="Select All" onclick="selectAll('fileListField1',true)" />
+	</div>
+	</center>
+</td>
+<td width=33.3%>
+	<div id=controlButtons>
+	<div id=cfdgOpt><input type="checkbox" name="c" value=1 onclick ="cfdgClick()"> Produce CFDG files <br></div>
+	<div id=pngOpt><input type="checkbox" name="g" value=1 onclick ="pngClick()"> Produce PNG files <br></div>
+	<div id=movOpt><input type="checkbox" name="v" value=1 onclick ="movClick()"> Produce Video files<br></div>
+	<div id=csvOpt><input type="checkbox" name="fa" value=1 onclick ="csvClick()"> Produce CSV files<br></div>
+	<div id=summaryOpt><input type="checkbox" name="fs" value=1 onclick ="summaryClick()"> Produce Summary files<br></div>
+	</div>
+</td>
+</tr>
+</table>
+
+<p><center><input id="submit" type="submit" value="Submit"/></center></p>
+<p>
+
+</form>
+</body>
+</html>

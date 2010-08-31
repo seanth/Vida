@@ -1,0 +1,30 @@
+Running Vida in NodeBox
+
+This is purely experimental at this point. The goal is to allow Vida to run within the NodeBox environment so one could see "real time" graphics of the simulation. As of this writing (2008.07.14) Vida seems to work correctly within NodeBox with two exceptions:
+	1.) ASCII progress bars do not work. This is because NodeBox comes with a sys module that differs from the standard sys in that there is no stdout.flush(). There is code in place in Vida that checks to see if Vida is running in NodeBox and, if true, disables all ascii progress bars, regardless of settings.
+	2.) There's a cryptic error associated with outputing graphics, but is inconsistant and seems related to previous syntax errors. It only shows up if you throw an error, fix it, and then rerun things. To fix things, quit NodeBox, relaunch and run Vida again
+	3.) Simulation states can not be saved to disk. The pickling of the garden simply fails. I've thrown in code to disable archival activities while running in NodeBox. It's not immediately clear to me why it is failing, but here is the traceback:
+
+Traceback (most recent call last):
+  File "nodebox/gui/mac/__init__.pyo", line 358, in _execScript
+  File "/Users/seant/Documents/2007-Present-Thesis/bahai/builds/Latest/beta 20080710.1/Vida.py", line 806, in <module>
+  File "/Users/seant/Documents/2007-Present-Thesis/bahai/builds/Latest/beta 20080710.1/Vida.py", line 563, in main
+  File "/Users/seant/Documents/2007-Present-Thesis/bahai/builds/Latest/beta 20080710.1/Vida.py", line 72, in saveSimulationPoint
+  File "pickle.pyo", line 1362, in dump
+  File "pickle.pyo", line 224, in dump
+  File "pickle.pyo", line 331, in save
+  File "pickle.pyo", line 419, in save_reduce
+  File "pickle.pyo", line 286, in save
+  File "pickle.pyo", line 649, in save_dict
+  File "pickle.pyo", line 663, in _batch_setitems
+  File "pickle.pyo", line 286, in save
+  File "pickle.pyo", line 649, in save_dict
+  File "pickle.pyo", line 663, in _batch_setitems
+  File "pickle.pyo", line 331, in save
+  File "pickle.pyo", line 401, in save_reduce
+  File "pickle.pyo", line 286, in save
+  File "pickle.pyo", line 562, in save_tuple
+  File "pickle.pyo", line 286, in save
+  File "pickle.pyo", line 748, in save_global
+PicklingError: Can't pickle <class 'Species1'>: it's not found as __builtin__.Species1
+

@@ -1,0 +1,21 @@
+0:
+   - Garden:
+     - lightIntensity: 0.25
+40:
+   - Garden:
+     - lightIntensity: 0.5
+80:
+   - Garden:
+     - lightIntensity: 0.75
+120:
+   - Garden:
+     - lightIntensity: 1.0
+160:
+   - Garden:
+     - lightIntensity: 0.25
+200:
+   - Garden:
+     - lightIntensity: 0.5
+240:
+   - Garden:
+     - lightIntensity: 0.75

@@ -1,0 +1,382 @@
+NAME
+----
+	VIDA - tree growth simulation software
+
+
+SYNOPSIS
+--------
+	VIDA.py [OPTIONS]
+
+
+CONTENTS
+--------
+	Description
+	Option summary
+	Basic Usage (with examples)
+	Advanced Usage
+		Default values for VIDA
+		World constants
+		Species files
+		Seed placement files	
+		Scripting events
+	
+
+DESCRIPTION
+-----------
+	VIDA is a software suite that attempts to model the growth of individual trees using empiriclly derived--or randomly chosen--values for use with allometric relationships. By modeling the behavior of an individual tree, it is possible to model population dynamics in a spatially explicit simulationspace. 
+
+Trees are intentionally represented in highly stylized, simplified forms, specificly as an untapered trunk which supports a hemispherical canopy. The simulationspace represents a Platonic, square world where there is no wind,   there is no light scattering due to materials in the atmosphere, there is no reflection of light and light comes from directly above each tree. As a consequence of the source of light and the lack of scattering or reflection, the available photosynthetic area for each tree is the projected area of the canopy.
+
+Some built in features include:
+	*	ability to define square or circular regions in the simulation space that have different light intensities, kill all plants, seeds or both, and to have these regions change according over time as defined in a human-readable event file
+	*	ability to plant defined or randomly chosen species in random locations, in rows, in an hexigonal arrangement, or as defined in a file specifing x,y locations for each seed
+	*	ability to save and resume simulations
+	*	ability to save statistics on each individual in the simulation, as well as population-wide statistics in CSV files for later analysis
+	*	ability to generate various graphical views of the simulationspace, including autoCAD dxf files and Quicktime movies(Macintosh OSX only)
+	
+SETUP
+-----
+	See the file README for installation instructions.
+
+OPTIONS SUMMARY
+---------------
+	-d			turn on basic debugging
+	-dd			turn on module debugging
+	-n <string>		simulation name
+	-w <integer>		world size in meters
+	-s <mixed>		starting population size, a list of species, locations 
+					and germination delays, or a file defining species, 
+					locations and delays in germination
+	-m <integer>		maximum population size
+	-t <integer>		maximum number of cycles
+	-g[<characters>]	produce graphics (see Graphic Options)
+	-g3d			produce a dxf file
+	-c			keep CFDG files
+	-p			delete PNG files
+	-v [<integer>]		produce a Quicktime video, with an optional frames/second 
+					value(Macintosh only)
+	-r <string>		reload a previously saved simulation
+	-e <string>		load an event file named <string>
+	-a<characters>		save a simulation state
+	-f<characters>		save statistical data
+	-x <integer>		number of times to rereun the simulation
+
+Graphic Options:
+	VIDA can generate graphics showing views of the simulation from various angles, using the following options:
+	-gs			show the simulation from the side without any depth
+	-gt			show the simulation from the top-down
+	-gb			show the simulation from the bottom-up
+	-gbs			show the simulation from the bottom-up and from the side
+	-gts			show the simulation from the top-down and from the side
+	-gtb			show the simulation from the top-down and from the 
+					bottom-up(images are oriented left to right) 
+	-gbt			show the simulation from the bottom-up and from the 
+					top-down(images are oriented left to right)
+
+	NOTE: As of version 0.9 -gbts and -gtbs are not implemented.
+
+	
+BASIC USAGE
+-----------
+	At the bare minimum, one can run a simulation with VIDA by simply typing:
+
+		python VIDA.py
+
+	Running VIDA without any arguments will make use of default values in VIDA_Data/vdefaults.py. One can modify how VIDA's simulations are run by either altering the default values in the vdefaults.py file, or by entering options on the command line. The order of the arguments does not matter. For example:
+		python VIDA.py -n Terra -w 75
+	is functionally the same as:
+		python VIDA.py -w 75 -n Terra
+
+	The best way to illustrate the options is to provide some examples:
+
+		python VIDA.py -n 1example -w 100 -s 10 -t 200 -m 550 -gsb -v
+
+	This example would create a simulation called "1example". All files would be placed in the VIDA directory in a folder named "Output-1example". The simulationspace would be 100x100 meters in size and be seeded with 10 seeds of species randomly chosen from those present in the "Species" folder and placed in random locations within the simulation space. The simulation will run for 200 iterations, or until the maximum population reaches 550. Graphics will be made showing a bottom-up view and a side-on view. In addition, a video will be generated from the graphics. <include example graphical views>
+
+	VIDA uses the ContextFree application (http://www.contextfreeart.org/) to generate graphics. To do so, VIDA first generates cfdg files which ContextFree can read. By default, VIDA deletes the cfdg files after png files are generated. If one does not wish to have the cfdg file deleted, one includes the -c option in the command line. For example:
+
+		python VIDA.py -n 2example -w 100 -s 10 -t 200 -m 550 -gsb -c -v
+
+	This example would create a simulation called "3example". All files would be placed in the VIDA directory in a folder named "Output-3example". The simulationspace would be 100x100 meters in size and be seeded with 10 seeds of species randomly chosen from those present in the "Species" folder and placed in random locations within the simulation space. The simulation will run for 200 iterations, or until the maximum population reaches 550. Graphics will be made showing a bottom-up view and a side-on view, and the cfdg files will not be deleted at the end of the simulation.
+
+
+		python VIDA.py -n 3example -w 100 -s 10 -t 200 -m 550 -gsb -v 10
+
+	This is obviously very similar to the first and second examples, but in this case the 10 randomly chosen seeds are randomly placed on a 100x100m world. The addition of an integer (10) after the -v option results in a video being made with 10 frames/second. 
+
+	If one is interested in examining numerical values and relationships for the plants and seeds for a given iteration of a simulation, one can save information pertaining to an object's location, mass, size, and parentage using the -f<character> options.
+
+		-fe			save the state of the last iteration of a simulation
+		-fa			save the state of all iterations of a simulation
+		-fn			do not save any states
+	
+	For example:
+		
+		python VIDA.py -n 4example -w 100 -s 10 -t 200 -m 550 -gsb -v -fa
+
+	is identical to example 2 with the exception that files containing information on each object in the simulation will be saved to a folder named "Simulation_data" within the "Output-4example" folder. Since each file can be very large, objects are divided into seeds, plants and corpses, and are saved to appropriate subfolders.<make figure showing screenshot of folder structure> When one uses the -fa command, VIDA takes the additional step to generate statistical summary files from the individual data files.
+	
+	Vida saves the data for the final iteration a simulation by default. This is the equivilant to using the command -fe. If one didn't want to save any data files, one would use the -fn command.
+
+	In addition to saving graphical files, data files, and statistical files, VIDA can save the state of iterations so that one could resume a simulation from a known point. The default setting for VIDA is to save the final iteration of a simulation. This is the equivilant to saying:
+
+		python VIDA.py -n 5example -w 100 -s 10 -t 200 -m 550 -gsb -v 10 -ae
+
+	The options available for saving files are:
+		-ae			save the state of the last iteration of a simulation
+		-aa			save the state of all iterations of a simulation
+		-an			do not save any states
+
+	For example:
+		
+		python VIDA.py -n 6example -w 100 -ss 10 -t 200 -m 550 -gsb -v 10 -fa
+
+	As in example 3, 10 randomly chosen seeds are randomly placed on a 100x100m world. The addition of an integer (10) after the -v option results in a video being made with 10 frames/second. For every iteration statistical data is saved for each and every plant and seed in the simulationspace, and overall statistics will also be produced.
+
+	It is possible to reload a saved simulation state and run a simulation from that point.
+
+		python VIDA.py -n 7example -r <file name> -s 10 -t 200 -m 550 -gsb
+
+	In example 7, a previously saved simulation is loaded and will be run for 200 cycles or until a maximum population of 550 is reached. It is important to point out that when resuming a simulation, the -t command is time added onto whatever the saved simulation has. For example, if a reloaded simulation was from the 100th iteration of a simulation and the command -t 200 is used, the newly running simulation will run for 200 iterations, starting at the saved point. Note that -s can be used to introduce new seeds to an established world. Because the simulation world has already been created, the -w command will not do anything when resuming a simulation; once a simulation's world space is defined, it is fixed at that size.
+
+	At times it might be necessary to repeat a simulation multiple times so as to get meaningful statistics. One can accomplish this using the -x <integer> command:
+
+		python VIDA.py -n 8example -w 100 -s 10 -t 200 -m 550 -fa -x 3
+
+	As should be obvious, this simulation is essentially the same as example 1 with the exception that data files will be generated for each iteration. In addition to data files, a statistical summary file will be made. This simulation will run a total of 3 times, with the name of the output folder having a numerical suffix appended to it. <have an example screen shot of this>
+	
+
+ADVANCED OPTIONS
+----------------
+
+	VIDA has a number of default values which it uses. This is why simply typing 'python Vida.py' works. Default values, and the information for a default species (which is used when there are no species files in the 'Species' folder) and stored in three different files: Vita World Preferences.yml, vdefaults.py, and Default_species.yml. Please note that that there should be revision as to what values are in Vita World Preferences.yml versus vdefaults.py.
+	By editing the values within these files, one can alter simulations in ways not possible using the command line. One can also provide default setting such that one can omit certain command line arguments.
+
+	Default values for VIDA
+	-----------------------
+ 		See table for default values used by VIDA and saved in the Vida_Data/vdefaults.py file.<include a screen shot showing folder path>
+
+	World constants
+	---------------
+		Found in Vita World Preferences.yml<include a screen shot showing folder path>
+		Gravity: 
+			This is is the force of gravity in the simulation world. This value is used to determine aspects of seed dispersal and is used in calculations determining whether a plant will buckle due to excessive height in relation to diameter. The default value is 9.81m/s^2.
+		Atmosphere:
+			Currently unused.
+		LightIntensity:
+			This value is the amount of light present in the world, in arbitrary units. The default value of 1.0 can be seen as meaning 100%. 
+		MaxSeedsPerPlant:
+			There are situations where a given species will produce an impractically large number of seeds. Because each object in the world must be evaluated, excessive numbers of seeds can slow down simulation speeds. This variable allows one to cap the maximum number of seeds that any individual plant can make. The default value is 5.
+		IgnoreGermDeathAtStart:
+			This variable determines whether the simulation should ignore germination failure defined by a species for the starting iteration. The default value is TRUE.
+		AllowRandomDeath:
+			It is possible to turn various methods of death on and off. In this case, this variable controls whether plants will die due to pseudorandom (stochastic) events. The default value is TRUE.
+		RandomDeath:
+			If AllowRandomDeath is set to True, the value that RandomDeath is set to is used to determine the chances that any plant will die during any given iteration. The default value is 0.0075, which translates as a 0.75% chance of death for each tree, each iteration.
+		AllowSlowGrowthDeath:
+			Depending on the species in question, as a species ages, it's growth in height will slow. When this setting is true, a tree risks dying due to growing too slow, simulating senescence. The default value is true.
+		RandomSlowGrowth:
+			When AllowSlowGrowthDeath is set to true, this variable is used to help determine whether the plant in question enters a second round of stochastic death. If the average growth of the plant (as a fraction) is less than this value, the plant enters another round of potential stochastic death. The default value is 0.05, which can be read as, if a plant's average height growth rate is less than 5% of it's maximum height growth rate, it will enter another round of random death.
+		AllowOverlaps:
+			When true, the simulation will allow objects to occupy the same space. Default is false.
+		AllowOffWorld:
+			When true, the simulation will allow stem objects to grow so that their edges are off the world space. The default is false.
+		AllowEulerGreenhillViolations:
+			When true, the simulation will ignore the possibility that trees might grow too tall relative to their diameter. The default is false.
+		FractionWorldGraphicEdgeSpacer:
+			This value is a fractional number specifing the amount of graphical space around the edge of the world. This helps stop images from resizing as large canopies grow beyond the edge of the world.
+The default is 0.3.
+		FractionWorldBetweenLRGraphicsSpacer:
+			When generating graphics, this value is a fractional value defining the amount of space between top-down and bottom-up graphics as requested using the -gbt, -gtb, or -gtbs commands. Default is 0.0.
+
+		FractionWorldBetweenTBGraphicsSpacer:
+			When generating graphics, this value is a fractional value defining the amount of space between top-down/bottom-up graphics and the side-view graphic as requested using the -gbs, -gts, or -gtbs commands. Default is 0.5.	
+
+	Species files
+	-------------
+		The default species file, Default_species.yml, is found within the Vida_Data folder and is used when there are no species filed present within the Species folder.
+		Species files contain all the physical, allometric and behaviorial information for how a species behaves in a simulation. Values range from wood density to where seeds form on the canopy, to how it responds to shading. For a complete list of each attribute and what it is for, please see table <n. this will be a reworked version of SpeciesFileHelpData.yml>.
+
+	Seed placement files
+	--------------------
+		Seed placement files are simple csv files that have information in the following format:
+			species name, x coordinate, y coordinate, delay in germination
+		
+		For example, the following line:
+			Generic Gymnosperm.yml, 0.0, 0.0, 0
+		would place a species called Generic Gymnosperm at 0.0, 0.0 when the world was first made. This plant would attempt to germinate during the first iteration (a delay of 0).
+		
+		One can place multiple plants by defining multiple lines, such as:
+			Generic Gymnosperm.yml, 0.0, 0.0, 0
+			Generic Gymnosperm.yml, 1.0, 0.0, 5
+			Generic Gymnosperm.yml, -1.0, 0.0, 10
+
+		In that example, three Generic Gymnosperm plants are placed at [0.0,0.0], [1.0,0.0] and [-1.0, 0.0] on the world. The first plant will germinate in the first cycle (a delay of 0), the second will germinate after waiting five iterations, and the third will germinate after ten iterations.
+
+		In general, one can keep seed placement files in any directory, but it is advised one puts them within the "Placement Files" folder withing the VIDA directory. VIDA comes with a number of example placement files in the Placement Files folder. One, Metroid.csv, will place the species Abies alba in a pattern that resembles a Metroid from the classic NES game<image of metroid placement>. To load a placement file, one uses the following commandline syntax:
+
+			python Vida.py -sf <path to file>
+
+		To load the example Metroid placement file, one would enter:
+
+			python Vida.py -sf 'Placement Files/Metroid.csv'
+
+		All other commandline arguments (except additional -s commands) are valid. For example, one could use the following commands:
+
+			python Vida.py -n metroidExample -sf 'Placement Files/Metroid.csv' -t 100 -m 10,000 -gsb -v 12 -fa -aa -x 3
+
+	Scripting events
+	----------------
+		It is sometimes useful to be able to script various events to occur during a simulation. One might want to change light intensities in various locations as a simulation runs, or introduce a new species, or cause a mass die-off in a specific region. To do any of these, one can use event files.
+		Event files are yml files with the basic structure:
+			Iteration#:
+				-Object or action:
+					-property1: value
+					-property2: value
+
+		For example, if one wanted to change the light intensity of the entire simulation world at iteration 10 of a simulation, one would add the following to an event file:
+				10:
+				   - Region:
+				       lightIntensity: 0.75	
+
+		For example, if one wanted to make the upper left quadrant of a 100x100m world have 50% light starting at iteration 10, one would write:
+				10:
+				   - Garden:
+				     - lightIntensity: 0.5
+
+		One can edit any property of the simulation world in an event file, so one can say something like:
+				10:
+				   - Garden:
+				     - lightIntensity: 0.5
+				       atmosphere: 1.1
+                                       gravity: 10.81
+
+		It is possible to create subregions in the simulation using event files by defining a region and its properties:
+				10:
+				   - Region:
+				     - name: reg1
+				       size: 50.0
+				       shape: square #circle or square
+				       x: -25.0
+				       y: 25.0
+				       lightIntensity: 0.5
+
+		Here, a new region named 'reg1' is made. It is centered on -25.0, 25.0, has a total size of 50m, is a square, and has a light intensity of 0.5. After a region is defined in a event file, one can change any of the properties that it has:
+				10:
+				   - Region:
+				     - name: reg1
+				       size: 50.0
+				       shape: square #circle or square
+				       x: -25.0
+				       y: 25.0
+				       lightIntensity: 0.5
+				20:
+				   - Region:
+				     - name: reg1
+				       lightIntensity: 0.75
+				25:
+				   - Region:
+				     - name: reg1
+				       gravity: 10.0
+
+		All regions have the same properties as the world in general (gravity, atmospheric pressure, light intensity), and can be modified using event files. An example event file showing how to change the light intensity in four different regions every five years is the file '2x2changeEvery05yearsClockwise.yml'
+
+		If one wishes to introduce seeds using an event file, one uses the format:
+				Iteration#:
+				   - Seed:
+				     - species: <name or 'random'>
+				       placement: <placement file, 'square', 'hex' or 'random'>
+				       number: <number of seeds>
+		For example, if one wished to place seeds using a placement file at iteration 21, one would say:
+				21:
+				   - Seed:
+				     - placement: 'Placement Files/Metroid.csv'
+
+		If one wanted to place 27 Abies alba seeds in a square pattern on iteration 100, one would say:
+				100:
+				   - Seed:
+				     - species: 'Abies alba.yml'
+				       placement: square
+				       number: 27
+		
+		Finally, if one wanted to place 45 random species randomly in the world on iteration 51, one would say:
+				51:
+				   - Seed:
+				     - species: random
+				       placement: random
+				       number: 45
+
+		There are times when one would like to kill plants, seeds or both in a given location. One can accomplish this using a syntax similar to that used for making regions:
+				Iteration#:
+				   - <'Killzone' or 'Safezone'>:
+				     - x: <x location zone is centered on>
+				       y: <y location zone is centered on>
+				       shape: <circle or square>
+				       size: <in meters>
+				       target: <'plants' or 'seeds' or 'all'>
+
+		If one wanted to kill all plants and seeds in a 10m circle centered on 0.0, 0.0 on iteration 87, one would use the following:
+				87:
+				   - Killzone:
+				     - x: 0.0
+				       y: 0.0
+				       shape: circle
+				       size: 10
+				       target: all
+
+		Alternately, if one had wanted to kill only seeds in the above example:
+				87:
+				   - Killzone:
+				     - x: 0.0
+				       y: 0.0
+				       shape: circle
+				       size: 10
+				       target: seeds
+
+		Each of these aspects of event files can be combined into a single file such as:
+				0:
+				   - Garden:
+				     - lightIntensity: 0.5
+				       atmosphere: 1.1
+                                       gravity: 10.81
+				10:
+				   - Region:
+				     - name: reg1
+				       size: 50.0
+				       shape: square #circle or square
+				       x: -25.0
+				       y: 25.0
+				       lightIntensity: 0.5
+				20:
+				   - Region:
+				     - name: reg1
+				       lightIntensity: 0.75
+				87:
+				   - Killzone:
+				     - x: 0.0
+				       y: 0.0
+				       shape: circle
+				       size: 10
+				       target: all
+				100:
+				   - Seed:
+				     - species: 'Abies alba.yml'
+				       placement: square
+				       number: 27
+
+		Of all the aspects of Vida, event files are by far the most powerful in that multiple regions and events in a single file can be combined. Examination of included event files is encouraged.
+
+		To make use of an event file, one uses the syntax:
+			python Vida.py -e <path to file>
+
+		To load an example event file, one would enter:
+
+			python Vida.py -e 'Event Files/events_examples.yml'
+
+		All other commandline arguments (except additional -s commands) are valid. For example, one could use the following commands:
+
+			python Vida.py -n eventExample -s 'Placement Files/Metroid.csv' -e 'Event Files/events_examples.yml' -t 100 -m 10,000 -gsb -v 12 -fa -aa -x 3
+
+
+
+	

@@ -1,0 +1,78 @@
+0:
+   - Garden:
+     - lightIntensity: 0.25
+10:
+   - Garden:
+     - lightIntensity: 0.5
+20:
+   - Garden:
+     - lightIntensity: 0.75
+30:
+   - Garden:
+     - lightIntensity: 1.0
+40:
+   - Garden:
+     - lightIntensity: 0.25
+50:
+   - Garden:
+     - lightIntensity: 0.5
+60:
+   - Garden:
+     - lightIntensity: 0.75
+70:
+   - Garden:
+     - lightIntensity: 1.0
+80:
+   - Garden:
+     - lightIntensity: 0.25
+90:
+   - Garden:
+     - lightIntensity: 0.5
+100:
+   - Garden:
+     - lightIntensity: 0.75
+110:
+   - Garden:
+     - lightIntensity: 1.0
+120:
+   - Garden:
+     - lightIntensity: 0.25
+130:
+   - Garden:
+     - lightIntensity: 0.5
+140:
+   - Garden:
+     - lightIntensity: 0.75
+150:
+   - Garden:
+     - lightIntensity: 1.0
+160:
+   - Garden:
+     - lightIntensity: 0.25
+170:
+   - Garden:
+     - lightIntensity: 0.5
+180:
+   - Garden:
+     - lightIntensity: 0.75
+190:
+   - Garden:
+     - lightIntensity: 1.0
+200:
+   - Garden:
+     - lightIntensity: 0.25
+210:
+   - Garden:
+     - lightIntensity: 0.5
+220:
+   - Garden:
+     - lightIntensity: 0.75
+230:
+   - Garden:
+     - lightIntensity: 1.0
+240:
+   - Garden:
+     - lightIntensity: 0.25
+250:
+   - Garden:
+     - lightIntensity: 0.5

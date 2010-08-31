@@ -1,0 +1,277 @@
+0:
+   - Region:
+     - name: q1
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: 41.67
+       lightIntensity: 0.75
+   - Region:
+     - name: q2
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: 41.67
+       lightIntensity: 0.75
+   - Region:
+     - name: q3
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: 41.67
+       lightIntensity: 0.25
+   - Region:
+     - name: q4
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: 41.67
+       lightIntensity: 0.75
+   - Region:
+     - name: q5
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: 41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: q6
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: 41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: q7
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: 25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: q8
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: 25.0
+       lightIntensity: 0.5
+   - Region:
+     - name: q9
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: 25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: q10
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: 25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: q11
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: 25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: q12
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: 25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: q13
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: 8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: q14
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: 8.33
+       lightIntensity: 0.25
+   - Region:
+     - name: q15
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: 8.33
+       lightIntensity: 0.25
+   - Region:
+     - name: q16
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: 8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: q17
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: 8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: q18
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: 8.33
+       lightIntensity: 0.75
+   - Region:
+     - name: q19
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: -8.33
+       lightIntensity: 0.75
+   - Region:
+     - name: q20
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: -8.33
+       lightIntensity: 0.5
+   - Region:
+     - name: q21
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: -8.33
+       lightIntensity: 0.75
+   - Region:
+     - name: q22
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: -8.33
+       lightIntensity: 0.5
+   - Region:
+     - name: q23
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: -8.33
+       lightIntensity: 0.5
+   - Region:
+     - name: q24
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: -8.33
+       lightIntensity: 1.0
+   - Region:
+     - name: q25
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: -25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: q26
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: -25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: q27
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: -25.0
+       lightIntensity: 0.25
+   - Region:
+     - name: q28
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: -25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: q29
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: -25.0
+       lightIntensity: 0.75
+   - Region:
+     - name: q30
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: -25.0
+       lightIntensity: 1.0
+   - Region:
+     - name: q31
+       size: 16.6
+       shape: square #circle or square
+       x: -41.67
+       y: -41.67
+       lightIntensity: 1.0
+   - Region:
+     - name: q32
+       size: 16.6
+       shape: square #circle or square
+       x: -25.0
+       y: -41.67
+       lightIntensity: 0.25
+   - Region:
+     - name: q33
+       size: 16.6
+       shape: square #circle or square
+       x: -8.33
+       y: -41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: q34
+       size: 16.6
+       shape: square #circle or square
+       x: 8.33
+       y: -41.67
+       lightIntensity: 0.5
+   - Region:
+     - name: q35
+       size: 16.6
+       shape: square #circle or square
+       x: 25.0
+       y: -41.67
+       lightIntensity: 0.75
+   - Region:
+     - name: q36
+       size: 16.6
+       shape: square #circle or square
+       x: 41.67
+       y: -41.67
+       lightIntensity: 0.75
+21:
+   - Region:     - name: q1       lightIntensity:  0.5   - Region:     - name: q2       lightIntensity:  1   - Region:     - name: q3       lightIntensity:  0.5   - Region:     - name: q4       lightIntensity:  0.75   - Region:     - name: q5       lightIntensity:  0.25   - Region:     - name: q6       lightIntensity:  1   - Region:     - name: q7       lightIntensity:  0.5   - Region:     - name: q8       lightIntensity:  0.5   - Region:     - name: q9       lightIntensity:  0.75   - Region:     - name: q10       lightIntensity:  0.75   - Region:     - name: q11       lightIntensity:  0.75   - Region:     - name: q12       lightIntensity:  0.5   - Region:     - name: q13       lightIntensity:  1   - Region:     - name: q14       lightIntensity:  0.5   - Region:     - name: q15       lightIntensity:  0.5   - Region:     - name: q16       lightIntensity:  0.25   - Region:     - name: q17       lightIntensity:  0.75   - Region:     - name: q18       lightIntensity:  0.5   - Region:     - name: q19       lightIntensity:  0.75   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  0.5   - Region:     - name: q23       lightIntensity:  0.5   - Region:     - name: q24       lightIntensity:  0.75   - Region:     - name: q25       lightIntensity:  0.25   - Region:     - name: q26       lightIntensity:  0.5   - Region:     - name: q27       lightIntensity:  0.75   - Region:     - name: q28       lightIntensity:  0.75   - Region:     - name: q29       lightIntensity:  0.5   - Region:     - name: q30       lightIntensity:  1   - Region:     - name: q31       lightIntensity:  0.75   - Region:     - name: q32       lightIntensity:  0.5   - Region:     - name: q33       lightIntensity:  0.5   - Region:     - name: q34       lightIntensity:  0.25   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.5
+41:
+   - Region:     - name: q1       lightIntensity:  0.5   - Region:     - name: q2       lightIntensity:  0.5   - Region:     - name: q3       lightIntensity:  0.75   - Region:     - name: q4       lightIntensity:  0.75   - Region:     - name: q5       lightIntensity:  0.75   - Region:     - name: q6       lightIntensity:  0.25   - Region:     - name: q7       lightIntensity:  0.75   - Region:     - name: q8       lightIntensity:  0.75   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.75   - Region:     - name: q11       lightIntensity:  0.25   - Region:     - name: q12       lightIntensity:  0.5   - Region:     - name: q13       lightIntensity:  0.75   - Region:     - name: q14       lightIntensity:  0.75   - Region:     - name: q15       lightIntensity:  0.5   - Region:     - name: q16       lightIntensity:  0.75   - Region:     - name: q17       lightIntensity:  0.5   - Region:     - name: q18       lightIntensity:  0.25   - Region:     - name: q19       lightIntensity:  0.75   - Region:     - name: q20       lightIntensity:  0.5   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  0.75   - Region:     - name: q23       lightIntensity:  0.75   - Region:     - name: q24       lightIntensity:  0.5   - Region:     - name: q25       lightIntensity:  0.75   - Region:     - name: q26       lightIntensity:  0.5   - Region:     - name: q27       lightIntensity:  0.25   - Region:     - name: q28       lightIntensity:  1   - Region:     - name: q29       lightIntensity:  0.25   - Region:     - name: q30       lightIntensity:  0.75   - Region:     - name: q31       lightIntensity:  0.75   - Region:     - name: q32       lightIntensity:  0.75   - Region:     - name: q33       lightIntensity:  0.75   - Region:     - name: q34       lightIntensity:  0.5   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.75
+61:
+   - Region:     - name: q1       lightIntensity:  0.5   - Region:     - name: q2       lightIntensity:  1   - Region:     - name: q3       lightIntensity:  0.5   - Region:     - name: q4       lightIntensity:  0.75   - Region:     - name: q5       lightIntensity:  0.25   - Region:     - name: q6       lightIntensity:  0.75   - Region:     - name: q7       lightIntensity:  1   - Region:     - name: q8       lightIntensity:  1   - Region:     - name: q9       lightIntensity:  1   - Region:     - name: q10       lightIntensity:  0.5   - Region:     - name: q11       lightIntensity:  0.5   - Region:     - name: q12       lightIntensity:  0.5   - Region:     - name: q13       lightIntensity:  0.5   - Region:     - name: q14       lightIntensity:  0.25   - Region:     - name: q15       lightIntensity:  0.75   - Region:     - name: q16       lightIntensity:  0.75   - Region:     - name: q17       lightIntensity:  0.75   - Region:     - name: q18       lightIntensity:  0.75   - Region:     - name: q19       lightIntensity:  0.5   - Region:     - name: q20       lightIntensity:  0.25   - Region:     - name: q21       lightIntensity:  0.5   - Region:     - name: q22       lightIntensity:  0.5   - Region:     - name: q23       lightIntensity:  0.75   - Region:     - name: q24       lightIntensity:  0.5   - Region:     - name: q25       lightIntensity:  0.75   - Region:     - name: q26       lightIntensity:  1   - Region:     - name: q27       lightIntensity:  0.25   - Region:     - name: q28       lightIntensity:  0.25   - Region:     - name: q29       lightIntensity:  1   - Region:     - name: q30       lightIntensity:  1   - Region:     - name: q31       lightIntensity:  0.25   - Region:     - name: q32       lightIntensity:  0.75   - Region:     - name: q33       lightIntensity:  0.75   - Region:     - name: q34       lightIntensity:  0.5   - Region:     - name: q35       lightIntensity:  0.25   - Region:     - name: q36       lightIntensity:  0.75
+81:
+   - Region:     - name: q1       lightIntensity:  0.75   - Region:     - name: q2       lightIntensity:  1   - Region:     - name: q3       lightIntensity:  0.25   - Region:     - name: q4       lightIntensity:  0.25   - Region:     - name: q5       lightIntensity:  0.5   - Region:     - name: q6       lightIntensity:  0.5   - Region:     - name: q7       lightIntensity:  0.5   - Region:     - name: q8       lightIntensity:  0.75   - Region:     - name: q9       lightIntensity:  0.75   - Region:     - name: q10       lightIntensity:  1   - Region:     - name: q11       lightIntensity:  1   - Region:     - name: q12       lightIntensity:  0.25   - Region:     - name: q13       lightIntensity:  0.75   - Region:     - name: q14       lightIntensity:  0.75   - Region:     - name: q15       lightIntensity:  0.75   - Region:     - name: q16       lightIntensity:  0.75   - Region:     - name: q17       lightIntensity:  0.75   - Region:     - name: q18       lightIntensity:  0.75   - Region:     - name: q19       lightIntensity:  0.25   - Region:     - name: q20       lightIntensity:  0.5   - Region:     - name: q21       lightIntensity:  1   - Region:     - name: q22       lightIntensity:  0.75   - Region:     - name: q23       lightIntensity:  0.75   - Region:     - name: q24       lightIntensity:  0.5   - Region:     - name: q25       lightIntensity:  0.5   - Region:     - name: q26       lightIntensity:  0.75   - Region:     - name: q27       lightIntensity:  0.5   - Region:     - name: q28       lightIntensity:  0.5   - Region:     - name: q29       lightIntensity:  0.5   - Region:     - name: q30       lightIntensity:  0.25   - Region:     - name: q31       lightIntensity:  1   - Region:     - name: q32       lightIntensity:  0.5   - Region:     - name: q33       lightIntensity:  0.5   - Region:     - name: q34       lightIntensity:  0.25   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.5
+101:
+   - Region:     - name: q1       lightIntensity:  0.5   - Region:     - name: q2       lightIntensity:  0.25   - Region:     - name: q3       lightIntensity:  0.75   - Region:     - name: q4       lightIntensity:  0.25   - Region:     - name: q5       lightIntensity:  0.5   - Region:     - name: q6       lightIntensity:  0.75   - Region:     - name: q7       lightIntensity:  1   - Region:     - name: q8       lightIntensity:  0.75   - Region:     - name: q9       lightIntensity:  0.75   - Region:     - name: q10       lightIntensity:  1   - Region:     - name: q11       lightIntensity:  0.5   - Region:     - name: q12       lightIntensity:  0.75   - Region:     - name: q13       lightIntensity:  0.25   - Region:     - name: q14       lightIntensity:  0.5   - Region:     - name: q15       lightIntensity:  1   - Region:     - name: q16       lightIntensity:  0.75   - Region:     - name: q17       lightIntensity:  0.75   - Region:     - name: q18       lightIntensity:  0.5   - Region:     - name: q19       lightIntensity:  0.5   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  1   - Region:     - name: q23       lightIntensity:  0.25   - Region:     - name: q24       lightIntensity:  0.75   - Region:     - name: q25       lightIntensity:  0.5   - Region:     - name: q26       lightIntensity:  0.5   - Region:     - name: q27       lightIntensity:  0.5   - Region:     - name: q28       lightIntensity:  0.75   - Region:     - name: q29       lightIntensity:  0.25   - Region:     - name: q30       lightIntensity:  0.25   - Region:     - name: q31       lightIntensity:  0.25   - Region:     - name: q32       lightIntensity:  0.75   - Region:     - name: q33       lightIntensity:  0.75   - Region:     - name: q34       lightIntensity:  0.75   - Region:     - name: q35       lightIntensity:  0.75   - Region:     - name: q36       lightIntensity:  1
+121:
+   - Region:     - name: q1       lightIntensity:  1   - Region:     - name: q2       lightIntensity:  0.25   - Region:     - name: q3       lightIntensity:  0.5   - Region:     - name: q4       lightIntensity:  1   - Region:     - name: q5       lightIntensity:  0.5   - Region:     - name: q6       lightIntensity:  0.75   - Region:     - name: q7       lightIntensity:  0.75   - Region:     - name: q8       lightIntensity:  0.5   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.5   - Region:     - name: q11       lightIntensity:  0.5   - Region:     - name: q12       lightIntensity:  0.5   - Region:     - name: q13       lightIntensity:  0.5   - Region:     - name: q14       lightIntensity:  0.75   - Region:     - name: q15       lightIntensity:  1   - Region:     - name: q16       lightIntensity:  0.5   - Region:     - name: q17       lightIntensity:  1   - Region:     - name: q18       lightIntensity:  0.5   - Region:     - name: q19       lightIntensity:  0.5   - Region:     - name: q20       lightIntensity:  1   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  0.25   - Region:     - name: q23       lightIntensity:  0.75   - Region:     - name: q24       lightIntensity:  0.75   - Region:     - name: q25       lightIntensity:  0.75   - Region:     - name: q26       lightIntensity:  0.5   - Region:     - name: q27       lightIntensity:  0.5   - Region:     - name: q28       lightIntensity:  0.5   - Region:     - name: q29       lightIntensity:  0.5   - Region:     - name: q30       lightIntensity:  0.25   - Region:     - name: q31       lightIntensity:  1   - Region:     - name: q32       lightIntensity:  0.75   - Region:     - name: q33       lightIntensity:  0.75   - Region:     - name: q34       lightIntensity:  0.75   - Region:     - name: q35       lightIntensity:  0.5   - Region:     - name: q36       lightIntensity:  0.25
+141:
+   - Region:     - name: q1       lightIntensity:  0.75   - Region:     - name: q2       lightIntensity:  0.75   - Region:     - name: q3       lightIntensity:  0.75   - Region:     - name: q4       lightIntensity:  0.5   - Region:     - name: q5       lightIntensity:  0.75   - Region:     - name: q6       lightIntensity:  1   - Region:     - name: q7       lightIntensity:  0.75   - Region:     - name: q8       lightIntensity:  0.5   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.25   - Region:     - name: q11       lightIntensity:  0.25   - Region:     - name: q12       lightIntensity:  0.75   - Region:     - name: q13       lightIntensity:  1   - Region:     - name: q14       lightIntensity:  0.5   - Region:     - name: q15       lightIntensity:  0.75   - Region:     - name: q16       lightIntensity:  0.5   - Region:     - name: q17       lightIntensity:  0.5   - Region:     - name: q18       lightIntensity:  0.5   - Region:     - name: q19       lightIntensity:  0.5   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  0.75   - Region:     - name: q23       lightIntensity:  0.5   - Region:     - name: q24       lightIntensity:  0.75   - Region:     - name: q25       lightIntensity:  0.5   - Region:     - name: q26       lightIntensity:  0.5   - Region:     - name: q27       lightIntensity:  0.5   - Region:     - name: q28       lightIntensity:  0.75   - Region:     - name: q29       lightIntensity:  0.75   - Region:     - name: q30       lightIntensity:  0.75   - Region:     - name: q31       lightIntensity:  0.5   - Region:     - name: q32       lightIntensity:  0.25   - Region:     - name: q33       lightIntensity:  0.5   - Region:     - name: q34       lightIntensity:  0.75   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.5
+161:
+   - Region:     - name: q1       lightIntensity:  0.5   - Region:     - name: q2       lightIntensity:  0.5   - Region:     - name: q3       lightIntensity:  0.75   - Region:     - name: q4       lightIntensity:  1   - Region:     - name: q5       lightIntensity:  0.5   - Region:     - name: q6       lightIntensity:  0.5   - Region:     - name: q7       lightIntensity:  0.75   - Region:     - name: q8       lightIntensity:  0.5   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.75   - Region:     - name: q11       lightIntensity:  0.5   - Region:     - name: q12       lightIntensity:  0.25   - Region:     - name: q13       lightIntensity:  0.75   - Region:     - name: q14       lightIntensity:  0.75   - Region:     - name: q15       lightIntensity:  0.75   - Region:     - name: q16       lightIntensity:  1   - Region:     - name: q17       lightIntensity:  0.5   - Region:     - name: q18       lightIntensity:  0.25   - Region:     - name: q19       lightIntensity:  0.5   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  0.75   - Region:     - name: q23       lightIntensity:  0.25   - Region:     - name: q24       lightIntensity:  1   - Region:     - name: q25       lightIntensity:  0.75   - Region:     - name: q26       lightIntensity:  0.75   - Region:     - name: q27       lightIntensity:  0.75   - Region:     - name: q28       lightIntensity:  0.5   - Region:     - name: q29       lightIntensity:  0.25   - Region:     - name: q30       lightIntensity:  0.75   - Region:     - name: q31       lightIntensity:  0.5   - Region:     - name: q32       lightIntensity:  0.75   - Region:     - name: q33       lightIntensity:  0.75   - Region:     - name: q34       lightIntensity:  1   - Region:     - name: q35       lightIntensity:  0.25   - Region:     - name: q36       lightIntensity:  0.5
+181:
+   - Region:     - name: q1       lightIntensity:  0.75   - Region:     - name: q2       lightIntensity:  0.75   - Region:     - name: q3       lightIntensity:  0.5   - Region:     - name: q4       lightIntensity:  0.75   - Region:     - name: q5       lightIntensity:  0.75   - Region:     - name: q6       lightIntensity:  0.75   - Region:     - name: q7       lightIntensity:  0.5   - Region:     - name: q8       lightIntensity:  0.25   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  1   - Region:     - name: q11       lightIntensity:  0.25   - Region:     - name: q12       lightIntensity:  0.75   - Region:     - name: q13       lightIntensity:  0.5   - Region:     - name: q14       lightIntensity:  1   - Region:     - name: q15       lightIntensity:  0.75   - Region:     - name: q16       lightIntensity:  0.5   - Region:     - name: q17       lightIntensity:  1   - Region:     - name: q18       lightIntensity:  1   - Region:     - name: q19       lightIntensity:  0.5   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.75   - Region:     - name: q22       lightIntensity:  0.5   - Region:     - name: q23       lightIntensity:  0.5   - Region:     - name: q24       lightIntensity:  1   - Region:     - name: q25       lightIntensity:  0.25   - Region:     - name: q26       lightIntensity:  0.5   - Region:     - name: q27       lightIntensity:  0.25   - Region:     - name: q28       lightIntensity:  0.5   - Region:     - name: q29       lightIntensity:  0.5   - Region:     - name: q30       lightIntensity:  0.5   - Region:     - name: q31       lightIntensity:  0.25   - Region:     - name: q32       lightIntensity:  0.75   - Region:     - name: q33       lightIntensity:  0.25   - Region:     - name: q34       lightIntensity:  0.75   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.75
+201:
+   - Region:     - name: q1       lightIntensity:  0.75   - Region:     - name: q2       lightIntensity:  1   - Region:     - name: q3       lightIntensity:  0.25   - Region:     - name: q4       lightIntensity:  0.75   - Region:     - name: q5       lightIntensity:  0.5   - Region:     - name: q6       lightIntensity:  1   - Region:     - name: q7       lightIntensity:  1   - Region:     - name: q8       lightIntensity:  1   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.75   - Region:     - name: q11       lightIntensity:  0.75   - Region:     - name: q12       lightIntensity:  0.25   - Region:     - name: q13       lightIntensity:  1   - Region:     - name: q14       lightIntensity:  0.25   - Region:     - name: q15       lightIntensity:  0.25   - Region:     - name: q16       lightIntensity:  0.75   - Region:     - name: q17       lightIntensity:  0.75   - Region:     - name: q18       lightIntensity:  0.75   - Region:     - name: q19       lightIntensity:  0.25   - Region:     - name: q20       lightIntensity:  0.25   - Region:     - name: q21       lightIntensity:  0.5   - Region:     - name: q22       lightIntensity:  0.75   - Region:     - name: q23       lightIntensity:  0.5   - Region:     - name: q24       lightIntensity:  0.75   - Region:     - name: q25       lightIntensity:  0.5   - Region:     - name: q26       lightIntensity:  0.75   - Region:     - name: q27       lightIntensity:  0.75   - Region:     - name: q28       lightIntensity:  0.5   - Region:     - name: q29       lightIntensity:  0.75   - Region:     - name: q30       lightIntensity:  1   - Region:     - name: q31       lightIntensity:  0.75   - Region:     - name: q32       lightIntensity:  0.5   - Region:     - name: q33       lightIntensity:  0.25   - Region:     - name: q34       lightIntensity:  0.25   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.25
+221:
+   - Region:     - name: q1       lightIntensity:  0.75   - Region:     - name: q2       lightIntensity:  0.5   - Region:     - name: q3       lightIntensity:  0.5   - Region:     - name: q4       lightIntensity:  0.75   - Region:     - name: q5       lightIntensity:  0.5   - Region:     - name: q6       lightIntensity:  0.75   - Region:     - name: q7       lightIntensity:  0.75   - Region:     - name: q8       lightIntensity:  0.75   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.5   - Region:     - name: q11       lightIntensity:  0.75   - Region:     - name: q12       lightIntensity:  0.5   - Region:     - name: q13       lightIntensity:  0.75   - Region:     - name: q14       lightIntensity:  0.5   - Region:     - name: q15       lightIntensity:  0.75   - Region:     - name: q16       lightIntensity:  0.75   - Region:     - name: q17       lightIntensity:  0.5   - Region:     - name: q18       lightIntensity:  0.25   - Region:     - name: q19       lightIntensity:  0.75   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.5   - Region:     - name: q22       lightIntensity:  0.5   - Region:     - name: q23       lightIntensity:  0.5   - Region:     - name: q24       lightIntensity:  0.25   - Region:     - name: q25       lightIntensity:  0.75   - Region:     - name: q26       lightIntensity:  1   - Region:     - name: q27       lightIntensity:  0.75   - Region:     - name: q28       lightIntensity:  0.75   - Region:     - name: q29       lightIntensity:  0.5   - Region:     - name: q30       lightIntensity:  0.5   - Region:     - name: q31       lightIntensity:  0.75   - Region:     - name: q32       lightIntensity:  0.5   - Region:     - name: q33       lightIntensity:  0.5   - Region:     - name: q34       lightIntensity:  0.5   - Region:     - name: q35       lightIntensity:  1   - Region:     - name: q36       lightIntensity:  0.75
+241:
+   - Region:     - name: q1       lightIntensity:  0.5   - Region:     - name: q2       lightIntensity:  0.5   - Region:     - name: q3       lightIntensity:  1   - Region:     - name: q4       lightIntensity:  1   - Region:     - name: q5       lightIntensity:  0.75   - Region:     - name: q6       lightIntensity:  0.25   - Region:     - name: q7       lightIntensity:  0.25   - Region:     - name: q8       lightIntensity:  0.75   - Region:     - name: q9       lightIntensity:  0.5   - Region:     - name: q10       lightIntensity:  0.75   - Region:     - name: q11       lightIntensity:  1   - Region:     - name: q12       lightIntensity:  1   - Region:     - name: q13       lightIntensity:  0.5   - Region:     - name: q14       lightIntensity:  1   - Region:     - name: q15       lightIntensity:  0.5   - Region:     - name: q16       lightIntensity:  0.5   - Region:     - name: q17       lightIntensity:  0.75   - Region:     - name: q18       lightIntensity:  0.5   - Region:     - name: q19       lightIntensity:  0.25   - Region:     - name: q20       lightIntensity:  0.75   - Region:     - name: q21       lightIntensity:  0.25   - Region:     - name: q22       lightIntensity:  0.75   - Region:     - name: q23       lightIntensity:  0.5   - Region:     - name: q24       lightIntensity:  1   - Region:     - name: q25       lightIntensity:  0.75   - Region:     - name: q26       lightIntensity:  1   - Region:     - name: q27       lightIntensity:  0.5   - Region:     - name: q28       lightIntensity:  0.5   - Region:     - name: q29       lightIntensity:  0.5   - Region:     - name: q30       lightIntensity:  0.5   - Region:     - name: q31       lightIntensity:  0.25   - Region:     - name: q32       lightIntensity:  1   - Region:     - name: q33       lightIntensity:  0.5   - Region:     - name: q34       lightIntensity:  0.75   - Region:     - name: q35       lightIntensity:  0.5   - Region:     - name: q36       lightIntensity:  0.25
