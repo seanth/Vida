@@ -1,6 +1,6 @@
 nameSpecies: WEB species
 creator: seanth@gmail.com
-comments: Species generated partly using Cannell data set for Generic Angiosperm. See Generic Angiosperm file for more info. WEB Species makes use of alpha values in keeping with the WEB theory
+comments: Species generated partly using Cannell data set for Generic Angiosperm. See Generic Angiosperm file for more info. WEB Species makes use of alpha values in keeping with the WEB theory.  Uses Generic Angiosperm  speciesExponent2
 
 ###Basic
 densityStem: 995.76 #Lavers 1967 Wood properties
@@ -53,7 +53,7 @@ fractionCarbonToStem: 0.99
 speciesConstant1: 0.86366077
 speciesExponent1: 1.0 #web value
 speciesConstant2: 0.11637722
-speciesExponent2: 0.75 #web value
+speciesExponent2: 0.88193255 #web value
 speciesConstant3: 0.11637722 #from cannell. calc for all angio#0.08536206
 speciesExponent3: 0.75 #web value
 speciesConstant20: 0.02649732

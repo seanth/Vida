@@ -205,7 +205,7 @@ def initCFDGText(theGarden, displayType, percentTimeStamp, maxHeightPlant):
 		#why is it ../../ on windows? how weird
 		CFDGtext=CFDGtext % {"thePathToiPix": "\"../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 	else:
-		CFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
+		CFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 	return CFDGtext
 
 

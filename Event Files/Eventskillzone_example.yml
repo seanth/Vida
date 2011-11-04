@@ -1,0 +1,42 @@
+1:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 10
+       target: seeds
+5:
+   - Safezone:
+     - x: 5.0
+       y: 5.0
+       shape: circle
+       size: 10
+       target: seeds
+10:
+   - Safezone:
+     - x: 10.0
+       y: 10.0
+       shape: circle
+       size: 10
+       target: seeds
+15:
+   - Safezone:
+     - x: 15.0
+       y: 15.0
+       shape: circle
+       size: 10
+       target: seeds
+20:
+   - Safezone:
+     - x: 20.0
+       y: 20.0
+       shape: circle
+       size: 10
+       target: seeds
+25:
+   - Safezone:
+     - x: 25.0
+       y: 25.0
+       shape: circle
+       size: 10
+       target: seeds

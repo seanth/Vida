@@ -491,29 +491,34 @@ class genericPlant(object):
 	def calcHeightStemFromRadiusStem(self, theGarden):
 		Ds=self.radiusStem*2
 		##there is a weird, very rare bug
-		if (Ds==0.0):
-			self.causeOfDeath="impossible diameter calculation(Ds==0.0)"
+		if (Ds<=0.0):
+			self.causeOfDeath="impossible diameter calculation(Ds<=0.0)"
 			theGarden.kill(self)
 		#mature allocation method
-		Hs=(self.speciesConstant8*math.log(Ds))+self.heightStemMax
-		if Hs<self.heightStem:
-			#young method
-			#Hs=(self.speciesConstant7*math.pow(Ds, self.speciesExponent7))-self.speciesConstant6
-			Hs=(self.speciesConstant7*(Ds**self.speciesExponent7))-self.speciesConstant6
-		elif not self.isMature:
-			self.isMature=True
-			#print "mature at: %i" % (self.age)
-		GHs=Hs-self.heightStem
-		if (Hs<0.0 or Hs<self.heightStem):
-			print "oops. stem is shrinking. that's not right. Die"
-			self.GHs=GHs
-			self.heightStem=Hs
-			#something is wrong. There's either a negative height or it is shrinking
-			self.causeOfDeath="impossible height calculation"
+		try:
+			Hs=(self.speciesConstant8*math.log(Ds))+self.heightStemMax
+		except:
+			self.causeOfDeath="impossible diameter calculation. Ds=%f" % (Ds)
 			theGarden.kill(self)
 		else:
-			self.GHs=GHs
-			self.heightStem=Hs
+			if Hs<self.heightStem:
+				#young method
+				#Hs=(self.speciesConstant7*math.pow(Ds, self.speciesExponent7))-self.speciesConstant6
+				Hs=(self.speciesConstant7*(Ds**self.speciesExponent7))-self.speciesConstant6
+			elif not self.isMature:
+				self.isMature=True
+				#print "mature at: %i" % (self.age)
+			GHs=Hs-self.heightStem
+			if (Hs<0.0 or Hs<self.heightStem):
+				print "oops. stem is shrinking. that's not right. Die"
+				self.GHs=GHs
+				self.heightStem=Hs
+				#something is wrong. There's either a negative height or it is shrinking
+				self.causeOfDeath="impossible height calculation"
+				theGarden.kill(self)
+			else:
+				self.GHs=GHs
+				self.heightStem=Hs
 			
 											
 	def makeSomeSeeds(self, maxSeedsPerPlant):
