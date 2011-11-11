@@ -15,8 +15,8 @@ CFDGtext=\
 """
 startshape garden
 
-//include ../../../Vida_Data/i_pix.cfdg
-include %(thePathToiPix)s
+include ../../../Vida_Data/i_pix.cfdg
+//include %(thePathToiPix)s
 
 rule garden{
 	%(theWorldType)s
@@ -513,7 +513,7 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 		appleScriptCmd="""osascript<<END
 		set folderPath to path to me as string
 		set the clipboard to folderPath as text
-		tell application "QuickTime Player"
+		tell application "QuickTime Player 7"
 		activate
 		--need absolute path of file here--
 		open image sequence "%s%s" frames per second %i
