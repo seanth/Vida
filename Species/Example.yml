@@ -1,4 +1,4 @@
-nameSpecies: DensityTester
+nameSpecies: SimpleExample
 creator: seanth@gmail.com
 comments: Based off the Abies alba species generated using Cannell data set. 11.11.10
 
@@ -30,7 +30,7 @@ fractionFailGerminate: 0.0
 leafIsHemisphere: TRUE
 radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
-radiusSeedMultiplier: 10
+radiusSeedMultiplier: 1
 borderImagePercent: 25
 colourSpecies: [0.0, 0.0, 0.0] #black
 colourLeaf: [116.6, 1.0, 1.0]

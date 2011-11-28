@@ -51,7 +51,8 @@ theDefaults={
     'framesPerSecond': 15,
     'seedPlacement': 'random',
     'startPopulationSize': 1,
-    'archive': 'e'
+    'archive': 'e',
+    'saveData': 'e'
 }
 
 	
@@ -89,6 +90,10 @@ class parseAction(argparse.Action):
                 theValues=[self.default, theOpt]
             else:
                 theValues=[theValues, theOpt]
+        ###archive options
+        if self.dest=="archive" or self.dest=="saveData":
+            #theOpt=self.option_strings
+            theValues=theValues[0]
         setattr(args, self.dest, theValues)
 
     
@@ -116,20 +121,13 @@ if __name__ == '__main__':
     parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sf', type=file, metavar='file', nargs=1, dest='startPopulationSize', action=parseAction)
     
-    parser.add_argument('-aa', dest='archive', action=parseAction)
-    parser.add_argument('-ae', dest='archive', action=parseAction)
-    parser.add_argument('-an', dest='archive', action=parseAction)
-    parser.add_argument('-a%', nargs=1, type=int, dest='archive', action=parseAction)
     
-    parser.add_argument('-fa', dest='archive', action=parseAction)
-    parser.add_argument('-fe', dest='archive', action=parseAction)
-    parser.add_argument('-fn', dest='archive', action=parseAction)
-    parser.add_argument('-f%', nargs=1, type=int, dest='archive', action=parseAction)
+    parser.add_argument('-a', type=str, dest='archive', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
+    parser.add_argument('-ai', type=int, dest='archive', action=parseAction, nargs=1 )
+    parser.add_argument('-f', type=str, dest='saveData', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
+    parser.add_argument('-fi', type=int, dest='saveData', action=parseAction, nargs=1 )
+
             
-    
-    
-    ###need to include the archiving options
-    ###need to include the file output options
 
 
     ##########
@@ -178,6 +176,8 @@ if __name__ == '__main__':
     if type(startPopulationSize)==list:
         seedPlacement=startPopulationSize[1]
         startPopulationSize=startPopulationSize[0]
+    ###parse achival options a bit more
+    
     
 
     for x in theOpts:
