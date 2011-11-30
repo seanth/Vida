@@ -19,12 +19,12 @@
        gravity: 25
        atmosphere: 26
        
-10:
+5:
    - Seed:
      - species: Abies alba.yml
        placement: hex
        number: 100
-20:
+10:
    - Seed:
      - species: Abies alba.yml
        placement: random
@@ -35,12 +35,12 @@
        shape: circle
        size: 5
        target: seeds
-50:
+15:
    - Seed:
      - species: random
        placement: random
        number: 100
-100:
+20:
    - Garden:
      - gravity: 9.9
        atmosphere: 1.1
