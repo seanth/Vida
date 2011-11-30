@@ -1,60 +1,35 @@
-	#simulationName= 'default'
-	#theWorldSize= 100.0
-	#startPopulationSize=1
-	#maxPopulation=10
-	#maxCycles=100
-	#outputDirectory=''
-	#webDirectory='"../../public_html/Bahai/'
-	#produceGraphics=0
-	#produceDXFGraphics=0
-	#produceVideo=0
-	#framesPerSecond=15
-	#webOutput=0
-	#percentTimeStamp=2.5
-	#theView=1
-	#resumeSim=0
-	#reloadSpeciesData=0
-	#archive='e'
-	#saveData='e'
-	#deleteCfdgFiles=1
-	#deletePngFiles=0
-	#showProgressBar=0
-	#debug=0
-	#debug2=0
-	#timesToRepeat=1
-	#sList=[]
-	#seedPlacement="random"
-	#produceStats=0
-	#simulationFile=""
-	#eventFile="events.yml"
-	
 import argparse
+import ConfigParser
 
-theDefaults={
-    'simulationName': 'default', 
-    'theWorldSize': 100,
-    'timesToRepeat': 1,
-    'maxPopulation': 10,
-    'maxCycles': 100,
-    'showProgressBar': False,
-    'debug': False,
-    'debug2': False,
-    'deleteCfdgFiles': True,
-    'deletePngFiles': False,
-    'percentTimeStamp': 2.5,
-    'resumeSim': None,
-    'reloadSpeciesData': False,
-    'eventFile': None,
-    'produceGraphics': False,
-    'graphicalView': 'sb',
-    'produceVideo': False,
-    'framesPerSecond': 15,
-    'seedPlacement': 'random',
-    'startPopulationSize': 1,
-    'archive': 'e',
-    'saveData': 'e'
-}
+try:
+    theConfig=ConfigParser.RawConfigParser()
+    theConfig.optionxform = str 
+    theConfig.read('Vida.ini')
+    theConfigSection='Vida Options'
+except ConfigParser.MissingSectionHeaderError:
+    print("Warning: Invalid config file, no [%s] section.") % (theConfigSection)
+    raise
 
+theDefaults={}
+for i in theConfig.items(theConfigSection):
+    theItem=i[0]
+    try:
+        theValue=theConfig.getint(theConfigSection, theItem)
+    except:
+        try:
+            theValue=theConfig.getboolean(theConfigSection, theItem)
+        except:
+            try:
+                theValue=theConfig.getfloat(theConfigSection, theItem)
+            except:
+                try:
+                    theValue=theConfig.get(theConfigSection, theItem)
+                    if theValue=="None": theValue=None
+                except:
+                    print "what the...?"
+    theDefaults[theItem]=theValue
+print theDefaults
+print "#################"
 	
 ###the actions stuff can probably be rolled together with a few ifs
 ###rolled several seperate action classes into a general on with lots of ifs
@@ -120,15 +95,10 @@ if __name__ == '__main__':
     parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sf', type=file, metavar='file', nargs=1, dest='startPopulationSize', action=parseAction)
-    
-    
     parser.add_argument('-a', type=str, dest='archive', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
     parser.add_argument('-ai', type=int, dest='archive', action=parseAction, nargs=1 )
     parser.add_argument('-f', type=str, dest='saveData', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
     parser.add_argument('-fi', type=int, dest='saveData', action=parseAction, nargs=1 )
-
-            
-
 
     ##########
 
@@ -184,3 +154,6 @@ if __name__ == '__main__':
         print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
         
     theDefaults=None#just clear it to free up memory
+
+print simulationName
+print reloadSpeciesData

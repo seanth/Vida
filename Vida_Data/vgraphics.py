@@ -15,8 +15,8 @@ CFDGtext=\
 """
 startshape garden
 
-include ../../../Vida_Data/i_pix.cfdg
-//include %(thePathToiPix)s
+//include ../../Vida_Data/i_pix.cfdg
+include %(thePathToiPix)s
 
 rule garden{
 	%(theWorldType)s
@@ -201,12 +201,15 @@ def initCFDGText(theGarden, displayType, percentTimeStamp, maxHeightPlant):
 		if displayType==13 or displayType==23 or displayType==123:
 			y=(worldY1/-2)-worldY2-(theWorldSize* fractWorldBetweenTBGraphicsSpacer/2)-(i/2)-1
 		timeStampCode = timeStampCode % (x, y, i, i)
+#print CFDGtext
 	if sys.platform=="win32":
-		#why is it ../../ on windows? how weird
-		CFDGtext=CFDGtext % {"thePathToiPix": "\"../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
+		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 	else:
-		CFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
-	return CFDGtext
+		#retCFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "thePopulationData":"%(thePopulationData)s", "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule, "theCycleNumber":"%(theCycleNumber)s"}
+		retCFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
+#CFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg"}
+#	print CFDGtext
+	return retCFDGtext
 
 
 def makeCFDG(theView, CFDGtext, theGarden, cycleNumber):
@@ -518,7 +521,7 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 		--need absolute path of file here--
 		open image sequence "%s%s" frames per second %i
 		tell movie 1
-			save self contained in "%s:%s.mov"
+			save self contained in "%s%s.mov"
 			--optional close?
 			--close
 		end tell
