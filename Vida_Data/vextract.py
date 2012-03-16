@@ -402,7 +402,7 @@ if __name__ == '__main__':
                         if not theName in theDeathNames:
                             theDeathNames.append(theName)
                             theDeathCount.append(theColumn.count(theColumn[i]))
-                    deathHeaders=["failed to germinate(immaturity)", "failed to germinate(other)", "random death", "crushed", "overlap violation", "stem off world", "lack of light", "growth too slow", "violated Euler-Greenhill"]
+                    deathHeaders=["failed to germinate(immaturity)", "failed to germinate(other)", "random death", "crushed", "overlap violation", "stem off world", "lack of light", "growth too slow", "violated Euler-Greenhill","experimental death due to distance from mother"]
                     for i in deathHeaders:
                         theOutput[0].append("#%s" % (i))
                         theValue=0

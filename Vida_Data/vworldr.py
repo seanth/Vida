@@ -1,11 +1,11 @@
 """This file is part of Vida.
-    --------------------------
-    Copyright 2011, Sean T. Hammond
-    
-    Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-    
-    You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
-    """
+--------------------------
+Copyright 2011, Sean T. Hammond
+
+Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
+"""
 
 import sys
 import math
@@ -434,6 +434,37 @@ class garden(object):
                 if theGarden.showProgressBar:
                     i=i+1
                     theProgressBar.update(i)
+
+    #the following is purely experimental. Testing mortality related to distance from mother plant.
+    #use the formula chanceOfDeath= ((1/(stddev*((2*3.14)^0.5)))*2.71)^-((((distance-average)^2))/((2*stddev)^2))
+    #where average=0 and stddev=?
+    def checkDistanceMortality(self):
+        if self.allowDistanceFromMother:
+            theGarden=self
+            if theGarden.showProgressBar:
+                print "***Checking for mortality due to proximity to mother...***"
+                theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+            #print "Name : Distance : Chance"
+            for obj in theGarden.soil[:]:
+                if not obj.isSeed:
+                    twoPi=2.0*3.14
+                    stddev=0.9
+                    theAvg=0.0
+                    theDistance=geometry_utils.distBetweenPoints(obj.motherPlant.x, obj.motherPlant.y, obj.x, obj.y)
+                    if theDistance>0.0:
+                        theExponent=-(((theDistance-theAvg)**2.0)/((2.0*stddev)**2.0))
+                        theDeathChance=((1/(stddev*(twoPi**0.5)))*2.71)**theExponent
+                        #print "%s : %s :%s" % (obj.name, theDistance, theDeathChance)
+                        tooBad=random.random()
+                        if tooBad<theDeathChance:
+                            obj.causeOfDeath="experimental death due to distance from mother"
+                            theGarden.kill(obj)
+                if theGarden.showProgressBar:
+                    i=i+1
+                    theProgressBar.update(i)
+
+
+        
     
     def placeSeed(self, seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList):
         theGarden=self
