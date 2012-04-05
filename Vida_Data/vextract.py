@@ -337,9 +337,11 @@ if __name__ == '__main__':
                 ##In general, most of the things that are numbers should be used
                 ##some should be ignored
                 theIndex=0
+                #print allText[0]
                 while theIndex<len(allText[0]):
                     theColumn=[row[theIndex] for row in allText]
-                    ignoreTheseColumns=["Cycle #", " X Location", " Y Location"]
+                    #print theColumn
+                    ignoreTheseColumns=["Cycle #", " X Location", " Y Location", " Age at Maturity"]
                     totalCommunitySums=["Mass of Stem", "Mass of Canopy", "Mass Stem+Mass Canopy", "Mass of all Seeds", "Mass Total", "Growth Stem (kg)", "Growth Canopy (kg)", "Growth Stem+Canopy (kg)"]
                     if not theColumn[0] in ignoreTheseColumns:
                         try:
@@ -354,6 +356,7 @@ if __name__ == '__main__':
                             theIndex=theIndex
                         else:
                             theColumnTitle=theColumn.pop(0).strip()
+                            #print theColumnTitle
                             theColumn=[float(theRow) for theRow in theColumn]
                             theColumnMin=min(theColumn)
                             theColumnMax=max(theColumn)
