@@ -1,6 +1,6 @@
 """This file is part of Vida.
 --------------------------
-Copyright 2009, Sean T. Hammond
+Copyright 2012, Sean T. Hammond
 
 Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
@@ -21,3 +21,12 @@ def sort_by_attr_inplace(lst, attr):
 	lst[:]=sort_by_attr(lst,attr)
 	#python 2.4
 	#lst.sort(key=operator.attrgetter(attr))
+
+def remove_duplicates(theList):
+	"remove_duplicates(list) => list as a set, i.e., all repeated elements removed."
+	"Ported from $list_utils:count. Imaginary Bridges lambdamoo by STH 2010.03.23"
+	checkedList = [] 
+	for anElement in theList: 
+		if anElement not in checkedList: 
+			checkedList.append(anElement) 
+	return checkedList
