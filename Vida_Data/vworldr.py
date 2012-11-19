@@ -451,7 +451,7 @@ class garden(object):
 			for obj in theGarden.soil[:]:
 				if not obj.isSeed:
 					twoPi=2.0*3.14
-					stddev=0.9
+					stddev=0.0
 					theAvg=0.0
 					theDistance=geometry_utils.distBetweenPoints(obj.motherPlant.x, obj.motherPlant.y, obj.x, obj.y)
 					if theDistance>0.0:

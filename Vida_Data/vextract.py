@@ -20,6 +20,7 @@ import ConfigParser
 sys.path.append("Vida_Data")
 import vgraphics as outputGraphics
 import vplantr as defaultSpecies
+import list_utils
 
 
 theCLArgs=""
@@ -338,11 +339,22 @@ if __name__ == '__main__':
                 ##some should be ignored
                 theIndex=0
                 #print allText[0]
+                #print allText
                 while theIndex<len(allText[0]):
                     theColumn=[row[theIndex] for row in allText]
                     #print theColumn
                     ignoreTheseColumns=["Cycle #", " X Location", " Y Location", " Age at Maturity"]
-                    totalCommunitySums=["Mass of Stem", "Mass of Canopy", "Mass Stem+Mass Canopy", "Mass of all Seeds", "Mass Total", "Growth Stem (kg)", "Growth Canopy (kg)", "Growth Stem+Canopy (kg)"]
+                    totalCommunitySums=["Mass of Stem", "Mass of Canopy", "Mass Stem+Mass Canopy", "Mass of all Seeds", "Mass Total", "Growth Stem (kg)", "Growth Canopy (kg)", "Growth Stem+Canopy (kg)", "Functional Area"]
+                    ###Get a list of unique species names
+                    #theIndex="na"
+                    #theIndex=allText[0].index(" Species")
+                    #if not theIndex=="na":
+                    #    # create array of all individuals of all species species 
+                    #    theSpeciesNameColumn=[row[theIndex] for row in allText]
+                    #    theSpeciesNameColumn.pop(0) #get rid of the column heading
+                    #    theSpeciesNames=list_utils.remove_duplicates(theColumn)
+                    #    theSpeciesNames.sort()
+                    #print theSpeciesNames
                     if not theColumn[0] in ignoreTheseColumns:
                         try:
                             #print theColumn[0]
@@ -368,6 +380,7 @@ if __name__ == '__main__':
                                 theOutput[0].append("sum community "+theColumnTitle)
                                 theOutput[1].append(theColumnSum)
                     theIndex=theIndex+1
+                    #print theOutput
                 
                 #How many seeds on the ground?
                 try:
@@ -416,27 +429,83 @@ if __name__ == '__main__':
                 
                 #How many Species
                 try:
+                    #list of all species with redundancies
                     theIndex=allText[0].index(" Species")
                 except:
                     theIndex="na"
                 if not theIndex=="na":
+                    # create array of all individuals of all species species 
                     theColumn=[row[theIndex] for row in allText]
-                    theColumn.pop(0)
-                    theSpeciesNames=[]
-                    theSpeciesCount=[]
-                    for i in range(len(theColumn)):
-                        theName=theColumn[i]
-                        if not theName in theSpeciesNames:
-                            theSpeciesNames.append(theName)
-                            theSpeciesNames.sort()
-                    #theSpeciesCount.append(theColumn.count(theColumn[i]))
+                    theColumn.pop(0) # " " and get rid of the column heading
+                    theSpeciesNames=list_utils.remove_duplicates(theColumn)
+                    theSpeciesNames.sort()
+                    #sorts theSpeciesNames species names. IMPORTANT FOR NEXT STEP.
                     theSpeciesNumb=len(theSpeciesNames)
+                    # creates new output header "# of species"
                     theOutput[0].append("# of species")
                     theOutput[1].append(theSpeciesNumb)
                     for name in theSpeciesNames:
                         theOutput[0].append(name)
                         theOutput[1].append(theColumn.count(name))
+                    #del theColumn #just explicitly cleaning up memory
+
+                    ####Species-specific statistics
+                    theDataIndex=allText[0].index(" Functional Area")
+                    theData=[row[theDataIndex] for row in allText]
+                    theData.pop(0)
+                    #print theSpeciesNames
+                    #print theColumn
+                    #print theData
+                    theSpeciesDict=dict.fromkeys(theSpeciesNames,[])
+                    #for aSpeciesName in theSpeciesNames:
+                    SpeciesData = []
+                    #print theColumn
+                    for anElement in theColumn:
+                        theListTemp=[]
+                        #print theListTemp
+                        #print anElement
+                    #   if anElement== aSpeciesName:
+                        datum = float(theData[theColumn.index(anElement)])
+                        #print datum
+                    #             print aSpeciesName
+                    #             print "****"
+                        import copy
+                        theListTemp=copy.copy(theSpeciesDict[anElement])
+                        theListTemp.append(datum)
+                        #print theListTemp
+                        theSpeciesDict[anElement]=theListTemp
+                        #theSpeciesDict.setdefault(anElement, SpeciesData).append(datum)
+                    #print theSpeciesDict
+                    #print sum(theSpeciesDict[anElement])
+                    for theName in theSpeciesNames:
+                        #print theName
+                        theOutput[0].append(("Total Functional Area of %s") % theName)
+                        theOutput[1].append(sum(theSpeciesDict[theName]))
+                    #print "*****"
+
+                    #allSpeciesFunctionalArea = dict(zip(theColumn,theData))
+                    #print allSpeciesFunctionalArea
+
+                    # # theSpeciesData = [] used to be here but I think it serves us better in the for loop so it can be repopulated
+                    # for name in theSpeciesNames:
+                    #     # "species" should = "name"  
+                    #     theSpeciesData = []
+                    #     otherSpecies = theSpeciesNames.remove(name)
+                    #     AlltheSpeciesData = dict(zip(theColumn, theData))
+                    #     for i in range(len(theColumn)):
+                    #         theName=theColumn[i]
+                    #         if not theName in otherSpecies:
+                    #             theSpeciesData.append(AlltheSpeciesData[theName])
+
+                    #     #for others in otherSpecies:
+                    #     # del AlltheSpeciesData[otherSpecies]
+                    #     theSpeciesData = AlltheSpeciesData
+                    #     theOutput[0].append("Total Functional Area of %s \n") % theSpeciesNames(name)
+                    #     theOutput[1].append(sum(theSpeciesData))
+                    # #theSpeciesCount.append(theColumn.count(theColumn[i]))
+
                 
+
                 ###make sure the header for the summary file is the one having the most data
                 if len(theSummaryOutputHeader)<len(theOutput[0]):
                     theSummaryOutputHeader=theOutput[0]
