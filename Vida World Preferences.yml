@@ -1,19 +1,20 @@
 debug: FALSE #moved
 gravity: 9.81
-atmosphere: 1.0 #unused in v0.8
+atmosphere: 1.0 #unused
 lightIntensity: 1.0
 maxSeedsPerPlant: 0
 ###Mortality settings###
 ignoreGermDeathAtStart: FALSE
-allowRandomDeath: FALSE
+allowRandomDeath: TRUE
 randomDeath: 0.0075
-allowSlowGrowthDeath: FALSE
+allowSlowGrowthDeath: TRUE
 randomSlowGrowth: 0.05
 allowOverlaps: FALSE
 allowOffWorld: FALSE
 allowEulerGreenhillViolations: FALSE
 ##experimental mortality##
-allowDistanceFromMother: FALSE
+allowDistanceFromMother: TRUE
+janzenConnell: 0.1
 ###To be removed/relocated###
 carbonAllocationMethod: 0 #discontinued
 canopyTransmittanceImpactsConversion: SPECIES #discontinued

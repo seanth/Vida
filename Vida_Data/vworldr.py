@@ -442,7 +442,7 @@ class garden(object):
 	#use the formula chanceOfDeath= ((1/(stddev*((2*3.14)^0.5)))*2.71)^-((((distance-average)^2))/((2*stddev)^2))
 	#where average=0 and stddev=?
 	def checkDistanceMortality(self):
-		if self.allowDistanceFromMother:
+		if self.allowDistanceFromMother and self.janzenConnell>0.0:
 			theGarden=self
 			if theGarden.showProgressBar:
 				print "***Checking for mortality due to proximity to mother...***"
@@ -451,7 +451,7 @@ class garden(object):
 			for obj in theGarden.soil[:]:
 				if not obj.isSeed:
 					twoPi=2.0*3.14
-					stddev=0.0
+					stddev=self.janzenConnell
 					theAvg=0.0
 					theDistance=geometry_utils.distBetweenPoints(obj.motherPlant.x, obj.motherPlant.y, obj.x, obj.y)
 					if theDistance>0.0:
