@@ -13,8 +13,8 @@ allowOverlaps: FALSE
 allowOffWorld: FALSE
 allowEulerGreenhillViolations: FALSE
 ##experimental mortality##
-allowDistanceFromMother: TRUE
-janzenConnell: 0.1
+allowDistanceFromMother: FALSE
+janzenConnell: 0.0
 ###To be removed/relocated###
 carbonAllocationMethod: 0 #discontinued
 canopyTransmittanceImpactsConversion: SPECIES #discontinued

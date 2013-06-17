@@ -1,0 +1,1 @@
+Note: the GUI interface no longer works due to security changes to javascript

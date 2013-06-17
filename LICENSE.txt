@@ -1,6 +1,6 @@
 License:
 Academic Software License Agreement
-Sean T. Hammond (Developer) gives permission for you and your laboratory (Institution) to use the Vida Version 0.5 software (Vida). The Developer allows researchers at your Institution to copy and modify Vida, for internal, non-profit research purposes, on the following conditions:
+Sean T. Hammond (Developer) gives permission for you and your laboratory (Institution) to use the Vida software (Vida). The Developer allows researchers at your Institution to copy and modify Vida, for internal, non-profit research purposes, on the following conditions:
 
 1. The Vida software remains at your Institution and is not published, distributed, or otherwise transferred or made available to other than Institution employees and students involved in research under your supervision.
 
@@ -8,16 +8,14 @@ If you wish to obtain Vida for any commercial purposes, you will need to execute
 
 Sean T. Hammond
 Care of:
-Plant Biology Department
-412 Mann Library Building
-Cornell University
-Ithaca, NY   14853
-U.S.A
-1.607.255.2131
+Department of Biology
+University of New Mexico
+Albuquerque, NM
+
 
 2. You retain in Vida and any modifications to Vida, the copyright, trademark, or other notices pertaining to Vida as provided by the Developer.
 
-3. You provide the Developer with feedback on the use of the Vida software in your research, and that the Developer is permitted to use any information you provide in making changes to the Vida software. All bug reports and technical questions shall be sent to Sean T. Hammond, email: sth24@gmail.com.
+3. You provide the Developer with feedback on the use of the Vida software in your research, and that the Developer is permitted to use any information you provide in making changes to the Vida software. All bug reports and technical questions shall be sent to Sean T. Hammond, email: seanth@gmail.com.
 
 
 4. You acknowledge that the Developer and its licensees may develop modifications to Vida that may be substantially similar to your modifications of Vida, and that the Developer and its licensees shall not be constrained in any way by you in the Developer's or its licensees' use or management of such modifications. You acknowledge the right of the Developer to prepare and publish modifications to Vida that may be substantially similar or functionally equivalent to your modifications and improvements, and if you obtain patent protection for any modification or improvement to Vida you agree not to allege or enjoin infringement of your patent by the Developer or by any of the Developer's licensees obtaining modifications or improvements to Vida from the Developer.

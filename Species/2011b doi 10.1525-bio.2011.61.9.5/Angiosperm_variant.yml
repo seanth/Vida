@@ -1,0 +1,64 @@
+nameSpecies: Angiosperm variant
+creator: seanth@gmail.com
+comments: Species generated partly using Cannell data set for Generic Angiosperm. See Generic Angiosperm file for more info. WEB Species makes use of alpha values in keeping with the WEB theory
+
+###Basic
+densityStem: 995.76 #Lavers 1967 Wood properties
+densityLeaf: 500.0
+densitySeed: 497.88 #assume density is half as stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.20
+heightLeafMax: 0.000296
+heightStemMax: 31.464273
+youngsModulusStem: 9.6543478 #GPa-Lavers 1967 Wood properties
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.00700713
+reproductionExponent: 1.7088611
+numYearsGrowthMemory: 2
+
+massSeedMax:  0.008
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 10
+borderImagePercent: 25
+colourSpecies: [285.0, 1.0, 0.7] #Purple
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.5056
+photoExponent: -0.44834
+canopyTransmittanceImpactsConversion: FALSE
+
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.003375 #seedling should ave 0.000027kg
+fractionCarbonToStem: 0.99
+speciesConstant1: 0.86366077
+speciesExponent1: 1.0 #web value
+speciesConstant2: 0.11637722
+speciesExponent2: 0.75 #web value
+speciesConstant3: 0.11637722 #from cannell. calc for all angio#0.08536206
+speciesExponent3: 0.75 #web value
+speciesConstant20: 0.02649732
+speciesExponent20: 0.375 #web value
+speciesConstant6: 0.0
+speciesConstant7: 65.0 #65.0 is from cannel. calc from all angio #50.0 #1.0 #35.0 #160.81198
+speciesExponent7: 0.666 #web value
+speciesConstant8: 7.7053399
