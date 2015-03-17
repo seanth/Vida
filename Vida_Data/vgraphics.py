@@ -206,7 +206,7 @@ def initCFDGText(theGarden, displayType, percentTimeStamp, maxHeightPlant):
 		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 	else:
 		#retCFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "thePopulationData":"%(thePopulationData)s", "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule, "theCycleNumber":"%(theCycleNumber)s"}
-		retCFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
+		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 #CFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg"}
 #	print CFDGtext
 	return retCFDGtext
