@@ -16,6 +16,9 @@ _________________________
 	*Python v2.7 (http://python.org/download/)
 	*pyYAML v3.11 (http://pyyaml.org/wiki/PyYAML)
 	*ContextFree v3.0.8 (optional. Needed to generate graphics. http://www.contextfreeart.org/download/ContextFreeSource3.0.8.tgz)
+		Apple users can make use of Homebrew (http://brew.sh/) to install the command line version of cfdg using the following commands:
+			brew tap kn1kn1/cfdg
+			brew install cfdg
 	*AppleScript v1.83 (optional. Needed to automatically generate videos from graphics. This can only be used with Apple's OS X operating system.)
 	*Quicktime v7.6 (optional. Needed to automatically generate videos from graphics. Because VIDA uses AppleScript is to automate Quicktime, this will only work computer's running Apple's OS X. http://www.apple.com/quicktime/download/)
 
