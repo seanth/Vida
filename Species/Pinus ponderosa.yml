@@ -1,16 +1,16 @@
-nameSpecies: SimpleExample
+nameSpecies: Pinus ponderosa
 creator: seanth@gmail.com
-comments: Based off the Abies alba species generated using Cannell data set. 11.11.10
+comments: First draft of a ponderosa pine for use in simulations at 
 
 ###Basic
-densityStem: 718.90 #Lavers 1967 Wood properties
+densityStem: 561.00 #Lavers 1967 Wood properties
 densityLeaf: 923.43
-densitySeed: 359.45 #assume density is half as stem
+densitySeed: 280.5 #assume density is half as stem
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
-heightStemMax: 42.69821
-youngsModulusStem: 7.4 #GPa-Lavers 1967 Wood properties
+heightStemMax: 50.0
+youngsModulusStem: 6.0 #GPa-Lavers 1967 Wood properties
 
 ###Reproduction
 makeSeeds: TRUE
@@ -48,15 +48,15 @@ fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
 fractionCarbonToStem: 0.99
-speciesConstant1: 0.94119204
-speciesExponent1: 1.00133354
-speciesConstant2: 0.03970297
-speciesExponent2: 1.19822771
-speciesConstant3: 0.03970297 #0.24834698
-speciesExponent3: 1.19822771 #0.73063124
+speciesConstant1: 0.8088787
+speciesExponent1: 1.0197017
+speciesConstant2: 0.0657352
+speciesExponent2: 1.0460219
+speciesConstant3: 0.210379 #0.24834698
+speciesExponent3: 0.8667031 #0.73063124
 speciesConstant20: 0.029 #0.03599987
 speciesExponent20: 0.39415386
 speciesConstant6: 0.0 #0.15
-speciesConstant7: 100.064153
+speciesConstant7: 70.0
 speciesExponent7: 1.08090778
-speciesConstant8: 15.508049
+speciesConstant8: 26.10

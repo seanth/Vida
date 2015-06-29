@@ -2,7 +2,7 @@ debug: FALSE #moved
 gravity: 9.81
 atmosphere: 1.0 #unused
 lightIntensity: 1.0
-maxSeedsPerPlant: 0
+maxSeedsPerPlant: 5
 ###Mortality settings###
 ignoreGermDeathAtStart: FALSE
 allowRandomDeath: TRUE
