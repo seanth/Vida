@@ -1,6 +1,7 @@
 nameSpecies: Pinus ponderosa
 creator: seanth@gmail.com
-comments: First draft of a ponderosa pine for use in simulations at 
+comments: First draft of a ponderosa pine for use in simulations at Metolius, Oregon. Revised 2015-1123
+
 
 ###Basic
 densityStem: 561.00 #Lavers 1967 Wood properties
@@ -8,7 +9,7 @@ densityLeaf: 923.43
 densitySeed: 280.5 #assume density is half as stem
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
-heightLeafMax: 0.000296
+heightLeafMax: 0.00039
 heightStemMax: 50.0
 youngsModulusStem: 6.0 #GPa-Lavers 1967 Wood properties
 
@@ -30,7 +31,7 @@ fractionFailGerminate: 0.0
 leafIsHemisphere: TRUE
 radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
-radiusSeedMultiplier: 1
+radiusSeedMultiplier: 0
 borderImagePercent: 25
 colourSpecies: [0.0, 0.0, 0.0] #black
 colourLeaf: [116.6, 1.0, 1.0]
@@ -39,7 +40,7 @@ colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
 
 ###Photosynthesis
-photoConstant: 1.531
+photoConstant: 1.7
 photoExponent: -0.4602
 canopyTransmittanceImpactsConversion: FALSE
 
@@ -52,11 +53,11 @@ speciesConstant1: 0.8088787
 speciesExponent1: 1.0197017
 speciesConstant2: 0.0657352
 speciesExponent2: 1.0460219
-speciesConstant3: 0.210379 #0.24834698
+speciesConstant3: 0.155 #0.24834698
 speciesExponent3: 0.8667031 #0.73063124
-speciesConstant20: 0.029 #0.03599987
+speciesConstant20: 0.045 #0.03599987
 speciesExponent20: 0.39415386
 speciesConstant6: 0.0 #0.15
 speciesConstant7: 70.0
 speciesExponent7: 1.08090778
-speciesConstant8: 26.10
+speciesConstant8: 25.6

@@ -1,0 +1,75 @@
+nameSpecies: Picea mariana
+creator: seanth@gmail.com
+comments: First draft of a ponderosa pine for use in simulations at Poker Flats, Alaska
+created: 2016-0111
+revised: 2016-0111
+
+
+###Basic
+densityStem: 450.0 #from [1], in kg/m3
+densityLeaf: 923.43
+densitySeed: 225.0 #assume density is half as stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.00039
+heightStemMax: 15.0 #from [1], in m
+youngsModulusStem: 10.5 #from [1], in GPa
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [0.0, 0.0, 0.0] #black
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 0.58408	#Based on [2]
+photoExponent: -0.45767	#Based on [2]
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.99
+#Ms vs Mt
+speciesConstant1: 0.7835305 #analysis of [3]
+speciesExponent1: 1.0476444 #analysis of [3]
+#Ml young vs Ms
+speciesConstant2: 0.1858312 #analysis of [3]
+speciesExponent2: 0.9354763 #analysis of [3]
+#Ml mature vs Ms
+speciesConstant3: 0.1858312 #analysis of [3]
+speciesExponent3: 0.9354763 #analysis of [2]
+#Ds vs Ms
+speciesConstant20: 0.0388416 #analysis of [3] using basal diameter
+speciesExponent20: 0.4552511 #analysis of [3]
+#Hs vs Ds
+speciesConstant6: 0.0 #analysis of [3]
+speciesConstant7: 30.479972 #analysis of [3]
+speciesExponent7: 0.9999934 #analysis of [3]
+speciesConstant8: 8.4941704 #Based on [2]
+
+#Citations
+#[1] http://www.wood-database.com/lumber-identification/softwoods/black-spruce/
+#[2] Hammond and Niklas, 2009
+#[3] Mack, Michelle Cailin. 2001. Black spruce allometric measurements: 2000 - 2001, Bonanza Creek LTER - University of Alaska Fairbanks. BNZ:27, http://www.lter.uaf.edu/data_detail.cfm?datafile_pkey=27
