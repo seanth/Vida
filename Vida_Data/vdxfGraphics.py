@@ -10,6 +10,7 @@ You should have received a copy of academic software agreement along with Vida. 
 import glob
 import os
 import sdxf_utils as sdxf
+import colour_utils
 
 def makeDXF(theGarden):
 	theData=sdxf.Drawing()
@@ -28,24 +29,33 @@ def makeDXF(theGarden):
 	theData.blocks.append(b)
 	theWorldSize=theGarden.theWorldSize
 	theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
+	dictColoursUsed={}
 	for obj in theGarden.soil:
 		x=obj.x
 		y=obj.y
 		z=obj.z
+		aicLeaf=colour_utils.HSV_to_AIC(obj.colourLeaf)
+		aicStem=colour_utils.HSV_to_AIC(obj.colourStem)
+		aicSeedDispersed=colour_utils.HSV_to_AIC(obj.colourSeedDispersed)
+		aicSeedAttached=colour_utils.HSV_to_AIC(obj.colourSeedAttached)
+		#aicLeaf=90
+		#aicStem=45
+		#aicSeedDispersed=45
+		#aicSeedAttached=1
 		if obj.isSeed:
 			theSeedRadius=obj.radiusSeed*obj.radiusSeedMultiplier
-			theData.append(sdxf.Insert('seed',point=(x,y,0+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=45,rotation=0))
+			theData.append(sdxf.Insert('seed',point=(x,y,0+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedDispersed,rotation=0))
 		else:
 			theStemRadius=obj.radiusStem*obj.radiusStemMultiplier
 			theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
-			theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=90,rotation=0))
-			theData.append(sdxf.Insert('stem',point=(x,y,0),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=45,rotation=0))
+			theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
+			theData.append(sdxf.Insert('stem',point=(x,y,0),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
 			for attachedSeed in obj.seedList:
 				x= attachedSeed.x
 				y= attachedSeed.y
 				z= attachedSeed.z
 				theSeedRadius= attachedSeed.radiusSeed* attachedSeed.radiusSeedMultiplier
-				theData.append(sdxf.Insert('seed',point=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=1,rotation=0))
+				theData.append(sdxf.Insert('seed',point=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedAttached,rotation=0))
 	return theData
 
 def writeDXF(outputDirectory, fileName, theData):
