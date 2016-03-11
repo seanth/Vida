@@ -48,7 +48,16 @@ def makeDXF(theGarden):
 		else:
 			theStemRadius=obj.radiusStem*obj.radiusStemMultiplier
 			theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
-			theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
+			if (obj.crownShape == "PARA"):
+				#bole height is not calculated. It's defined in the species file
+				#print theLeafRadius
+				#print obj.heightStem
+				#print obj.boleHeight
+				#print obj.heightStem*(obj.boleHeight/100.0)
+				theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
+			else:
+				#default shape is a perfect hemisphere
+				theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
 			theData.append(sdxf.Insert('stem',point=(x,y,0),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
 			for attachedSeed in obj.seedList:
 				x= attachedSeed.x
