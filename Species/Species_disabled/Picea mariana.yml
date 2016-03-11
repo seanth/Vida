@@ -7,7 +7,7 @@ revised: 2016-0111
 
 ###Basic
 densityStem: 450.0 #from [1], in kg/m3
-densityLeaf: 923.43
+densityLeaf: 923.43 
 densitySeed: 225.0 #assume density is half as stem
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
@@ -18,8 +18,9 @@ youngsModulusStem: 10.5 #from [1], in GPa
 ###Reproduction
 makeSeeds: TRUE
 fractionSelfishness: 0.5
-reproductionConstant: 0.09974943
-reproductionExponent: 1.09777536
+#mass propagules vd total growth
+reproductionConstant: 0.09974943 #analysis of [2]
+reproductionExponent: 1.09777536 #analysis of [2]
 numYearsGrowthMemory: 2
 massSeedMax:  0.60
 locSeedFormation: [1.0, 0.0]
@@ -40,10 +41,14 @@ colourLeaf: [116.6, 1.0, 1.0]
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
+###testing different canopy shapes in 3d output
+crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
+
 
 ###Photosynthesis
-photoConstant: 0.58408	#Based on [2]
-photoExponent: -0.45767	#Based on [2]
+photoConstant: 0.58408 #Based on [2]
+photoExponent: -0.45767 #Based on [2]
 canopyTransmittanceImpactsConversion: FALSE
 
 ###Allometry
@@ -63,13 +68,17 @@ speciesExponent3: 0.9354763 #analysis of [2]
 #Ds vs Ms
 speciesConstant20: 0.0388416 #analysis of [3] using basal diameter
 speciesExponent20: 0.4552511 #analysis of [3]
+#Dl vs Ds
+speciesConstant5:
+speciesExponent5:
 #Hs vs Ds
 speciesConstant6: 0.0 #analysis of [3]
-speciesConstant7: 30.479972 #analysis of [3]
-speciesExponent7: 0.9999934 #analysis of [3]
-speciesConstant8: 8.4941704 #Based on [2]
+speciesConstant7: 60.528700 #analysis of [3]
+speciesExponent7: 1.1204719 #analysis of [3]
+speciesConstant8: 4.4 #Simple modeling using miniVida [4]
 
 #Citations
 #[1] http://www.wood-database.com/lumber-identification/softwoods/black-spruce/
 #[2] Hammond and Niklas, 2009
 #[3] Mack, Michelle Cailin. 2001. Black spruce allometric measurements: 2000 - 2001, Bonanza Creek LTER - University of Alaska Fairbanks. BNZ:27, http://www.lter.uaf.edu/data_detail.cfm?datafile_pkey=27
+#[4] https://github.com/seanth/Vida/blob/b50ee7d11cc007b6237b13d609ca64bab849fd02/tools/miniVida%20simulator.xls
