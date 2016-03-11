@@ -3,7 +3,7 @@ atmosphere: 1.0 #unused
 lightIntensity: 1.0
 maxSeedsPerPlant: 5
 ###Mortality settings###
-ignoreGermDeathAtStart: FALSE
+ignoreGermDeathAtStart: TRUE
 allowRandomDeath: TRUE
 randomDeath: 0.0075
 allowSlowGrowthDeath: TRUE
@@ -13,7 +13,7 @@ allowOffWorld: FALSE
 allowEulerGreenhillViolations: FALSE
 ##experimental mortality##
 allowDistanceFromMother: TRUE
-janzenConnell: 0.0
+janzenConnell: 0.2
 ###To be removed/relocated###
 carbonAllocationMethod: 0 #discontinued
 canopyTransmittanceImpactsConversion: SPECIES #discontinued
