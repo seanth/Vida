@@ -1,0 +1,19 @@
+106:
+   - Garden:
+     - allowRandomDeath: TRUE
+       randomDeath: 0.5
+107:
+   - Garden:
+     - allowRandomDeath: FALSE
+       randomDeath: 0.0075
+       
+196:
+   - Garden:
+     - allowRandomDeath: TRUE
+       randomDeath: 0.5
+197:
+   - Garden:
+     - allowRandomDeath: FALSE
+       randomDeath: 0.0075
+
+
