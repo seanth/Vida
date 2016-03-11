@@ -8,22 +8,33 @@ def main(theFolder):
 	thePath=theFolder+"/Graphics/bottom-up/"
 	fileList=os.listdir(thePath) 
 	print "***Checking for image files...***"
+	print"\nImage #, # of Pixels"
+	showAll=True #turn this into an argument
 	for file in fileList:
-	    theExtension=os.path.splitext(file)[1]
-	    theNumber=os.path.splitext(file)[0]
-	    theNumber=theNumber.split('-')[-1]
-	    if theExtension==".png":
-	    	if theNumber[-1]=="0": 
-	    		#count only files whose cucle number ends in 0
+		theExtension=os.path.splitext(file)[1]
+		theNumber=os.path.splitext(file)[0]
+		theNumber=theNumber.split('-')[-1]
+		if theExtension==".png":
+			if showAll==False:
+				if theNumber[-1]=="0": 
+					#count only files whose cucle number ends in 0
+					theImg=Image.open(thePath+file).getdata()
+					theCount=0
+					for i in list(theImg):
+						if i==theRGB:
+							theCount=theCount+1
+					print "%s, %s" % (theNumber, theCount)
+			else:
 				theImg=Image.open(thePath+file).getdata()
-
 				theCount=0
 				for i in list(theImg):
 					if i==theRGB:
 						theCount=theCount+1
+				print "%s, %s" % (theNumber, theCount)
 
-				#print "%s %s" % (theNumber, theCount)
-				print "%s" % (theCount)
+
+			
+			#print "%s" % (theNumber)
 
 if __name__ == '__main__':
 	theArguments=sys.argv
