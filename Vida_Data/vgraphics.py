@@ -204,7 +204,7 @@ def initCFDGText(theGarden, displayType, percentTimeStamp, maxHeightPlant):
 		timeStampCode = timeStampCode % (x, y, i, i)
 #print CFDGtext
 	if sys.platform=="win32":
-		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
+		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 	else:
 		#retCFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "thePopulationData":"%(thePopulationData)s", "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule, "theCycleNumber":"%(theCycleNumber)s"}
 		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
