@@ -12,7 +12,7 @@ allowOverlaps: FALSE
 allowOffWorld: FALSE
 allowEulerGreenhillViolations: FALSE
 ##experimental mortality##
-allowDistanceFromMother: TRUE
+allowDistanceFromMother: FALSE
 janzenConnell: 0.2
 ###To be removed/relocated###
 carbonAllocationMethod: 0 #discontinued

@@ -10,6 +10,7 @@ You should have received a copy of academic software agreement along with Vida. 
 import glob
 import os
 import sys
+import re
 
 CFDGtext=\
 """
@@ -477,7 +478,9 @@ def outputPNGs(inputDirectory, outputDirectory):
 		allTargetFiles=glob.glob(inputDirectory +"*.cfdg")
 	inputDirectory=os.path.dirname(allTargetFiles[0])+"/"
 	for fileItem in allTargetFiles:
+		print "*********"+fileItem
 		pngFileName =fileItem.replace(outputDirectory, "")
+		print "*********"+pngFileName
 		pngFileName = pngFileName.replace(".cfdg", "")
 		pngFileName= pngFileName +".png"
 		###this should get the cfdg app to do its thing
@@ -504,8 +507,6 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 		absolutePath=os.path.abspath(outputDirectory)
 		#print "#################"
 		#print simulationName
-		#print outputDirectory
-		#print glob.glob(outputDirectory+"*.png")
 		firstFile=glob.glob(outputDirectory+"*.png")[0]
 		firstFile=firstFile.replace(outputDirectory,"")
 		###turn "/" into ":" so applescript understand the path
@@ -537,7 +538,21 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 		#		print "Deleting .png file %s." % (fileItem)
 		#		os.remove(fileItem)
 	else:
-		print "***A video was not made because this feature currently only works on Macintosh OS X***"
+		#print "***A video was not made because this feature currently only works on Macintosh OS X***"
+		#EXPERIMENTAL!!!!
+		#uses ffmpeg to make videos
+		###Absolute path to output png files necessary
+		absolutePath=os.path.abspath(outputDirectory)
+		firstFile=glob.glob(outputDirectory+"*.png")[0]
+		firstFile=firstFile.replace(outputDirectory,"")
+		firstFile=os.path.splitext(firstFile)[0]
+		firstFile=re.sub(r'\d', '', firstFile)
+		firstFile= firstFile.rstrip("-")
+		theArg = "ffmpeg -i %s/%s-%%01d.png -framerate %i -c:v libx264 -r 30 -pix_fmt yuv420p %s/%s.mp4"
+		#theArg=theArg % (absolutePath, firstFile, framesPerSec, absolutePath, simulationName)
+		theArg=theArg % (absolutePath, firstFile, framesPerSec, absolutePath, firstFile)
+		os.system(theArg)
+		print "     mp4 video made"
 
 
 

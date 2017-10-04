@@ -1,0 +1,66 @@
+nameSpecies: Hammondia pina 
+creator: sthammond@aero.und.edu
+comments: Made for use in UND's ESSP 501L--The Biosphere. 2016.10.10
+
+
+###Basic
+densityStem: 561.00 #Lavers 1967 Wood properties
+densityLeaf: 923.43
+densitySeed: 280.5 #assume density is half as stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.00039
+heightStemMax: 57.0
+youngsModulusStem: 6.0 #GPa-Lavers 1967 Wood properties
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.65
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 0
+borderImagePercent: 25
+colourSpecies: [160.0, 1.0, 1.0]
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+###testing different canopy shapes in 3d output
+crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
+
+###Photosynthesis
+photoConstant: 1.504397
+photoExponent: -0.45245
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.99
+speciesConstant1: 0.8088787
+speciesExponent1: 1.0197017
+speciesConstant2: 0.0657352
+speciesExponent2: 1.0460219
+speciesConstant3: 0.155 #0.24834698
+speciesExponent3: 0.8667031 #0.73063124
+speciesConstant20: 0.0302 #0.03599987
+speciesExponent20: 0.39254
+speciesConstant6: 0.0 #0.15
+speciesConstant7: 90.0
+speciesExponent7: 0.913257
+speciesConstant8: 22.5
