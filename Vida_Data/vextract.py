@@ -178,6 +178,9 @@ if __name__ == '__main__':
 #        print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
 
     theDefaults=None#just clear it to free up memory
+    #remove the ' from start and back for essp501L
+    if fileOrFolder[0][0]=="'": fileOrFolder[0]=fileOrFolder[0][1:]
+    if fileOrFolder[0][-1]=="'": fileOrFolder[0]=fileOrFolder[0][0:-1]
     #need to parse the -n to see if it's a file or folder
     theLastChar= fileOrFolder[0][len(fileOrFolder[0])-1]
     theOutputFolder=os.path.dirname(fileOrFolder[0])+"/"
