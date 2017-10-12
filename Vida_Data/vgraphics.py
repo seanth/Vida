@@ -478,9 +478,9 @@ def outputPNGs(inputDirectory, outputDirectory):
 		allTargetFiles=glob.glob(inputDirectory +"*.cfdg")
 	inputDirectory=os.path.dirname(allTargetFiles[0])+"/"
 	for fileItem in allTargetFiles:
-		print "*********"+fileItem
+		#print "*********"+fileItem
 		pngFileName =fileItem.replace(outputDirectory, "")
-		print "*********"+pngFileName
+		#print "*********"+pngFileName
 		pngFileName = pngFileName.replace(".cfdg", "")
 		pngFileName= pngFileName +".png"
 		###this should get the cfdg app to do its thing
@@ -489,7 +489,7 @@ def outputPNGs(inputDirectory, outputDirectory):
 			theArg="ContextFreeCLI.exe /c /b 0 /s 500 %s %s"
 			theArg=theArg % (fileItem, pngFileName)
 		else:
-			theArg="cfdg -c -b 0 -s 500 %s %s > /dev/null"
+			theArg="cfdg -q -c -b 0 -s 500 %s %s"
 			#theArg="cfdg -c -b 0 -s 500 %s %s"
 			theArg=theArg % (fileItem, outputDirectory + pngFileName)
 		os.system(theArg)
@@ -501,58 +501,58 @@ def deleteCFDGFiles(outputDirectory):
 		os.remove(fileItem)
 
 def outputMOV(outputDirectory, simulationName, framesPerSec):
-	if sys.platform=="darwin":
-		###Absolute path to output png files necessary
-		###for the embedded applescript to work correctly
-		absolutePath=os.path.abspath(outputDirectory)
-		#print "#################"
-		#print simulationName
-		firstFile=glob.glob(outputDirectory+"*.png")[0]
-		firstFile=firstFile.replace(outputDirectory,"")
-		###turn "/" into ":" so applescript understand the path
-		absolutePath= absolutePath.replace("/", ":")
-		if not absolutePath.endswith(":"):
-			absolutePath=absolutePath+":"
-		###get quicktime to make the video###
-		appleScriptCmd="""osascript<<END
-		set folderPath to path to me as string
-		set the clipboard to folderPath as text
-		tell application "QuickTime Player 7"
-		activate
-		--need absolute path of file here--
-		open image sequence "%s%s" frames per second %i
-		tell movie 1
-			save self contained in "%s%s.mov"
-			--optional close?
-			--close
-		end tell
-		end tell
-		"""
-		appleScriptCmd=appleScriptCmd % (absolutePath, firstFile, framesPerSec, absolutePath, simulationName)
-		os.system(appleScriptCmd)
-		print "     Quicktime video made"
-		###Delete png files if requested
-		#if deletePngFiles:
-		#	allTargetFiles =glob.glob(outputDirectory+"*.png")
-		#	for fileItem in allTargetFiles:
-		#		print "Deleting .png file %s." % (fileItem)
-		#		os.remove(fileItem)
-	else:
-		#print "***A video was not made because this feature currently only works on Macintosh OS X***"
-		#EXPERIMENTAL!!!!
-		#uses ffmpeg to make videos
-		###Absolute path to output png files necessary
-		absolutePath=os.path.abspath(outputDirectory)
-		firstFile=glob.glob(outputDirectory+"*.png")[0]
-		firstFile=firstFile.replace(outputDirectory,"")
-		firstFile=os.path.splitext(firstFile)[0]
-		firstFile=re.sub(r'\d', '', firstFile)
-		firstFile= firstFile.rstrip("-")
-		theArg = "ffmpeg -i %s/%s-%%01d.png -framerate %i -c:v libx264 -r 30 -pix_fmt yuv420p %s/%s.mp4"
-		#theArg=theArg % (absolutePath, firstFile, framesPerSec, absolutePath, simulationName)
-		theArg=theArg % (absolutePath, firstFile, framesPerSec, absolutePath, firstFile)
-		os.system(theArg)
-		print "     mp4 video made"
+	# if sys.platform=="darwin":
+	# 	###Absolute path to output png files necessary
+	# 	###for the embedded applescript to work correctly
+	# 	absolutePath=os.path.abspath(outputDirectory)
+	# 	#print "#################"
+	# 	#print simulationName
+	# 	firstFile=glob.glob(outputDirectory+"*.png")[0]
+	# 	firstFile=firstFile.replace(outputDirectory,"")
+	# 	###turn "/" into ":" so applescript understand the path
+	# 	absolutePath= absolutePath.replace("/", ":")
+	# 	if not absolutePath.endswith(":"):
+	# 		absolutePath=absolutePath+":"
+	# 	###get quicktime to make the video###
+	# 	appleScriptCmd="""osascript<<END
+	# 	set folderPath to path to me as string
+	# 	set the clipboard to folderPath as text
+	# 	tell application "QuickTime Player 7"
+	# 	activate
+	# 	--need absolute path of file here--
+	# 	open image sequence "%s%s" frames per second %i
+	# 	tell movie 1
+	# 		save self contained in "%s%s.mov"
+	# 		--optional close?
+	# 		--close
+	# 	end tell
+	# 	end tell
+	# 	"""
+	# 	appleScriptCmd=appleScriptCmd % (absolutePath, firstFile, framesPerSec, absolutePath, simulationName)
+	# 	os.system(appleScriptCmd)
+	# 	print "     Quicktime video made"
+	#uses ffmpeg to make videos
+	###Absolute path to output png files necessary
+	absolutePath=os.path.abspath(outputDirectory)
+	firstFile=glob.glob(outputDirectory+"*.png")[0]
+	firstFile=os.path.normpath(firstFile)
+	outputDirectory = os.path.normpath(outputDirectory)
+	firstFile=firstFile.replace(outputDirectory,"")
+	firstFile=os.path.normpath(firstFile)
+	firstFile=os.path.splitext(firstFile)[0]
+	firstFile=re.sub(r'\d', '', firstFile)
+	firstFile= firstFile.rstrip("-")
+
+	theArg = "ffmpeg -hide_banner -loglevel panic -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
+	theArg=theArg % (framesPerSec, absolutePath, firstFile, absolutePath, firstFile)
+	os.system(theArg)
+	print "     mp4 video made"
+	###Delete png files if requested
+	#if deletePngFiles:
+	#	allTargetFiles =glob.glob(outputDirectory+"*.png")
+	#	for fileItem in allTargetFiles:
+	#		print "Deleting .png file %s." % (fileItem)
+	#		os.remove(fileItem)
 
 
 
