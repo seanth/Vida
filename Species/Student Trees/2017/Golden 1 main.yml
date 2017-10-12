@@ -1,0 +1,62 @@
+nameSpecies: Mansurat Gymno1
+creator: mansurat.abdulmalika@und.edu
+comments: Made for use in UND's ESSP 501L-The Biosphere dated 2017.10.04
+
+###Basic
+densityStem: 710
+densityLeaf: 923.43
+densitySeed: 355 #assume density is half of stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.00039
+heightStemMax: 52
+youngsModulusStem: 12.51 #GPa
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [160.0, 1.0, 1.0] #LimeGreen
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.7
+photoExponent: -0.4602
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045
+fractionCarbonToStem: 0.99
+speciesConstant1: 0.807879
+speciesExponent1: 1.059702
+speciesConstant2: 0.056735
+speciesExponent2: 1.066022
+speciesConstant3: 0.155
+speciesExponent3: 0.866703
+speciesConstant20: 0.035
+speciesExponent20: 0.394154
+speciesConstant6: 0
+speciesConstant7: 79
+speciesExponent7: 1.109908
+speciesConstant8: 25.6

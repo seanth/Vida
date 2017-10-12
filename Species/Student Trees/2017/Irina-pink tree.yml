@@ -1,0 +1,62 @@
+nameSpecies: pink tree
+creator: Irina Vladimirovna Tsiryapkina / irina.tsiryapkina@ndus.edu
+comments: crazy values
+
+###Basic
+densityStem: 1100
+densityLeaf: 923.43
+densitySeed: 280 #assume density is half of stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.00039
+heightStemMax: 59
+youngsModulusStem: 40 #40 #GPa
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.5]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [297.0, 0.1000, 0.620] #pink
+colourLeaf: [326.0, 0.560, 0.6627]
+colourStem: [331.0, 0.770, 0.6627]
+colourSeedDispersed: [296.0, 0.1000, 0.6627]
+colourSeedAttached: [356.0, 0.560, 0.6627]
+
+###Photosynthesis
+photoConstant: 1.7
+photoExponent: -0.4602
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045
+fractionCarbonToStem: 0.99
+speciesConstant1: 5
+speciesExponent1: 1
+speciesConstant2: 2
+speciesExponent2: 1
+speciesConstant3: 10
+speciesExponent3: 0.8
+speciesConstant20: 1
+speciesExponent20: 0.36
+speciesConstant6: 4.7 #16
+speciesConstant7: 60
+speciesExponent7: 0.67
+speciesConstant8: 27.0

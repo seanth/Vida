@@ -1,0 +1,62 @@
+nameSpecies: Nana :)
+creator: Nana Yaw Owusu-Amponsah, nana.owusuamponsah@und.edu
+comments: ESSP 501 - Bisophere Block - Special African Species 
+
+###Basic
+densityStem: 565
+densityLeaf: 923.43
+densitySeed: 282.5 #assume density is half of stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.00039
+heightStemMax: 51
+youngsModulusStem: 3 #GPa
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [300.00, 1.0, 1.0] #Pink
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.7
+photoExponent: -0.4602
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045
+fractionCarbonToStem: 0.95
+speciesConstant1: 0.8
+speciesExponent1: 1.1208017
+speciesConstant2: 0.0788952
+speciesExponent2: 1.0510318
+speciesConstant3: 0.189
+speciesExponent3: 0.8709021
+speciesConstant20: 0.05
+speciesExponent20: 0.39415386
+speciesConstant6: 0.0
+speciesConstant7: 75
+speciesExponent7: 1.09
+speciesConstant8: 25.8
