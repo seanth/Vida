@@ -1,0 +1,42 @@
+1:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+5:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+10:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+15:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+20:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+25:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all

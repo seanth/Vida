@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """This file is part of Vida.
 --------------------------
-Copyright 2012, Sean T. Hammond
+Copyright 2017, Sean T. Hammond
 
 Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
@@ -519,6 +519,28 @@ def main():
                                 for theObject in killThese:
                                     theObject.causeOfDeath="zone"
                                     theGarden.kill(theObject)
+                            else:
+                                killThese=[]
+                                for theObject in theGarden.soil:
+                                    objectX=theObject.x
+                                    objectY=theObject.y
+                                    theResult=geometry_utils.pointInsideSquare(zoneX, zoneY, zoneSize, objectX, objectY)
+                                    if theResult>0 and aKey=='Killzone':
+                                        if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
+                                            killThese.append(theObject) 
+                                    elif aKey=='Safezone':
+                                        if theResult==0:
+                                            killThese.append(theObject)
+                                        elif theResult>0:
+                                            if (theObject.isSeed and zoneTarget=='plants') or (not theObject.isSeed and zoneTarget=='seeds'):
+                                                killThese.append(theObject)  
+
+                                for theObject in killThese:
+                                    theObject.causeOfDeath="zone"
+                                    theGarden.kill(theObject)
+
+
+
                         elif aKey=="Seed":
                             if debug==1: print "debug: A seeding related event has been triggered."   #
                             theDict=aItem[aKey][0]                                            #
