@@ -7,7 +7,7 @@ Vida is experimental in nature and is made available as a research courtesy "AS 
 
 You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
 """
-vidaVersion = "0.9.0.1"
+vidaVersion = "0.9.0.2"
 
 import random
 import math
@@ -560,6 +560,7 @@ def main():
                                 if infoItem=="placement": seedPlacement=theDict[infoItem]
                                 if seedPlacement=="hexagon": seedPlacement="hex" #just make sure it is consistant
                                 if os.path.isfile(seedPlacement):
+                                    if debug == 1: print "debug: Confirming placement file exists...."
                                     theFile=open(seedPlacement)
                                     try:
                                         sList=theFile.readlines()
@@ -568,6 +569,23 @@ def main():
                                     sList=checkSeedPlacementList(sList)
                                     startPopulationSize=len(sList)
                                     seedPlacement="fromFile"
+                                    if debug ==1: print "debug: Will place seeds from a file"
+                                    ###if a simulation is being reloaded from a pickle, that sim might not have saved
+                                    ###data on a new species being introduced. Load the new species and add it to the platonic list
+                                    ###so it can be added to theGarden
+                                    for j in sList:
+                                        jj=j[0]
+                                        if not theGarden.platonicSeeds.has_key(jj):
+                                            if debug == 1: print "debug: Desired species missing from loaded simulation"
+                                            if debug == 1: print "debug: Adding species %s" % (jj)
+                                            theSeed=Species1()
+                                            fileLoc= "Species/"+jj
+                                            theSeed.importPrefs(fileLoc)
+                                            theSeed.name="Platonic %s" % jj
+                                            theGarden.platonicSeeds[jj]=theSeed
+
+
+
                             if not seedPlacement=="fromFile" and not sList==[]:
                                 newList=[]
                                 for j in range(startPopulationSize):
