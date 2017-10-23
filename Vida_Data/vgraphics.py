@@ -544,6 +544,7 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 	firstFile= firstFile.rstrip("-")
 
 	theArg = "ffmpeg -hide_banner -loglevel panic -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
+	#theArg = "ffmpeg -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
 	theArg=theArg % (framesPerSec, absolutePath, firstFile, absolutePath, firstFile)
 	os.system(theArg)
 	print "     mp4 video made"

@@ -7,6 +7,7 @@ Vida is experimental in nature and is made available as a research courtesy "AS 
 
 You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
 """
+vidaVersion = "0.9.0.1"
 
 import random
 import math
@@ -299,6 +300,8 @@ def main():
     global sList
     global theCLArgs
     
+    print "*********Vida version: %s *********" % (vidaVersion)
+
     CFDGtext=""
     CFDGtextDict={}
     
