@@ -491,6 +491,11 @@ def main():
                             zoneY=float(theDict['y'])
                             zoneSize=float(theDict['size'])
                             zoneShape=theDict['shape']
+                            zoneTarget=theDict['target']
+                            if 'species' in theDict:
+                                zoneSpecies=theDict['species']
+                            else:
+                                zoneSpecies = 'all'
                             if zoneShape not in ['circle','square']:
                                 print "***WARNING: improper zone shape defined. Defaulting to square.***"
                                 zoneShape='square'
@@ -498,8 +503,9 @@ def main():
                             if zoneTarget not in ['all','plants','seeds']:
                                 print "***WARNING: improper zone target defined. Defaulting to all.***"
                                 zoneTarget='all'
+
+                            killThese=[]
                             if zoneShape=='circle':
-                                killThese=[]
                                 for theObject in theGarden.soil:
                                     if theObject.isSeed:
                                         r=theObject.radiusSeed
@@ -507,8 +513,9 @@ def main():
                                         r=theObject.radiusStem
                                     theResult=geometry_utils.checkOverlap(theObject.x, theObject.y, r, zoneX, zoneY, zoneSize)
                                     if theResult>0 and aKey=='Killzone':
-                                        if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
-                                            killThese.append(theObject)    
+                                        if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):                                            
+                                            if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
+                                                killThese.append(theObject)   
                                     elif aKey=='Safezone':
                                         if theResult==0:
                                             killThese.append(theObject)
@@ -516,18 +523,15 @@ def main():
                                             if (theObject.isSeed and zoneTarget=='plants') or (not theObject.isSeed and zoneTarget=='seeds'):
                                                 killThese.append(theObject)    
                                                                                 
-                                for theObject in killThese:
-                                    theObject.causeOfDeath="zone"
-                                    theGarden.kill(theObject)
                             else:
-                                killThese=[]
                                 for theObject in theGarden.soil:
                                     objectX=theObject.x
                                     objectY=theObject.y
                                     theResult=geometry_utils.pointInsideSquare(zoneX, zoneY, zoneSize, objectX, objectY)
                                     if theResult>0 and aKey=='Killzone':
-                                        if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
-                                            killThese.append(theObject) 
+                                        if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):                                      
+                                            if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
+                                                killThese.append(theObject) 
                                     elif aKey=='Safezone':
                                         if theResult==0:
                                             killThese.append(theObject)
@@ -535,9 +539,9 @@ def main():
                                             if (theObject.isSeed and zoneTarget=='plants') or (not theObject.isSeed and zoneTarget=='seeds'):
                                                 killThese.append(theObject)  
 
-                                for theObject in killThese:
-                                    theObject.causeOfDeath="zone"
-                                    theGarden.kill(theObject)
+                            for theObject in killThese:
+                                theObject.causeOfDeath="zone"
+                                theGarden.kill(theObject)
 
 
 
