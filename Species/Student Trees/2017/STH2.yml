@@ -1,6 +1,6 @@
-nameSpecies: Kane
-creator: 201306381@panthers.greenville.edu
-comments: Made for use in UND's ESSP 501L--The Biosphere. 2017.10.08
+nameSpecies: Hammondia angiospermia
+creator: sthammond@aero.und.edu
+comments: Made for use in UND's ESSP 501L--The Biosphere. 2016.10.10
 
 
 ###Basic
@@ -10,7 +10,7 @@ densitySeed: 280.5 #assume density is half as stem
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.00039
-heightStemMax: 57.0
+heightStemMax: 20.0
 youngsModulusStem: 6.0 #GPa-Lavers 1967 Wood properties
 
 ###Reproduction
@@ -18,12 +18,12 @@ makeSeeds: TRUE
 fractionSelfishness: 0.5
 reproductionConstant: 0.09974943
 reproductionExponent: 1.09777536
-numYearsGrowthMemory: 3
+numYearsGrowthMemory: 2
 massSeedMax:  0.60
 locSeedFormation: [1.0, 0.0]
 seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
-randomSlowGrowth: 0.5
+randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
 fractionFailGerminate: 0.65
 
@@ -33,8 +33,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 0
 borderImagePercent: 25
-colourSpecies: [1.0, 0.0, 0.5]
-colourLeaf: [40.0, .70, 14.0]
+colourSpecies: [271.0, 0.5, 1.0]
+colourLeaf: [116.6, 1.0, 1.0]
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -43,7 +43,7 @@ crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA
 boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
 
 ###Photosynthesis
-photoConstant: 1.5
+photoConstant: 1.7
 photoExponent: -0.4602
 canopyTransmittanceImpactsConversion: FALSE
 
@@ -52,15 +52,15 @@ fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
 fractionCarbonToStem: 0.99
-speciesConstant1: 0.87
-speciesExponent1: 1.06
-speciesConstant2: 0.8
-speciesExponent2: 0.6
-speciesConstant3: 0.2 #0.24834698
-speciesExponent3: 0.9 #0.73063124
-speciesConstant20: 0.04 #0.03599987
-speciesExponent20: 0.41
+speciesConstant1: 0.67458
+speciesExponent1: 1.04258
+speciesConstant2: 0.0525712
+speciesExponent2: 0.8988991
+speciesConstant3: 0.08 #0.24834698
+speciesExponent3: 0.602574 #0.73063124
+speciesConstant20: 0.02993 #0.03599987
+speciesExponent20: 0.37689
 speciesConstant6: 0.0 #0.15
-speciesConstant7: 50.0
-speciesExponent7: 0.913257
-speciesConstant8: 25.0
+speciesConstant7: 60.0
+speciesExponent7: 0.8023654
+speciesConstant8: 4.8
