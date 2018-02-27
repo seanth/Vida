@@ -1,0 +1,11 @@
+1:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 50
+       target: all
+
+2:
+   - Seed:
+     - placement: Placement Files/Re-plantMiddle50x50.csv
