@@ -4,39 +4,39 @@
        y: 0.0
        shape: square
        size: 30
-       target: plants
+       target: all
 10:
    - Killzone:
      - x: 0.0
        y: 0.0
        shape: square
        size: 30
-       target: plants
+       target: all
 20:
    - Killzone:
      - x: 0.0
        y: 0.0
        shape: square
        size: 30
-       target: plants
+       target: all
 30:
    - Killzone:
      - x: 0.0
        y: 0.0
        shape: square
        size: 30
-       target: plants
+       target: all
 40:
    - Killzone:
      - x: 0.0
        y: 0.0
        shape: square
        size: 30
-       target: plants
+       target: all
 50:
    - Killzone:
      - x: 0.0
        y: 0.0
        shape: square
        size: 30
-       target: plants
+       target: all

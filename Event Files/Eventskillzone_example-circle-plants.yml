@@ -4,39 +4,39 @@
        y: 0.0
        shape: circle
        size: 30
-       target: all
-5:
-   - Killzone:
-     - x: 5.0
-       y: 5.0
-       shape: circle
-       size: 30
-       target: all
+       target: plants
 10:
    - Killzone:
-     - x: 10.0
-       y: 10.0
+     - x: 0.0
+       y: 0.0
        shape: circle
        size: 30
-       target: all
-15:
-   - Killzone:
-     - x: 15.0
-       y: 15.0
-       shape: circle
-       size: 30
-       target: all
+       target: plants
 20:
    - Killzone:
-     - x: 20.0
-       y: 20.0
+     - x: 0.0
+       y: 0.0
        shape: circle
        size: 30
-       target: all
-25:
+       target: plants
+30:
    - Killzone:
-     - x: 25.0
-       y: 25.0
+     - x: 0.0
+       y: 0.0
        shape: circle
        size: 30
-       target: all
+       target: plants
+40:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 30
+       target: plants
+50:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 30
+       target: plants
