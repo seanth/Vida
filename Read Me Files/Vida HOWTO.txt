@@ -359,12 +359,26 @@ The default is 0.3.
 				       size: 10
 				       target: seeds
 
+		Please note that 'size' will define the radius of a circle zone, where as 'size' will define the length on a size of a 'box'. THIS WILL BE CHANGED IN THE FUTURE SO 'SIZE' IS THE DIAMETER OF THE CIRCLE.
+
+		It is possible to define specific species to be targeted in Killzones and Safezones with the inclusion of a 'species' parameter:
+				87:
+				   - Killzone:
+				     - x: 0.0
+				       y: 0.0
+				       shape: circle
+				       size: 10
+				       target: seeds
+				       species: Abies alba
+
+		In the above example, only the seeds of the species 'Abies alba' will have its seeds killed in the defined killzone. The species name corresponds to the parameter 'speciesName' in the species file. the targeted species will default to all species if no parameter is supplied.
+
 		Each of these aspects of event files can be combined into a single file such as:
 				0:
 				   - Garden:
 				     - lightIntensity: 0.5
 				       atmosphere: 1.1
-                                       gravity: 10.81
+                       gravity: 10.81
 				10:
 				   - Region:
 				     - name: reg1
