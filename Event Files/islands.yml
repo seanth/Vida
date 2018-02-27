@@ -1,0 +1,71 @@
+0:
+   - Region:
+     - name: reg1
+       size: 29
+       shape: circle #circle or square
+       x: 475
+       y: -71
+       lightIntensity: 1.0
+   - Region:
+     - name: reg2
+       size: 36
+       shape: circle #circle or square
+       x: 361
+       y: 329
+       lightIntensity: 1.0
+   - Region:
+     - name: reg3
+       size: 44
+       shape: circle #circle or square
+       x: -136
+       y: -135
+       lightIntensity: 1.0
+   - Region:
+     - name: reg4
+       size: 49
+       shape: circle #circle or square
+       x: 384
+       y: 36
+       lightIntensity: 1.0
+   - Region:
+     - name: reg5
+       size: 42
+       shape: circle #circle or square
+       x: -183
+       y: -268
+       lightIntensity: 1.0
+   - Region:
+     - name: reg6
+       size: 25
+       shape: circle #circle or square
+       x: 379
+       y: 351
+       lightIntensity: 1.0
+   - Region:
+     - name: reg7
+       size: 32
+       shape: circle #circle or square
+       x: 343
+       y: 48
+       lightIntensity: 1.0
+   - Region:
+     - name: reg8
+       size: 29
+       shape: circle #circle or square
+       x: -428
+       y: -20
+       lightIntensity: 1.0
+   - Region:
+     - name: reg9
+       size: 50.0
+       shape: circle #circle or square
+       x: -245
+       y: 255
+       lightIntensity: 1.0
+   - Region:
+     - name: reg10
+       size: 29
+       shape: circle #circle or square
+       x: 337
+       y: 170
+       lightIntensity: 1.0
