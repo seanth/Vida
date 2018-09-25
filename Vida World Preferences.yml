@@ -5,7 +5,8 @@ maxSeedsPerPlant: 5
 ###Mortality settings###
 ignoreGermDeathAtStart: TRUE
 allowRandomDeath: TRUE
-randomDeath: 0.0075
+randomDeathPlant: 0.0075
+randomDeathSeed: 0.0075
 allowSlowGrowthDeath: TRUE
 randomSlowGrowth: 0.05
 allowOverlaps: FALSE
