@@ -1,0 +1,24 @@
+30:
+ - Garden:
+   - allowRandomDeath: TRUE
+     randomDeathPlant: 1.0
+31:
+ - Garden:
+   - allowRandomDeath: TRUE
+     randomDeathPlant: 0.0075
+60:
+ - Garden:
+   - allowRandomDeath: TRUE
+     randomDeathPlant: .5
+61:
+ - Garden:
+   - allowRandomDeath: TRUE
+     randomDeathPlant: 0.0075
+90:
+ - Garden:
+   - allowRandomDeath: TRUE
+     randomDeathPlant: .5
+91:
+ - Garden:
+   - allowRandomDeath: TRUE
+     randomDeathPlant: 0.0075
