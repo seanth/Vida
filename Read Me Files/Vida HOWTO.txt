@@ -196,9 +196,11 @@ ADVANCED OPTIONS
 		IgnoreGermDeathAtStart:
 			This variable determines whether the simulation should ignore germination failure defined by a species for the starting iteration. The default value is TRUE.
 		AllowRandomDeath:
-			It is possible to turn various methods of death on and off. In this case, this variable controls whether plants will die due to pseudorandom (stochastic) events. The default value is TRUE.
-		RandomDeath:
-			If AllowRandomDeath is set to True, the value that RandomDeath is set to is used to determine the chances that any plant will die during any given iteration. The default value is 0.0075, which translates as a 0.75% chance of death for each tree, each iteration.
+			It is possible to turn various methods of death on and off. In this case, this variable controls whether plants and/or seend will die due to pseudorandom (stochastic) events. The default value is TRUE.
+		RandomDeathPlant:
+			If AllowRandomDeath is set to True, the value that RandomDeathPlant is set to is used to determine the chances that any plant will die during any given iteration. The default value is 0.0075, which translates as a 0.75% chance of death for each tree, each iteration.
+		RandomDeathSeed:
+			If AllowRandomDeath is set to True, the value that RandomDeathSeed is set to is used to determine the chances that any plant will die during any given iteration. The default value is 0.0, which translates as a 0% chance of death for each seed, each iteration.
 		AllowSlowGrowthDeath:
 			Depending on the species in question, as a species ages, it's growth in height will slow. When this setting is true, a tree risks dying due to growing too slow, simulating senescence. The default value is true.
 		RandomSlowGrowth:
@@ -275,7 +277,7 @@ The default is 0.3.
 				   - Garden:
 				     - lightIntensity: 0.5
 				       atmosphere: 1.1
-                                       gravity: 10.81
+                       gravity: 10.81
 
 		It is possible to create subregions in the simulation using event files by defining a region and its properties:
 				10:
