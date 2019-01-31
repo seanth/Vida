@@ -433,7 +433,7 @@ class garden(object):
                         if len(obj.subregion)>0:
                             #if there are multiple regions, only the most recently made one is used.
                             theRegion=obj.subregion[-1]
-                        chanceOfDeath=theRegion.randomDeath
+                        chanceOfDeath=theRegion.randomDeathPlant
                         if tooBad<=chanceOfDeath:
                             obj.causeOfDeath="growth too slow"
                             theGarden.kill(obj)
