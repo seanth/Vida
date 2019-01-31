@@ -32,7 +32,7 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [358.00, 1.0, 1.0] 
+colourSpecies: [300.00, 1.0, 1.0] #Pink
 colourLeaf: [116.6, 1.0, 1.0]
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
