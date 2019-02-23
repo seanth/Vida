@@ -492,10 +492,9 @@ class genericPlant(object):
         self.radiusStem=Rs
         if debug==1:print "          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem)
     #print "          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem)
-    
+
     def calcHeightStemFromRadiusStem(self, theGarden):
         Ds=self.radiusStem*2
-        ##there is a weird, very rare bug
         if (Ds<=0.0):
             self.causeOfDeath="impossible diameter calculation(Ds<=0.0)"
             theGarden.kill(self)
@@ -505,26 +504,62 @@ class genericPlant(object):
         except:
             self.causeOfDeath="impossible diameter calculation. Ds=%f" % (Ds)
             theGarden.kill(self)
-        else:
-            if Hs<self.heightStem:
-                #young method
-                #Hs=(self.speciesConstant7*math.pow(Ds, self.speciesExponent7))-self.speciesConstant6
-                Hs=(self.speciesConstant7*(Ds**self.speciesExponent7))-self.speciesConstant6
-            elif self.isMature==False:
+        #immature allocation method. Once the transition is made to mature, no need to
+        #do this calc. STH 2019-02-23
+        if self.isMature==False:
+            Hsyoung=(self.speciesConstant7*(Ds**self.speciesExponent7))-self.speciesConstant6
+            if Hs>=Hsyoung:
                 self.isMature=True
                 self.matureAge=self.age
-            #print "mature at: %i" % (self.age)
-            GHs=Hs-self.heightStem
-            if (Hs<0.0 or Hs<self.heightStem):
-                print "oops. stem is shrinking. that's not right. Die"
-                self.GHs=GHs
-                self.heightStem=Hs
-                #something is wrong. There's either a negative height or it is shrinking
-                self.causeOfDeath="impossible height calculation"
-                theGarden.kill(self)
-            else:
-                self.GHs=GHs
-                self.heightStem=Hs
+            else:  
+                Hs = Hsyoung
+
+        GHs=Hs-self.heightStem
+        self.GHs=GHs
+        self.heightStem=Hs
+        if (Hs<0.0 or Hs<self.heightStem):
+            print "oops. stem is shrinking. that's not right. Die"
+            #something is wrong. There's either a negative height or it is shrinking
+            self.causeOfDeath="impossible height calculation"
+            theGarden.kill(self)
+        else:
+            self.GHs=GHs
+            self.heightStem=Hs
+
+
+    
+    # def calcHeightStemFromRadiusStemOld(self, theGarden):
+    #     Ds=self.radiusStem*2
+    #     ##there is a weird, very rare bug
+    #     if (Ds<=0.0):
+    #         self.causeOfDeath="impossible diameter calculation(Ds<=0.0)"
+    #         theGarden.kill(self)
+    #     #mature allocation method
+    #     try:
+    #         Hs=(self.speciesConstant8*math.log(Ds))+self.heightStemMax
+    #     except:
+    #         self.causeOfDeath="impossible diameter calculation. Ds=%f" % (Ds)
+    #         theGarden.kill(self)
+    #     else:
+    #         if Hs<self.heightStem:
+    #             #young method
+    #             #Hs=(self.speciesConstant7*math.pow(Ds, self.speciesExponent7))-self.speciesConstant6
+    #             Hs=(self.speciesConstant7*(Ds**self.speciesExponent7))-self.speciesConstant6
+    #         elif self.isMature==False:
+    #             self.isMature=True
+    #             self.matureAge=self.age
+    #         #print "mature at: %i" % (self.age)
+    #         GHs=Hs-self.heightStem
+    #         if (Hs<0.0 or Hs<self.heightStem):
+    #             print "oops. stem is shrinking. that's not right. Die"
+    #             self.GHs=GHs
+    #             self.heightStem=Hs
+    #             #something is wrong. There's either a negative height or it is shrinking
+    #             self.causeOfDeath="impossible height calculation"
+    #             theGarden.kill(self)
+    #         else:
+    #             self.GHs=GHs
+    #             self.heightStem=Hs
     
     
     def makeSomeSeeds(self, maxSeedsPerPlant):
