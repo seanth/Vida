@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 """This file is part of Vida.
 --------------------------
-Copyright 2017, Sean T. Hammond
+Copyright 2019, Sean T. Hammond
 
 Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
 You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
 """
-vidaVersion = "0.9.0.2"
+vidaVersion = "0.9.0.3"
 
 import random
 import math
@@ -73,6 +73,8 @@ class parseAction(argparse.Action):
     def __call__(self,parser,args,theValues,option_string=None):
         ###reload species option
         if self.dest=="resumeSim":
+            theValues=[theValues, True]
+        if self.dest=="resumeSimReload":
             theValues=[theValues, True]
         ###video option
         if self.dest=="produceVideo":
@@ -349,8 +351,7 @@ def main():
             pythonList.append(file)
     fileList=[]
     ##########
-
-    if resumeSim==True and not simulationFile=="":
+    if (resumeSim==True or resumeSimReload==True) and not simulationFile=="":
         print "***Loading simulation: %s...***" % (simulationFile.name)
         #simulationFile=open(simulationFile, 'r')
         theGarden=pickle.load(simulationFile)
@@ -359,14 +360,19 @@ def main():
         print "***Resuming Simulation: %s as %s***" % (theGarden.name, simulationName)
         theGarden.name=simulationName
         startPopulationSize=theGarden.numbPlants
+        if resumeSimReload==True:
+            print "***Reloading Vida World Preferences...***"
+            #reload Vida World Preferences.yml in case there were changes
+            fileLoc="Vida World Preferences.yml"
+            theGarden.importPrefs(fileLoc)
         ##this should reload species data.
         ###Important if you want to compare runs
-        if reloadSpeciesData==True:
-            print "***Reloading species data...***"
-            ###fileLoc will be different for each species eventually
-            fileLoc="Vida_Data/Default_species.yml"
-            for item in theGarden.soil:
-                item.importPrefs(fileLoc)
+        # if reloadSpeciesData==True:
+        #     # print "***Reloading species data...***"
+        #     # ###fileLoc will be different for each species eventually
+        #     # fileLoc="Vida_Data/Default_species.yml"
+        #     # for item in theGarden.soil:
+        #     #     item.importPrefs(fileLoc)
     else:
         theGarden.makePlatonicSeedDict(ymlList, Species1)
         print "***Species loaded.***"
@@ -870,9 +876,10 @@ if __name__ == '__main__':
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
     parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
+    parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
     parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')    
     ###options that use a code action
-    parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
+    #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
     parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','3d' ], help='Graphical view desired')    
     parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
@@ -930,6 +937,10 @@ if __name__ == '__main__':
             print "***Warning: A video can not be auto generated from the '3d' graphical option\n   Video output turned off"
             produceVideo=False
     ##parse resume sim option a bit more
+    if type(resumeSimReload)==file:
+        simulationFile=resumeSimReload
+        resumeSimReload=True
+        reloadSpeciesData=False
     if type(resumeSim)==file:
         simulationFile=resumeSim
         resumeSim=True

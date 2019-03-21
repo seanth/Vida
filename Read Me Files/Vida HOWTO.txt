@@ -55,6 +55,7 @@ OPTIONS SUMMARY
 	-v [<integer>]		produce a Quicktime video, with an optional frames/second 
 					value(Macintosh only)
 	-r <string>		reload a previously saved simulation
+	-rl <string>	reload a previously saved simulation & reload the Vida World Preferences file
 	-e <string>		load an event file named <string>
 	-a <characters>		save a simulation state
 	-f <characters>		save statistical data
