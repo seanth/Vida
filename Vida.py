@@ -464,9 +464,7 @@ def main():
             makeDirectory(dataDirectory+"Plants/")
             makeDirectory(dataDirectory+"Corpses/")
 
-
-        
-        if resumeSim==None:
+        if resumeSim==None and resumeSimReload==None:
             #2008.11.06 Moved a huge block of code related to placing seeds to vworldr.py
             theGarden.placeSeed(seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList)
         if produceGraphics==True and CFDGtextDict=={}:
