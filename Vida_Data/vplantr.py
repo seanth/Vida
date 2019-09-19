@@ -119,7 +119,7 @@ class genericPlant(object):
         tempList=copy.copy(self.seedList)
         if self.makeSeeds:
             numbSeeds=float(len(tempList))
-            self.massSeedsTotal=0
+            self.massSeedsTotal=0.0
             if numbSeeds>0.0:
                 maxCarbonToSeed=(self.massFixed*self.fractionCarbonToSeeds)
                 maxCarbonToSeed=maxCarbonToSeed/numbSeeds
@@ -144,7 +144,6 @@ class genericPlant(object):
                         attachedSeed.disperseSeed(attachedSeed, self, theGarden)
                     else:
                         self.massSeedsTotal=self.massSeedsTotal+attachedSeed.massSeed
-            #print "plant %f" % (self.massSeedsTotal)
             
             ##if you lack seeds, make them
             #if (self.heightStem>=self.startMakingSeedsHeight) or (self.age>=self.startMakingSeedsAge) or self.isMature:
@@ -238,7 +237,7 @@ class genericPlant(object):
             if maxCarbonForSeed>self.motherPlant.massFixed:
                 maxCarbonForSeed=self.motherPlant.massFixed
         self.motherPlant.massFixed=self.motherPlant.massFixed-maxCarbonForSeed
-        self.massSeed= self. massSeed + maxCarbonForSeed
+        self.massSeed= self.massSeed + maxCarbonForSeed
         #use that value to calculate the radius of the seed
         #convert mass to volume and the get the radius
         i= self.massSeed/self.densitySeed #this is volume in m^3
