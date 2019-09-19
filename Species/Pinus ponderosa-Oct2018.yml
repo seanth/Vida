@@ -1,0 +1,65 @@
+nameSpecies: Pinus ponderosa
+creator: seanth@gmail.com
+comments: First draft of a ponderosa pine for use in simulations at Metolius, Oregon. Revised 2015-1123. Revised again 2018-1010
+
+###Basic
+densityStem: 561.00 #Lavers 1967 Wood properties
+densityLeaf: 923.43
+densitySeed: 280.5 #assume density is half as stem
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.00039
+heightStemMax: 28.959162
+youngsModulusStem: 6.0 #GPa-Lavers 1967 Wood properties
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax: 0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.7
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [0.0, 0.0, 0.0] #black
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+###testing different canopy shapes in 3d output
+crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
+
+###Photosynthesis
+photoConstant: 1.6
+photoExponent: -0.4602
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.99
+speciesConstant1: 0.8088787
+speciesExponent1: 1.0197017
+speciesConstant2: 0.0657352
+speciesExponent2: 1.0460219
+speciesConstant3: 0.133 #0.24834698
+speciesExponent3: 0.8667031 #0.73063124
+speciesConstant20: 0.045 #0.03599987
+speciesExponent20: 0.39415386
+speciesConstant6: 0.0 #0.15
+speciesConstant7: 48.138625
+speciesExponent7: 0.9276885
+speciesConstant8: 11.124877
