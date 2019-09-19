@@ -1,0 +1,5 @@
+10:
+   - Species:
+     - name: 'blablabla'
+       makeSeeds: FALSE
+       youngsModulusStem: 0.0 
