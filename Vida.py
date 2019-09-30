@@ -695,12 +695,8 @@ def main():
                             #STH 2019-0930
                             for theObject in theGarden.soil:
                                 if theObject.nameSpecies == theSpeciesName:
-                                    print "we have a matching species"
                                     for theSpeciesAttr in speciesAttrs:
-                                        print "changing "+theSpeciesAttr
-                                        print theObject.youngsModulusStem
                                         setattr(theObject, theSpeciesAttr, theDict[theSpeciesAttr])
-                                        print theObject.youngsModulusStem
                             speciesAttrs = ""
                                     
                         theDict=[]#just clear this to free up the memory
