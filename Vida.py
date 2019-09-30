@@ -7,7 +7,7 @@ Vida is experimental in nature and is made available as a research courtesy "AS 
 
 You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
 """
-vidaVersion = "0.9.0.3"
+vidaVersion = "0.9.0.4"
 
 import random
 import math
@@ -147,7 +147,7 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
         if plant.age>0:
             theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,"na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
         else:
-            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,"na",0,"na")            
+            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,"na",0,0)            
         if plant.isSeed:
             theSeedList.append(theData)
         else:
@@ -156,7 +156,7 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
         if plant.age>0:
             theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
         else:
-            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,plant.causeOfDeath,0,"na")
+            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,plant.causeOfDeath,0,0)
         theCorpseList.append(theData)
     if len(thePlantList)>1:
         saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'wb')
@@ -491,6 +491,7 @@ def main():
                             for theGardenAttr in gardenAttrs:                                 #
                                 setattr(theGarden, theGardenAttr, theDict[theGardenAttr])     #
                             gardenAttrs=""    
+
                         elif aKey=="Killzone" or aKey=="Safezone":
                             if debug==1: print "debug: generation of a zone event has been triggered."
                             theDict=aItem[aKey][0]                                           #
@@ -551,8 +552,6 @@ def main():
                                 theObject.causeOfDeath="zone"
                                 theGarden.kill(theObject)
 
-
-
                         elif aKey=="Seed":
                             if debug==1: print "debug: A seeding related event has been triggered."   #
                             theDict=aItem[aKey][0]                                            #
@@ -589,8 +588,6 @@ def main():
                                             theSeed.name="Platonic %s" % jj
                                             theGarden.platonicSeeds[jj]=theSeed
 
-
-
                             if not seedPlacement=="fromFile" and not sList==[]:
                                 newList=[]
                                 for j in range(startPopulationSize):
@@ -610,6 +607,7 @@ def main():
                                         theGarden.platonicSeeds[j]=theSeed
 
                             theGarden.placeSeed(seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList)
+
                         elif aKey=="Region":
                             if debug: print "debug: Region event detected..."
                             theDict=aItem[aKey][0] 
@@ -681,7 +679,30 @@ def main():
                                         
                                 newRegion=""
                             
-                            
+                        elif aKey=="Species":
+                            if debug: print "debug: Species event detected..."
+                            theDict = aItem[aKey][0]
+                            theSpeciesName = theDict['name']
+                            speciesAttrs = theDict.keys()
+                            #I'm not sure whether the user should be allowed to change the base species name
+                            #Why might this be useful? Species evolution/creation of a new subspecies?
+                            #STH 2019-0930
+                            if 'name' in speciesAttrs:
+                                speciesAttrs.remove('name')
+
+                            #Do we need to go through and modify all the "platonic seeds" in theGarden?
+                            #Might need to revisit this part of the code
+                            #STH 2019-0930
+                            for theObject in theGarden.soil:
+                                if theObject.nameSpecies == theSpeciesName:
+                                    print "we have a matching species"
+                                    for theSpeciesAttr in speciesAttrs:
+                                        print "changing "+theSpeciesAttr
+                                        print theObject.youngsModulusStem
+                                        setattr(theObject, theSpeciesAttr, theDict[theSpeciesAttr])
+                                        print theObject.youngsModulusStem
+                            speciesAttrs = ""
+                                    
                         theDict=[]#just clear this to free up the memory
             ###################################################################################
             theGarden.cycleNumber=cycleNumber
