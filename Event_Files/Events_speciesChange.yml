@@ -1,5 +1,6 @@
-10:
+20:
    - Species:
-     - name: 'blablabla'
+     - name: 'Pinus ponderosa'
        makeSeeds: FALSE
        youngsModulusStem: 0.0 
+       densityStem: 0.001
