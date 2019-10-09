@@ -1,6 +1,6 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2011, Sean T. Hammond
+    Copyright 2019, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     

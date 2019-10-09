@@ -7,7 +7,7 @@ Vida is experimental in nature and is made available as a research courtesy "AS 
 
 You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
 """
-vidaVersion = "0.9.0.4"
+vidaVersion = "0.9.0.5"
 
 import random
 import math
@@ -557,7 +557,7 @@ def main():
                             theDict=aItem[aKey][0]                                            #
                             seedingInfo=theDict.keys()                                        #
                             for infoItem in seedingInfo:
-                                if infoItem=="number" and not seedPlacement=="fromFile": startPopulationSize=theDict[infoItem]
+                                if infoItem=="number" and not seedPlacement=="fromFile": addPopulationSize=theDict[infoItem]
                                 if infoItem=="species": 
                                     sList=theDict[infoItem]
                                     if sList=="random": sList=[]
@@ -571,7 +571,7 @@ def main():
                                     finally:
                                         theFile.close()
                                     sList=checkSeedPlacementList(sList)
-                                    startPopulationSize=len(sList)
+                                    addPopulationSize=len(sList)
                                     seedPlacement="fromFile"
                                     if debug ==1: print "debug: Will place seeds from a file"
                                     ###if a simulation is being reloaded from a pickle, that sim might not have saved
@@ -590,7 +590,7 @@ def main():
 
                             if not seedPlacement=="fromFile" and not sList==[]:
                                 newList=[]
-                                for j in range(startPopulationSize):
+                                for j in range(addPopulationSize):
                                     newList.append(sList)
                                 ###if a simulation is being reloaded from a pickle, that sim might not have saved
                                 ###data on a new species being introduced. Load the new species and add it to the platonic list
@@ -606,7 +606,8 @@ def main():
                                         theSeed.name="Platonic %s" % j
                                         theGarden.platonicSeeds[j]=theSeed
 
-                            theGarden.placeSeed(seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList)
+                            theGarden.placeSeed(seedPlacement, sList, addPopulationSize, useDefaultYml, ymlList)
+                            sList= [] #reset the sList to what it was when we started
 
                         elif aKey=="Region":
                             if debug: print "debug: Region event detected..."
@@ -696,12 +697,15 @@ def main():
                             for theObject in theGarden.soil:
                                 if theObject.nameSpecies == theSpeciesName:
                                     for theSpeciesAttr in speciesAttrs:
+                                        if debug: print "       Attempting to set species '%s' property '%s' to %s" % (theObject.nameSpecies, theSpeciesAttr, theDict[theSpeciesAttr])
                                         setattr(theObject, theSpeciesAttr, theDict[theSpeciesAttr])
+
                             speciesAttrs = ""
                                     
                         theDict=[]#just clear this to free up the memory
             ###################################################################################
             theGarden.cycleNumber=cycleNumber
+
             if not showProgressBar:
                     theProgressBar.update(cycleNumber)
 
@@ -864,7 +868,7 @@ def main():
                 if aView!="3d":
                     outputGraphics.outputMOV(outputGraphicsDirectoryDict[aView], simulationName, framesPerSecond)
                     time.sleep(1)
-        print "\n*****Simulation Complete*****"
+        print "\n*****Simulation Complete*****\n\n\n\n\n"
         #clear the values
         theGarden.soil=[]
         theGarden.deathNote=[]
