@@ -1,0 +1,68 @@
+nameSpecies: F_americana
+creator: miniVida2yml.py
+comments: Generated from file f americana new miniVida graphs.xls on 2019-0220
+
+###Basic
+densityStem: 675.000000 #[1], in kg/m3
+densityLeaf: 923.430000
+densitySeed: 337.500000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 32.000000
+youngsModulusStem: 12.000000 #[3], in GPa
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943 #analysis of [4]
+reproductionExponent: 1.09777536 #analysis of [4]
+numYearsGrowthMemory: 2
+massSeedMax:  0.4 #0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.995 #0.46 #[5]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [30.0, 45.0, 18.0] 
+colourLeaf: [78.0, 217.0, 39.0]
+colourStem: [57.0, 187.0 , 66.0]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.5 #0.760000
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.810450
+speciesExponent1: 1.037282
+speciesConstant2: 0.116400
+speciesExponent2: 0.881900
+speciesConstant3: 0.150000
+speciesExponent3: 0.771900
+speciesConstant20: 0.027943
+speciesExponent20: 0.387955
+speciesConstant6: 0.000000
+speciesConstant7: 130 #77.224650
+speciesExponent7: 1.0 #0.803966
+speciesConstant8: 8.500000
+
+#[1] https://www.wood-database.com/white-ash/
+#[2] set the 50% densityStem
+#[3] https://www.wood-database.com/white-ash/
+#[4] Cannell, 1982
+#[5] https://www.srs.fs.usda.gov/pubs/misc/ag_654/volume_2/fraxinus/americana.htm

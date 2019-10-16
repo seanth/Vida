@@ -1,0 +1,50 @@
+0:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: A_rubrum
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: B_lenta
+200:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: C_dentata
+   - Species:
+     - name: Q_alba
+       fractionFailGerminate: 0.91
+       randomSlowGrowth: 0.4
+   - Seed:
+     - species: arubrum_sth2.yml
+       placement: random
+       number: 100
+   - Seed:
+     - species: blenta_sth1.yml
+       placement: random
+       number: 100
+281:
+   - Killzone:
+     - x: -25.0
+       y: 25.0
+       shape: square
+       size: 25
+       target: all
+   - Seed:
+     - placement: Placement_Files/cdentata-quad1.csv
+
+289:
+   - Species:
+     - name: Q_alba
+       fractionFailGerminate: 0.2
+       randomSlowGrowth: 0.0

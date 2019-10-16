@@ -1,0 +1,67 @@
+nameSpecies: C_glabra
+creator: miniVida2yml.py
+comments: Generated from file c glabra new miniVida graphs.xls on 2019-0223
+
+###Basic
+densityStem: 835.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 305.000000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 31.500000
+youngsModulusStem: 15.59 #[3]
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.375 #[4]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [74.0, 21.0, 200.0] 
+colourLeaf: [4.0, 190.0, 210.0]
+colourStem: [20.0, 113.0 , 50.0]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.5056 #0.770000
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.604749
+speciesExponent1: 1.052236
+speciesConstant2: 0.116400
+speciesExponent2: 0.881900
+speciesConstant3: 0.150000
+speciesExponent3: 0.771900
+speciesConstant20: 0.027824
+speciesExponent20: 0.390418
+speciesConstant6: 0.000000
+speciesConstant7: 73.723680
+speciesExponent7: 0.796027
+speciesConstant8: 8.500000
+
+#[1] https://www.wood-database.com/pignut-hickory/
+#[2] set the 50% densityStem
+#[3] https://www.wood-database.com/pignut-hickory/
+#[4] https://www.srs.fs.usda.gov/pubs/misc/ag_654/volume_2/carya/glabra.htm

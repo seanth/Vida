@@ -1,0 +1,67 @@
+nameSpecies: Q_alba
+creator: miniVida2yml.py
+comments: Generated from file q alba new miniVida with graphs.xls on 2019-0219
+
+###Basic
+densityStem: 865.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 432.500000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 31.300000
+youngsModulusStem: 12.150000 #[3]
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax: 0.4 #0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.20 #0.25 #0.2475 #0.25 #0.15 #[4]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [175.0, 21.0, 32.0] 
+colourLeaf: [9.0, 17.0, 32.0]
+colourStem: [53.0, 64.0 , 179.0]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.5 #1.150000
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.776542
+speciesExponent1: 1.004372
+speciesConstant2: 0.100000
+speciesExponent2: 0.881900
+speciesConstant3: 0.130000
+speciesExponent3: 0.771900
+speciesConstant20: 0.025352
+speciesExponent20: 0.409024
+speciesConstant6: 0.000000
+speciesConstant7: 95.579426
+speciesExponent7: 0.901484
+speciesConstant8: 8.510000
+
+#[1] 1967, Lavers
+#[2] set the 50% densityStem
+#[3] https://www.wood-database.com/white-oak/
+#[4] https://www.nrs.fs.fed.us/pubs/other/oak_sym/oak_symposium_proceedings_019.pdf

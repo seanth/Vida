@@ -1,0 +1,67 @@
+nameSpecies: C_dentata
+creator: miniVida2yml.py
+comments: Generated from file c dentata new miniVida with graphs.xls on 2019-0220
+
+###Basic
+densityStem: 480.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 240.000000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 33.000000
+youngsModulusStem: 8.480000 #[3]
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.19 #0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.915 #0.93 #0.35 #[4]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [179.0, 10.0, 40.0] 
+colourLeaf: [139.0, 18.0, 21.0]
+colourStem: [2.0, 190.0, 75.0]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.50000
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.778521
+speciesExponent1: 0.920525
+speciesConstant2: 0.200000
+speciesExponent2: 0.881900
+speciesConstant3: 0.250000
+speciesExponent3: 0.771900
+speciesConstant20: 0.030139
+speciesExponent20: 0.444427
+speciesConstant6: 0.000000
+speciesConstant7: 128.298178
+speciesExponent7: 0.972229
+speciesConstant8: 8.500000
+
+#[1] https://www.wood-database.com/american-chestnut/
+#[2] set the 50% densityStem
+#[3] https://www.wood-database.com/american-chestnut/
+#[4] https://www.srs.fs.fed.us/pubs/gtr/gtr_srs173.pdf

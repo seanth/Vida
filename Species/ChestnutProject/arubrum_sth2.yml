@@ -1,0 +1,62 @@
+nameSpecies: A_rubrum
+creator: miniVida2yml.py
+comments: Generated from file a rubrum new miniVida with graphs.xls on 2019-0223. Revised by STH 2019-1002
+
+###Basic
+densityStem: 610.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 305.000000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 24.500000
+youngsModulusStem: 11.310000 #[3]
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax: 0.09 #0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.13 #[4]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [10.0, 220.0, 10.0] 
+colourLeaf: [40.0, 121.0, 230.0]
+colourStem: [106.0, 50.0 , 120.0]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.505600
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.698213
+speciesExponent1: 1.002060
+speciesConstant2: 0.116400
+speciesExponent2: 0.881900
+speciesConstant3: 0.150000
+speciesExponent3: 0.771900
+speciesConstant20: 0.025310
+speciesExponent20: 0.422062
+speciesConstant6: 0.000000
+speciesConstant7: 88.205967
+speciesExponent7: 0.837747
+speciesConstant8: 5.400000
