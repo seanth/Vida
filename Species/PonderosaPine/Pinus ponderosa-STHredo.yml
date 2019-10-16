@@ -1,6 +1,6 @@
 nameSpecies: Pinus ponderosa
 creator: seanth@gmail.com
-comments: First draft of a ponderosa pine for use in simulations at Metolius, Oregon. Revised 2015-1123
+comments: First draft of a ponderosa pine for use in simulations at Metolius, Oregon. Revised 2015-1123. Revised 2019-0821
 
 
 ###Basic
@@ -10,7 +10,7 @@ densitySeed: 280.5 #assume density is half as stem
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.00039
-heightStemMax: 50.0
+heightStemMax: 29.483541 #derived from analysis of Law lab's standsurvey_Me2_2014
 youngsModulusStem: 6.0 #GPa-Lavers 1967 Wood properties
 
 ###Reproduction
@@ -25,7 +25,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.65
+fractionFailGerminate: 0.5 #from sensitivity analysis by STH 2019-0821
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -52,15 +52,21 @@ fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
 fractionCarbonToStem: 0.99
-speciesConstant1: 0.8088787
-speciesExponent1: 1.0197017
-speciesConstant2: 0.0657352
-speciesExponent2: 1.0460219
-speciesConstant3: 0.155 #0.24834698
-speciesExponent3: 0.8667031 #0.73063124
-speciesConstant20: 0.045 #0.03599987
-speciesExponent20: 0.39415386
-speciesConstant6: 0.0 #0.15
-speciesConstant7: 70.0
-speciesExponent7: 1.08090778
-speciesConstant8: 25.6
+#Ms=B1*Mt^a1
+speciesConstant1: 0.8088787             #b1
+speciesExponent1: 1.0197017             #a1
+#Mlyoung=B2*Ms^a2
+speciesConstant2: 0.0657352             #b2
+speciesExponent2: 1.0460219             #a2
+#Mlmature=B3*Ms^a3
+speciesConstant3: 0.133 #0.24834698      #b3
+speciesExponent3: 0.8667031 #0.73063124  #a3
+#Ds=B4*Ms^a4
+speciesConstant20: 0.045 #0.03599987     #b4
+speciesExponent20: 0.39415386            #a4
+#Hsyoung=(B5*Ds^a5)-B6
+speciesConstant6: 0.0                    #b6
+speciesConstant7: 42.956377 #derived from analysis of Law lab's standsurvey_Me2_2014                   #b5
+speciesExponent7: 0.8399717 #derived from analysis of Law lab's standsurvey_Me2_2014
+#Hsmature=B7 + B8 ln Ds
+speciesConstant8: 10.974724 #derived from analysis of Law lab's standsurvey_Me2_2014

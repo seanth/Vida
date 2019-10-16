@@ -1,0 +1,62 @@
+nameSpecies: ISENGAARDians
+creator: miniVida2yml.py
+comments: Generated from file mccloattree1_miniVida-withGraphs.xls on 2019-0305
+
+###Basic
+densityStem: 718.900000
+densityLeaf: 923.430000
+densitySeed: 359.450000
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 43.000000
+youngsModulusStem: 7.400000
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [203.84, 0.5222, 0.8564] #a sort of light greyish blue
+colourLeaf: [31, 43, 190]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.531000
+photoExponent: -0.460200
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.995000
+speciesExponent1: 1.050000
+speciesConstant2: 0.075000
+speciesExponent2: 1.150000
+speciesConstant3: 0.185000
+speciesExponent3: 0.870000
+speciesConstant20: 0.031000
+speciesExponent20: 0.394154
+speciesConstant6: 0.000000
+speciesConstant7: 102.000000
+speciesExponent7: 1.150000
+speciesConstant8: 16.000000

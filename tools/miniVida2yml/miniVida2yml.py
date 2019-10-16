@@ -1,3 +1,4 @@
+
 import argparse
 import xlrd
 import time
@@ -17,8 +18,8 @@ if __name__ == "__main__":
 	inFileName = args.inFile
 	ymlTempFile = open("speciesTemplate.txt", "r")
 	ymlTempTxt = ymlTempFile.read()
-
 	ymlTempFile.close()
+
 	theXLS = xlrd.open_workbook(inFileName)
 	firstSheet = theXLS.sheet_by_index(0)
 	#cell coordinates: column(y), row(x)

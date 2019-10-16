@@ -1,0 +1,62 @@
+nameSpecies: Shabaz miniVida-withGraphs
+creator: miniVida2yml.py
+comments: Generated from file Shabaz miniVida-withGraphs.xls on 2019-0305
+
+###Basic
+densityStem: 718.900000
+densityLeaf: 923.430000
+densitySeed: 359.450000
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 42.698210
+youngsModulusStem: 7.400000
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [229.04, 0.7725, 1.0000] #black
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.531000
+photoExponent: -0.460200
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.800000
+speciesExponent1: 1.001334
+speciesConstant2: 0.070000
+speciesExponent2: 0.930000
+speciesConstant3: 0.170000
+speciesExponent3: 0.700000
+speciesConstant20: 0.270000
+speciesExponent20: 0.350000
+speciesConstant6: 0.000000
+speciesConstant7: 100.064153
+speciesExponent7: 1.080908
+speciesConstant8: 15.508049

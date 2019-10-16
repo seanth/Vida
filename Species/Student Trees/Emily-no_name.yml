@@ -1,0 +1,62 @@
+nameSpecies: no_name
+creator: minivida2yml.py
+comments: Generated from file Emily-miniVida-withGraphs.xls on 2019-0305
+
+###Basic
+densityStem: 718.900000
+densityLeaf: 923.430000
+densitySeed: 359.450000
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 31.800000
+youngsModulusStem: 7.400000
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [259.11, 0.2942, 1.0000]
+colourLeaf: [259.11, 0.2942, 1.0000]
+colourStem: [259.11, 0.2942, 1.0000]
+colourSeedDispersed: [259.11, 0.2942, 1.0000]
+colourSeedAttached: [259.11, 0.2942, 1.0000]
+
+###Photosynthesis
+photoConstant: 1.531000
+photoExponent: -0.460200
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.860000
+speciesExponent1: 1.002000
+speciesConstant2: 0.090000
+speciesExponent2: 0.950000
+speciesConstant3: 0.180000
+speciesExponent3: 0.710000
+speciesConstant20: 0.028000
+speciesExponent20: 0.384154
+speciesConstant6: -0.010000
+speciesConstant7: 150.000000
+speciesExponent7: 1.070000
+speciesConstant8: 8.650000
