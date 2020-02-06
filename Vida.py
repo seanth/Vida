@@ -323,6 +323,14 @@ def main():
     else:
         eventTimes=[]
     #####################################
+
+    ####################################
+    ###experiments in importing a terrain file
+    if terrainFile!=None:
+        #if type(eventFile)==file:
+        print "***Loading terrain file: %s***" % (terrainFile.name)
+        #don't actually do anything with the file right now
+    #####################################
     
     if debug==1: print "***debug is on***"
 
@@ -897,7 +905,8 @@ if __name__ == '__main__':
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
     parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
     parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
-    parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')    
+    parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
+    parser.add_argument('-l', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
     ###options that use a code action
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
