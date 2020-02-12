@@ -307,6 +307,12 @@ def main():
 
     CFDGtext=""
     CFDGtextDict={}
+
+    if debug==1: print "***debug is on***"
+
+    theGarden= worldBasics.garden()
+    theGarden.platonicSeeds={}
+    theGarden.theRegions=[]
     
     ####################################
     ###experiments in importing events
@@ -327,16 +333,34 @@ def main():
     ####################################
     ###experiments in importing a terrain file
     if terrainFile!=None:
+        from PIL import Image
         #if type(eventFile)==file:
         print "***Loading terrain file: %s***" % (terrainFile.name)
-        #don't actually do anything with the file right now
-    #####################################
-    
-    if debug==1: print "***debug is on***"
+        #theImage = Image.open(terrainFile)
+        tmp=Image.open(terrainFile)
+        #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
+        #make sure the list is the correct length
+        if len(theGarden.terrainImage)<3:
+            theGarden.terrainImage=[0]*3
+        #store the image mode
+        theGarden.terrainImage[0]=tmp.mode
+        #store the image size
+        theGarden.terrainImage[1]=tmp.size
+        #store the image as bytes
+        theGarden.terrainImage[2]=tmp.tobytes()
+        tmp.close()
+        tmp=None
 
-    theGarden= worldBasics.garden()
-    theGarden.platonicSeeds={}
-    theGarden.theRegions=[]
+        #print "I am here thx"
+        #print Image.frombytes(theGarden.terrainImage[0],theGarden.terrainImage[1],theGarden.terrainImage[2]).size
+
+    #####################################
+
+
+
+
+
+
 
     
     ####
@@ -897,7 +921,7 @@ if __name__ == '__main__':
     parser.add_argument('-x', type=int, metavar='int', dest='timesToRepeat', required=False, help='Times to repeat simulation')
     parser.add_argument('-m', type=int, metavar='int', dest='maxPopulation', required=False, help='Maximum population before stop')
     parser.add_argument('-t', type=int, metavar='int', dest='maxCycles', required=False, help='Maximum time before stop')
-    parser.add_argument('-i', type=float, metavar='float', dest='percentTimeStamp', required=False, help='Percent size of time stamp')
+    parser.add_argument('-l', type=float, metavar='float', dest='percentTimeStamp', required=False, help='Percent size of time stamp')
     parser.add_argument('-d', dest='debug', action='store_true', required=False, help='Debug level 1')
     parser.add_argument('-dd',dest='debug2',action='store_true', required=False, help='Debug level 2')
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
@@ -906,7 +930,7 @@ if __name__ == '__main__':
     parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
     parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
     parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
-    parser.add_argument('-l', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
+    parser.add_argument('-i', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
     ###options that use a code action
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
