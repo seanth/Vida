@@ -20,6 +20,10 @@ import list_utils
 import yaml
 import progressBarClass
 
+###experimental terrain import
+###STH & EKT 05 Feb 2020
+import vterrainImport as terrain_utils
+
 
 debug1=0
 debug2=0
@@ -566,8 +570,14 @@ class garden(object):
             j=j/(4.0/3.0)
             j=j/(math.pi)
             j=math.pow(j, 1.0/3.0)
+            #print terrainFile
             theSeed.radiusSeed=j
             theSeed.z= theSeed.radiusSeed
+            #theSeed.z = theSeed.z + random.randrange(1,50)
+            theElevation = terrain_utils.getPixelValue(theSeed.x,theSeed.y)
+            #print "hopefully this worked"
+            theSeed.z = theSeed.z + theElevation
+            #print theSeed.z
             theSeed.r= theSeed.radiusSeed            
             #theSeed.growSeedOnPlant(theSeed.massSeedMax)
             #print "#######"

@@ -163,7 +163,7 @@ class genericPlant(object):
         ###convert mass to get radius of leaf
         self.calcRadiusLeafFromMassLeaf()
         
-        self.z=self.heightStem+self.heightLeafMax
+        self.z=self.z+self.heightStem+self.heightLeafMax
         
         if self.radiusLeaf>=self.radiusStem:
             self.r=self.radiusLeaf
@@ -399,7 +399,7 @@ class genericPlant(object):
                     ###will be in world_basics
                     
                     ###rename the seed so you know it's a plant
-                    self.z=self.heightStem+self.heightLeafMax
+                    self.z=self.z+self.heightStem+self.heightLeafMax
                     ###why am I doing this, again?
                     if self.radiusLeaf>=self.radiusStem:
                         self.r=self.radiusLeaf
