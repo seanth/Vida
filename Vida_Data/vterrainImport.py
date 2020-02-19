@@ -7,8 +7,11 @@ def getPixelValue(x,y,theImage):
     ###This needs to be expanded more to adjust for different world sizes and 
     ###different image sizes
     ###STH & EKT 05 Feb 2020
-    theX = x+50
-    theY = y+50
+    theX = x+50.0
+    theY = y+50.0
+
+    #theX = theX*2.0
+    #theY = theY*2.0
 
     #convert the stored image data into something usable
     #format of theImage is [mode, size tuple, image as bytes] STH 0212-2020

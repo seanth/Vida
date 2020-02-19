@@ -80,6 +80,10 @@ class genericPlant(object):
         self.x=0.0
         self.y=0.0
         self.z=0.0
+        #New property related to elevation
+        #0219-2020 STH EKT
+        self.elevation=0.0
+
         self.r=0.00        
         self.age=0.0
         self.overlapList=[]
@@ -163,8 +167,12 @@ class genericPlant(object):
         ###convert mass to get radius of leaf
         self.calcRadiusLeafFromMassLeaf()
         
-        self.z=self.z+self.heightStem+self.heightLeafMax
-        
+        #self.z=self.z+self.heightStem+self.heightLeafMax
+        #self.z=self.elevation+self.heightStem+self.heightLeafMax
+        self.z=self.heightStem+self.heightLeafMax
+        print self.z
+        print self.elevation
+
         if self.radiusLeaf>=self.radiusStem:
             self.r=self.radiusLeaf
         else:
@@ -399,7 +407,10 @@ class genericPlant(object):
                     ###will be in world_basics
                     
                     ###rename the seed so you know it's a plant
-                    self.z=self.z+self.heightStem+self.heightLeafMax
+                    #self.z=self.z+self.heightStem+self.heightLeafMax
+                    #self.z=self.elevation+self.heightStem+self.heightLeafMax
+                    self.z=self.heightStem+self.heightLeafMax
+                    
                     ###why am I doing this, again?
                     if self.radiusLeaf>=self.radiusStem:
                         self.r=self.radiusLeaf

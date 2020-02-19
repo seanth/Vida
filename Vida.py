@@ -346,6 +346,7 @@ def main():
         theGarden.terrainImage[0]=tmp.mode
         #store the image size
         theGarden.terrainImage[1]=tmp.size
+        print tmp.size
         #store the image as bytes
         theGarden.terrainImage[2]=tmp.tobytes()
         tmp.close()

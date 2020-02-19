@@ -579,15 +579,16 @@ class garden(object):
 
             #look up the pixel grey-scale value at the target x,y
             #and then use that value to map to an elevation
-            #STH 0212-2020
-            if theGarden.terrainImage!=None:
+            #STH EKT 0212-2020
+            print theGarden.terrainImage
+            if theGarden.terrainImage!=[]:
                 thePixelValue = terrain_utils.getPixelValue(theSeed.x,theSeed.y,theGarden.terrainImage)
                 theElevation = terrain_utils.elevationFromPixel(thePixelValue)
             else:
                 theElevation = 0.0
 
-            theSeed.z = theSeed.z + theElevation
-            #print theSeed.z
+            theSeed.elevation = theElevation
+            theSeed.z = theSeed.z + theSeed.elevation
             theSeed.r= theSeed.radiusSeed            
             #theSeed.growSeedOnPlant(theSeed.massSeedMax)
             #print "#######"
