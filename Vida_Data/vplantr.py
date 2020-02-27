@@ -18,6 +18,11 @@ sys.path.append("Vida_Data")
 import geometry_utils
 import yaml
 
+###experimental terrain import
+###STH & EKT 05 Feb 2020
+import vterrainImport as terrain_utils
+import vworldr as worldBasics
+
 debug=0
 
 #class genericPlant(object):
@@ -100,8 +105,6 @@ class genericPlant(object):
     
     def dieNow(self, thePlant, theGarden):
         #die!
-        #print len(thePlant.seedList)
-        #print "hmmm"
         if len(thePlant.seedList)>0:
             for theSeed in thePlant.seedList:
                 ###The plant has seeds. Drop them prior to killing plant###
@@ -170,8 +173,7 @@ class genericPlant(object):
         #self.z=self.z+self.heightStem+self.heightLeafMax
         #self.z=self.elevation+self.heightStem+self.heightLeafMax
         self.z=self.heightStem+self.heightLeafMax
-        print self.z
-        print self.elevation
+        #print "plant z: %f  plant elevation: %f" % (self.z, self.elevation)
 
         if self.radiusLeaf>=self.radiusStem:
             self.r=self.radiusLeaf
@@ -353,11 +355,24 @@ class genericPlant(object):
             newY=math.sin(theAngle)*theDistance
             newX=newX+theSeed.x
             newY=newY+theSeed.y
-        
-        
+
         #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
+        ###Place the seed in xyz space correctly
+        ###STH 2020-0226
         theSeed.x=newX
         theSeed.y=newY
+        #look up the pixel grey-scale value at the target x,y
+        #and then use that value to map to an elevation
+        #STH EKT 0212-2020
+        if theGarden.terrainImage!=[]:
+            thePixelValue = terrain_utils.getPixelValue(theSeed.x,theSeed.y,theGarden.terrainImage)
+            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+        else:
+            theElevation = 0.0
+
+        theSeed.elevation = theElevation
+        theSeed.z = theSeed.z + theSeed.elevation
+
         theSeed.countToGerm=self.delayInGermination
         theGarden.plantSeed(theSeed)
         motherPlant.seedList.remove(theSeed)

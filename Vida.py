@@ -34,6 +34,10 @@ import progressBarClass
 ###append the path to where species are
 sys.path.append("Species")
 
+###EXPERIMENTS IT WRITING TERRAIN FROM GREYSCALE IMAGE
+import vterrainImport as terrain_utils
+from dxfwrite import DXFEngine as dxf 
+
 sList=[]
 theCLArgs=""
 
@@ -346,15 +350,27 @@ def main():
         theGarden.terrainImage[0]=tmp.mode
         #store the image size
         theGarden.terrainImage[1]=tmp.size
-        print tmp.size
         #store the image as bytes
         theGarden.terrainImage[2]=tmp.tobytes()
         tmp.close()
         tmp=None
-
-        #print "I am here thx"
-        #print Image.frombytes(theGarden.terrainImage[0],theGarden.terrainImage[1],theGarden.terrainImage[2]).size
-
+        ######
+        #All of this should be moved to the part where 3d image code is
+        #2020-0226 STH EXPERIMENT IN USING dxfwrite
+        xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
+        dwg = dxf.drawing('mesh.dxf')
+        mesh = dxf.polymesh(xSize, ySize)
+        for x in range(xSize):
+            for y in range(ySize):
+                #the -50 thing in the following line is a temporary kludge
+                #has to go away to adjust for world/images of differing sizes
+                #STH 2020-0226
+                thePixelValue = terrain_utils.getPixelValue(x-50,y-50,theGarden.terrainImage)
+                z = terrain_utils.elevationFromPixel(thePixelValue)
+                mesh.set_vertex(x, y, (x, y, z))
+        dwg.add(mesh)
+        #need to save it to target output folder eventually
+        dwg.save()
     #####################################
 
 

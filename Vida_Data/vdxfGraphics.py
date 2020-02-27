@@ -34,6 +34,7 @@ def makeDXF(theGarden):
 		x=obj.x
 		y=obj.y
 		z=obj.z
+		theElevation=obj.elevation
 		aicLeaf=colour_utils.HSV_to_AIC(obj.colourLeaf)
 		aicStem=colour_utils.HSV_to_AIC(obj.colourStem)
 		aicSeedDispersed=colour_utils.HSV_to_AIC(obj.colourSeedDispersed)
@@ -44,8 +45,11 @@ def makeDXF(theGarden):
 		#aicSeedAttached=1
 		if obj.isSeed:
 			theSeedRadius=obj.radiusSeed*obj.radiusSeedMultiplier
-			theData.append(sdxf.Insert('seed',point=(x,y,0+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedDispersed,rotation=0))
+			#theData.append(sdxf.Insert('seed',point=(x,y,0+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedDispersed,rotation=0))
 			#theData.append(sdxf.Insert('seed',point=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedDispersed,rotation=0))
+			#This should offset the seeds to match the image elevation
+			#STH 2020-0226
+			theData.append(sdxf.Insert('seed',point=(x,y,theElevation+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedDispersed,rotation=0))
 		else:
 			theStemRadius=obj.radiusStem*obj.radiusStemMultiplier
 			theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
@@ -56,12 +60,15 @@ def makeDXF(theGarden):
 				#print obj.boleHeight
 				#print obj.heightStem*(obj.boleHeight/100.0)
 				#theData.append(sdxf.Insert('canopy',point=(x,y,z+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
-				theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
+				#theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
+				theData.append(sdxf.Insert('canopy',point=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
 			else:
 				#default shape is a perfect hemisphere
 				#theData.append(sdxf.Insert('canopy',point=(x,y,z+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
-				theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
-			theData.append(sdxf.Insert('stem',point=(x,y,0),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
+				#theData.append(sdxf.Insert('canopy',point=(x,y,obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
+				theData.append(sdxf.Insert('canopy',point=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
+			#theData.append(sdxf.Insert('stem',point=(x,y,0),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
+			theData.append(sdxf.Insert('stem',point=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
 			for attachedSeed in obj.seedList:
 				x= attachedSeed.x
 				y= attachedSeed.y

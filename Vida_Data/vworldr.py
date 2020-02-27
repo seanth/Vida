@@ -580,7 +580,6 @@ class garden(object):
             #look up the pixel grey-scale value at the target x,y
             #and then use that value to map to an elevation
             #STH EKT 0212-2020
-            print theGarden.terrainImage
             if theGarden.terrainImage!=[]:
                 thePixelValue = terrain_utils.getPixelValue(theSeed.x,theSeed.y,theGarden.terrainImage)
                 theElevation = terrain_utils.elevationFromPixel(thePixelValue)
