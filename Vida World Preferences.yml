@@ -1,0 +1,23 @@
+gravity: 9.81
+atmosphere: 1.0 #unused
+lightIntensity: 1.0
+maxSeedsPerPlant: 5
+###Mortality settings###
+ignoreGermDeathAtStart: TRUE
+allowRandomDeath: TRUE
+randomDeathPlant: 0.0075
+randomDeathSeed: 0.0075
+allowSlowGrowthDeath: TRUE
+randomSlowGrowth: 0.05
+allowOverlaps: FALSE
+allowOffWorld: FALSE
+allowEulerGreenhillViolations: FALSE
+##experimental mortality##
+allowDistanceFromMother: TRUE
+janzenConnell: 0.0
+###To be removed/relocated###
+carbonAllocationMethod: 0 #discontinued
+canopyTransmittanceImpactsConversion: SPECIES #discontinued
+fractionWorldGraphicEdgeSpacer: 0.3 #to be moved
+fractionWorldBetweenLRGraphicsSpacer: 0.0 #to be moved
+fractionWorldBetweenTBGraphicsSpacer: 0.5 #to be moved
