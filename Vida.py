@@ -34,6 +34,10 @@ import progressBarClass
 ###append the path to where species are
 sys.path.append("Species")
 
+###EXPERIMENTS IT WRITING TERRAIN FROM GREYSCALE IMAGE
+import vterrainImport as terrain_utils
+from dxfwrite import DXFEngine as dxf 
+
 sList=[]
 theCLArgs=""
 
@@ -200,6 +204,10 @@ def makeDirectory(theDirectory):
             theDirectory=basicPath+"/"
         os.mkdir(theDirectory)
     return theDirectory
+
+def dirPath(thePath):
+    return thePath
+
         
 def correctType(theItem):
     returnValue="na"
@@ -307,6 +315,12 @@ def main():
 
     CFDGtext=""
     CFDGtextDict={}
+
+    if debug==1: print "***debug is on***"
+
+    theGarden= worldBasics.garden()
+    theGarden.platonicSeeds={}
+    theGarden.theRegions=[]
     
     ####################################
     ###experiments in importing events
@@ -327,16 +341,97 @@ def main():
     ####################################
     ###experiments in importing a terrain file
     if terrainFile!=None:
-        #if type(eventFile)==file:
-        print "***Loading terrain file: %s***" % (terrainFile.name)
-        #don't actually do anything with the file right now
-    #####################################
-    
-    if debug==1: print "***debug is on***"
+        tiffFound = False
+        if os.path.isfile(terrainFile) == True:
+            tiffFound = True
+            stupidKludge = terrainFile
+        elif os.path.isdir(terrainFile) == True:
+            fileList=os.listdir(terrainFile)
+            print "***Checking for tiff terrain image...***"
+            for file in fileList:
+                theExtension=os.path.splitext(file)[1]
+                if theExtension==".tif" or theExtension==".tiff":
+                    tiffFound = True
+                    stupidKludge = os.path.join(terrainFile, file)
+                    break
+            #Now look for a .asc file
+            #.asc files have headers of six lines, followed by tabular data
+            for file in fileList:
+                theExtension=os.path.splitext(file)[1]
+                if theExtension==".asc":
+                    theAscFile = os.path.join(terrainFile, file)
+                    fileData = open(theAscFile, 'r')
+                    ascData = fileData.readlines()
+                    #this is dirt and spit
+                    #fix this
+                    #I am ashamed
+                    ascData.pop(0)
+                    ascData.pop(0)
+                    ascData.pop(0)
+                    ascData.pop(0)
+                    ascData.pop(0)
+                    ascData.pop(0)
+                    totDataLen = len(ascData)
 
-    theGarden= worldBasics.garden()
-    theGarden.platonicSeeds={}
-    theGarden.theRegions=[]
+                    theMin = -1
+                    theMax = 0.0
+                    for x in ascData:
+                        rowList = x.split()
+
+                        for i in rowList:
+                            if float(i) > theMax:
+                                theMax = float(i)
+                            if float(i) < theMin or theMin == -1:
+                                theMin = float(i)
+                    theElevDelta = theMax-theMin
+                else:
+                    theElevDelta = -1
+
+        if tiffFound == False:
+            print "***Tiff terrain image not found. Skipping terrain import***"
+        else:
+            from PIL import Image
+            #if type(eventFile)==file:
+            print "***Loading terrain file: %s***" % (stupidKludge)
+            #theImage = Image.open(terrainFile)
+            tmp=Image.open(stupidKludge)
+            #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
+            #make sure the list is the correct length
+            if len(theGarden.terrainImage)<3:
+                theGarden.terrainImage=[0]*3
+            #store the image mode
+            theGarden.terrainImage[0]=tmp.mode
+            #store the image size
+            theGarden.terrainImage[1]=tmp.size
+            #store the image as bytes
+            theGarden.terrainImage[2]=tmp.tobytes()
+            tmp.close()
+            tmp=None
+            ######
+            #All of this should be moved to the part where 3d image code is
+            #2020-0226 STH EXPERIMENT IN USING dxfwrite
+            xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
+            dwg = dxf.drawing('mesh.dxf')
+            mesh = dxf.polymesh(xSize, ySize)
+            for x in range(xSize):
+                for y in range(ySize):
+                    #the -50 thing in the following line is a temporary kludge
+                    #has to go away to adjust for world/images of differing sizes
+                    #STH 2020-0226
+                    thePixelValue = terrain_utils.getPixelValue(x-50,y-50,theGarden.terrainImage)
+                    z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+                    mesh.set_vertex(x, y, (x, y, z))
+            dwg.add(mesh)
+            #need to save it to target output folder eventually
+            dwg.save()
+
+    #####################################
+
+
+
+
+
+
 
     
     ####
@@ -897,7 +992,7 @@ if __name__ == '__main__':
     parser.add_argument('-x', type=int, metavar='int', dest='timesToRepeat', required=False, help='Times to repeat simulation')
     parser.add_argument('-m', type=int, metavar='int', dest='maxPopulation', required=False, help='Maximum population before stop')
     parser.add_argument('-t', type=int, metavar='int', dest='maxCycles', required=False, help='Maximum time before stop')
-    parser.add_argument('-i', type=float, metavar='float', dest='percentTimeStamp', required=False, help='Percent size of time stamp')
+    parser.add_argument('-l', type=float, metavar='float', dest='percentTimeStamp', required=False, help='Percent size of time stamp')
     parser.add_argument('-d', dest='debug', action='store_true', required=False, help='Debug level 1')
     parser.add_argument('-dd',dest='debug2',action='store_true', required=False, help='Debug level 2')
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
@@ -906,7 +1001,9 @@ if __name__ == '__main__':
     parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
     parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
     parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
-    parser.add_argument('-l', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
+    #parser.add_argument('-i', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
+    parser.add_argument('-i', metavar='file', type=dirPath, dest='terrainFile', required=False, help='Load an image as a terrain file')    
+
     ###options that use a code action
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    

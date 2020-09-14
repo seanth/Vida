@@ -155,6 +155,8 @@ class garden(object):
         self.deathNote=[]
         self.cycleNumber=0
         self.lightIntensity=1.0
+        #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
+        self.terrainImage=[]
         fileLoc="Vida World Preferences.yml"
         self.importPrefs(fileLoc)
         if self.lightIntensity>1.0: self.lightIntensity=1.0
@@ -574,10 +576,18 @@ class garden(object):
             theSeed.radiusSeed=j
             theSeed.z= theSeed.radiusSeed
             #theSeed.z = theSeed.z + random.randrange(1,50)
-            theElevation = terrain_utils.getPixelValue(theSeed.x,theSeed.y)
-            #print "hopefully this worked"
-            theSeed.z = theSeed.z + theElevation
-            #print theSeed.z
+
+            #look up the pixel grey-scale value at the target x,y
+            #and then use that value to map to an elevation
+            #STH EKT 0212-2020
+            if theGarden.terrainImage!=[]:
+                thePixelValue = terrain_utils.getPixelValue(theSeed.x,theSeed.y,theGarden.terrainImage)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+            else:
+                theElevation = 0.0
+
+            theSeed.elevation = theElevation
+            theSeed.z = theSeed.z + theSeed.elevation
             theSeed.r= theSeed.radiusSeed            
             #theSeed.growSeedOnPlant(theSeed.massSeedMax)
             #print "#######"
