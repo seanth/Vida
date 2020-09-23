@@ -356,36 +356,63 @@ def main():
                     break
             #Now look for a .asc file
             #.asc files have headers of six lines, followed by tabular data
-            for file in fileList:
-                theExtension=os.path.splitext(file)[1]
-                if theExtension==".asc":
-                    theAscFile = os.path.join(terrainFile, file)
-                    fileData = open(theAscFile, 'r')
-                    ascData = fileData.readlines()
+            #for file in fileList:
+                #theExtension=os.path.splitext(file)[1]
+                #if theExtension==".asc":
+                    #theAscFile = os.path.join(terrainFile, file)
+                    #fileData = open(theAscFile, 'r')
+                    #ascData = fileData.readlines()
                     #this is dirt and spit
                     #fix this
                     #I am ashamed
-                    ascData.pop(0)
-                    ascData.pop(0)
-                    ascData.pop(0)
-                    ascData.pop(0)
-                    ascData.pop(0)
-                    ascData.pop(0)
-                    totDataLen = len(ascData)
+                    #ascData.pop(0)
+                    #ascData.pop(0)
+                    #ascData.pop(0)
+                    #ascData.pop(0)
+                    #ascData.pop(0)
+                    #ascData.pop(0)
+                    #totDataLen = len(ascData)
 
-                    theMin = -1
-                    theMax = 0.0
-                    for x in ascData:
-                        rowList = x.split()
+                    #theMin = -1
+                    #theMax = 0.0
+                    #for x in ascData:
+                        #rowList = x.split()
 
-                        for i in rowList:
-                            if float(i) > theMax:
-                                theMax = float(i)
-                            if float(i) < theMin or theMin == -1:
-                                theMin = float(i)
-                    theElevDelta = theMax-theMin
-                else:
-                    theElevDelta = -1
+                        #for i in rowList:
+                            #if float(i) > theMax:
+                                #theMax = float(i)
+                            #if float(i) < theMin or theMin == -1:
+                                #theMin = float(i)
+                    #theElevDelta = theMax-theMin
+                #else:
+                    #theElevDelta = -1
+
+            #Now look for a .xlsx file 
+            #.xlsx files have headers of six lines, followed by tabular data
+            #ET addition 9-15-2020
+            for file in fileList:
+                theExtension=os.path.splitext(file)[1]
+                if theExtension==".xlsx":
+                    theExcelFile = os.path.join(terrainFile, file)
+                    fileData = open(theExcelFile, 'r')
+                    xlsxData = fileData.readlines()
+
+                    import pandas
+                    
+                    #theFile = "rastert_emidala1_TableToExcel.xlsx"
+
+                    fileData = pandas.read_excel(theExcelFile, skiprows=7)
+
+                    allMaxForEachColumn = fileData.max()
+                    absMax = allMaxForEachColumn.max()
+
+                    print absMax
+
+                    allMinForEachColumn = fileData.min()
+                    absMin = allMinForEachColumn.min()
+
+                    print absMin
+            sys.exit()
 
         if tiffFound == False:
             print "***Tiff terrain image not found. Skipping terrain import***"
