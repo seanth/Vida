@@ -342,77 +342,64 @@ def main():
     ###experiments in importing a terrain file
     if terrainFile!=None:
         tiffFound = False
+        theElevDelta = -1 #just making the variable so it exists
         if os.path.isfile(terrainFile) == True:
             tiffFound = True
             stupidKludge = terrainFile
+        #reworked checking for file types in a directory
+        #STH 23 Sept 2020
         elif os.path.isdir(terrainFile) == True:
-            fileList=os.listdir(terrainFile)
-            print "***Checking for tiff terrain image...***"
-            for file in fileList:
-                theExtension=os.path.splitext(file)[1]
-                if theExtension==".tif" or theExtension==".tiff":
-                    tiffFound = True
-                    stupidKludge = os.path.join(terrainFile, file)
-                    break
-            #Now look for a .asc file
-            #.asc files have headers of six lines, followed by tabular data
-            #for file in fileList:
-                #theExtension=os.path.splitext(file)[1]
-                #if theExtension==".asc":
-                    #theAscFile = os.path.join(terrainFile, file)
-                    #fileData = open(theAscFile, 'r')
-                    #ascData = fileData.readlines()
-                    #this is dirt and spit
-                    #fix this
-                    #I am ashamed
-                    #ascData.pop(0)
-                    #ascData.pop(0)
-                    #ascData.pop(0)
-                    #ascData.pop(0)
-                    #ascData.pop(0)
-                    #ascData.pop(0)
-                    #totDataLen = len(ascData)
+            print "***Checking directory for tif terrain image...***"
+            tmpPath = os.path.join(terrainFile,'*.tif') #assumes file ssuffix is 'tif'
+            matchFiles = glob.glob(tmpPath)
+            #print matchFiles
+            if not matchFiles:
+                #no matching files found
+                tiffFound = False
+            else:
+                stupidKludge = matchFiles[0] #no matter what, grab the first item in the list
+                if len(matchFiles)==1:
+                    print "***Tif file found"
+                else:
+                    print "      Multiple tif files found. Using:"
+                    print "       %s" % os.path.basename(stupidKludge)
 
-                    #theMin = -1
-                    #theMax = 0.0
-                    #for x in ascData:
-                        #rowList = x.split()
-
-                        #for i in rowList:
-                            #if float(i) > theMax:
-                                #theMax = float(i)
-                            #if float(i) < theMin or theMin == -1:
-                                #theMin = float(i)
-                    #theElevDelta = theMax-theMin
-                #else:
-                    #theElevDelta = -1
 
             #Now look for a .xlsx file 
             #.xlsx files have headers of six lines, followed by tabular data
             #ET addition 9-15-2020
-            for file in fileList:
-                theExtension=os.path.splitext(file)[1]
-                if theExtension==".xlsx":
-                    theExcelFile = os.path.join(terrainFile, file)
-                    fileData = open(theExcelFile, 'r')
-                    xlsxData = fileData.readlines()
+            print "***Checking directory for xlsx terrain data...***"
+            tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file ssuffix is 'xlsx'
+            matchFiles = glob.glob(tmpPath)
+            #needs to have some default max, min values defined in Vida.ini
+            #could allow for command line -imin and -imax, so you can define max
+            #and min elevation at command line run STH 23 Sept 2020
+            if not matchFiles:
+                #no matching files found
+                #provide some default values until the above is implemented
+                absMax = 10
+                absMin = 0
+            else:
+                theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
+                if len(matchFiles)==1:
+                    print "***xlsx file found"
+                else:
+                    print "      Multiple xlsx files found. Using:"
+                    print "       %s" % os.path.basename(theExcelFile)
 
-                    import pandas
-                    
-                    #theFile = "rastert_emidala1_TableToExcel.xlsx"
+                import pandas
+                fileData = pandas.read_excel(theExcelFile, skiprows=7)
 
-                    fileData = pandas.read_excel(theExcelFile, skiprows=7)
+                allMaxForEachColumn = fileData.max()
+                absMax = allMaxForEachColumn.max()
 
-                    allMaxForEachColumn = fileData.max()
-                    absMax = allMaxForEachColumn.max()
+                print absMax
 
-                    print absMax
+                allMinForEachColumn = fileData.min()
+                absMin = allMinForEachColumn.min()
 
-                    allMinForEachColumn = fileData.min()
-                    absMin = allMinForEachColumn.min()
+                print absMin
 
-                    print absMin
-            sys.exit()
 
         if tiffFound == False:
             print "***Tiff terrain image not found. Skipping terrain import***"
@@ -1035,7 +1022,7 @@ if __name__ == '__main__':
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
     parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','3d' ], help='Graphical view desired')    
-    parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
+    parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with')
     parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sf', type=file, metavar='file', dest='startPopulationSize', action=parseAction)
