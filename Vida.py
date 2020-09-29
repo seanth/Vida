@@ -338,6 +338,7 @@ def main():
         eventTimes=[]
     #####################################
 
+
     ####################################
     ###experiments in importing a terrain file
     if terrainFile!=None:
@@ -374,12 +375,19 @@ def main():
             #needs to have some default max, min values defined in Vida.ini
             #could allow for command line -imin and -imax, so you can define max
             #and min elevation at command line run STH 23 Sept 2020
+
+
             if not matchFiles:
                 #no matching files found
                 #provide some default values until the above is implemented
                 absMax = 10
                 absMin = 0
             else:
+            	#9/28/2020 ET-test of default absMax and absMin values from vida.ini
+				print "absMax: as" % absMax
+				print "absMin: as" % absMin
+				
+
                 theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
                 if len(matchFiles)==1:
                     print "***xlsx file found"
@@ -1017,6 +1025,9 @@ if __name__ == '__main__':
     parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
     #parser.add_argument('-i', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
     parser.add_argument('-i', metavar='file', type=dirPath, dest='terrainFile', required=False, help='Load an image as a terrain file')    
+    #default max and min elevation for a grayscale image given no elevation data)
+    parser.add_argument('imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
+    parser.add_argument('imin', type=int, metavar='int', dest='absMax', required=False, help='Min default elevation value for an imported grayscale terrain image')
 
     ###options that use a code action
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
