@@ -383,9 +383,9 @@ def main():
                 absMax = 10
                 absMin = 0
             else:
-            	#9/28/2020 ET-test of default absMax and absMin values from vida.ini
-				print "absMax: as" % absMax
-				print "absMin: as" % absMin
+                #9/28/2020 ET-test of default absMax and absMin values from vida.ini
+                print "absMax: as" % absMax
+                print "absMin: as" % absMin
 				
 
                 theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
