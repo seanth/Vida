@@ -1027,7 +1027,7 @@ if __name__ == '__main__':
     parser.add_argument('-i', metavar='file', type=dirPath, dest='terrainFile', required=False, help='Load an image as a terrain file')    
     #default max and min elevation for a grayscale image given no elevation data)
     parser.add_argument('imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
-    parser.add_argument('imin', type=int, metavar='int', dest='absMax', required=False, help='Min default elevation value for an imported grayscale terrain image')
+    parser.add_argument('imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
 
     ###options that use a code action
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
