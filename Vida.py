@@ -368,6 +368,7 @@ def main():
                 else:
                     print "      Multiple tif files found. Using:"
                     print "       %s" % os.path.basename(stupidKludge)
+                tiffFound = True
 
 
             #Now look for a .xlsx file 
@@ -432,9 +433,12 @@ def main():
             theGarden.terrainImage[2]=tmp.tobytes()
             tmp.close()
             tmp=None
-            ######
+
+
+            
+            ##########################################################################
             #All of this should be moved to the part where 3d image code is
-            #2020-0226 STH EXPERIMENT IN USING dxfwrite
+            #2020-0226 STH EXPERIMENT IN USING 
             xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
             dwg = dxf.drawing('mesh.dxf')
             mesh = dxf.polymesh(xSize, ySize)
