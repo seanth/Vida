@@ -435,12 +435,29 @@ def main():
             tmp=None
 
 
-            
+
             ##########################################################################
             #All of this should be moved to the part where 3d image code is
             #2020-0226 STH EXPERIMENT IN USING 
             xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
+            #theData=sdxf.Drawing()
             dwg = dxf.drawing('mesh.dxf')
+
+            if waterLevel != "none":
+                #b=sdxf.Block('world')
+                b = dxf.block(name='WATER')    # create a block-definition
+                #b.append(sdxf.Solid(points=[(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
+                #b.add(dxf.rectangle((0,0,0), 1, 1)) #insertion point(xyz), width, length
+                b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1, color=5))
+
+                #theData.blocks.append(b)
+                dwg.blocks.add(b)              # add block-definition to dwg
+
+                #theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
+                dwg.add(dxf.insert(blockname='WATER', xscale=100, yscale=100, zscale=2))
+               
+
+
             mesh = dxf.polymesh(xSize, ySize)
             for x in range(xSize):
                 for y in range(ySize):
