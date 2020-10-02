@@ -304,12 +304,16 @@ def correctSList(sList):
     
 def main():
     #why do only these need to be reminded they are global?
+    #YUP. Confirmed that old me was smarter 2 October 2020 STH
     global simulationFile
     global theWorldSize
     global startPopulationSize
     global seedPlacement
     global sList
     global theCLArgs
+    global absMin
+    global absMax
+
     
     print "*********Vida version: %s *********" % (vidaVersion)
 
@@ -370,24 +374,23 @@ def main():
             #.xlsx files have headers of six lines, followed by tabular data
             #ET addition 9-15-2020
             print "***Checking directory for xlsx terrain data...***"
-            tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file ssuffix is 'xlsx'
+            tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
             matchFiles = glob.glob(tmpPath)
             #needs to have some default max, min values defined in Vida.ini
             #could allow for command line -imin and -imax, so you can define max
             #and min elevation at command line run STH 23 Sept 2020
 
 
-            if not matchFiles:
-                #no matching files found
-                #provide some default values until the above is implemented
-                absMax = 10
-                absMin = 0
-            else:
+            if matchFiles:
+            #     #no matching files found
+            #     #provide some default values until the above is implemented
+            #     absMax = 10
+            #     absMin = 0
+            # else:
                 #9/28/2020 ET-test of default absMax and absMin values from vida.ini
-                print "absMax: as" % absMax
-                print "absMin: as" % absMin
+                print "absMax: as %s" % absMax
+                print "absMin: as %s" % absMin
 				
-
                 theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
                 if len(matchFiles)==1:
                     print "***xlsx file found"
@@ -414,7 +417,7 @@ def main():
         else:
             from PIL import Image
             #if type(eventFile)==file:
-            print "***Loading terrain file: %s***" % (stupidKludge)
+            print "***Loading terrain file:\n     %s***" % (stupidKludge)
             #theImage = Image.open(terrainFile)
             tmp=Image.open(stupidKludge)
             #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
