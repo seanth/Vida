@@ -331,7 +331,7 @@ def main():
         print "***Loading event file: %s***" % (eventFile.name)
         #theFile=open(eventFile)
         #eventData=yaml.load(theFile)
-        eventData=yaml.load(eventFile)
+        eventData=yaml.load(eventFile, Loader=yaml.FullLoader)
         #theFile.close
         eventTimes=eventData.keys()
     else:

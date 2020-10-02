@@ -98,7 +98,7 @@ class genericPlant(object):
     
     def importPrefs(self, fileLoc):
         theFile=open(fileLoc)
-        theData=yaml.load(theFile)
+        theData=yaml.load(theFile, Loader=yaml.FullLoader)
         theFile.close
         for key in theData:
             setattr(self, key, theData[key])
