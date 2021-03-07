@@ -71,14 +71,13 @@ def initDXFBlocks(terrainImage):
 
 
 def makeDXF(theGarden, theBlockData):
-    theBlockDataa=theBlockData
     theWorldSize=theGarden.theWorldSize
     # theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
-    theBlockDataa.add(dxf.insert(blockname='WORLD', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0, rotation=0, color=0))
+    theBlockData.add(dxf.insert(blockname='WORLD', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0, rotation=0, color=0))
 
     if len(theGarden.terrainImage)==3:
-        theBlockDataa.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
-        theBlockDataa.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0))
+        theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
+        theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0))
 
     #dictColoursUsed={}
     for obj in theGarden.soil:
@@ -95,28 +94,27 @@ def makeDXF(theGarden, theBlockData):
             #This should offset the seeds to match the image elevation
             #STH 2020-0226
             # theData.append(sdxf.Insert('seed',point=(x,y,theElevation+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedDispersed,rotation=0))
-            theBlockDataa.add(dxf.insert(blockname='SEED', insert=(x,y,theElevation+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedDispersed))
+            theBlockData.add(dxf.insert(blockname='SEED', insert=(x,y,theElevation+theSeedRadius),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedDispersed))
         else:
             theStemRadius=obj.radiusStem*obj.radiusStemMultiplier
             theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
             if (obj.crownShape == "PARA"):
                 #bole height is not calculated. It's defined in the species file
                 # theData.append(sdxf.Insert('canopy',point=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
-                theBlockDataa.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0), rotation=0, color=aicLeaf))
+                theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0), rotation=0, color=aicLeaf))
             else:
                 #default shape is a perfect hemisphere
                 # theData.append(sdxf.Insert('canopy',point=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
-                theBlockDataa.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius, rotation=0, color=aicLeaf))
+                theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius, rotation=0, color=aicLeaf))
             # theData.append(sdxf.Insert('stem',point=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
-            theBlockDataa.add(dxf.insert(blockname='STEM', insert=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem, rotation=0, color=aicStem))
+            theBlockData.add(dxf.insert(blockname='STEM', insert=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem, rotation=0, color=aicStem))
             for attachedSeed in obj.seedList:
                 x= attachedSeed.x
                 y= attachedSeed.y
                 z= attachedSeed.z
                 theSeedRadius= attachedSeed.radiusSeed* attachedSeed.radiusSeedMultiplier
                 # theData.append(sdxf.Insert('seed',point=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedAttached,rotation=0))
-                theBlockDataa.add(dxf.insert(blockname='SEED', insert=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedAttached))
-    print(theBlockData==theBlockDataa)
+                theBlockData.add(dxf.insert(blockname='SEED', insert=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedAttached))
     return theBlockData
 
 def writeDXF(outputDirectory, fileName, theData):

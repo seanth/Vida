@@ -7,7 +7,7 @@ Vida is experimental in nature and is made available as a research courtesy "AS 
 
 You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
 """
-vidaVersion = "0.9.0.5"  
+vidaVersion = "0.9.0.6"  
 
 import random
 import math
@@ -29,6 +29,9 @@ import vplantr as defaultSpecies
 import vgraphics as outputGraphics
 import list_utils as list_utils
 import geometry_utils as geometry_utils
+
+from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
+import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 
 import progressBarClass
 ###append the path to where species are
@@ -343,8 +346,7 @@ def main():
     
     ####################################
     ###experiments in importing events
-    import yaml
-        #if eventFile!=None and os.path.exists(eventFile):
+    #if eventFile!=None and os.path.exists(eventFile):
     if eventFile!=None:
         #if type(eventFile)==file:
         print "***Loading event file: %s***" % (eventFile.name)
@@ -910,17 +912,11 @@ def main():
                     ###A init call to generate the blocks and, more importantly
                     ###make the terrain mesh (if needed) should have been called already
                     ###2021-0306 STH
-
-                    #DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden.terrainImage)
-                    bla=copy.deepcopy(DXFBlockDefs)
-                    print(DXFBlockDefs.entities.__dict__)
-                    print(bla.entities.__dict__)
-                    theDXFData=vdxfGraphics.makeDXF(theGarden, bla)
-                    print(DXFBlockDefs.entities.__dict__)
+                    dxfObject= dxf.drawing()
+                    dxfObject.blocks = DXFBlockDefs.blocks #had problems with assignment overwriting what I want to be immutable STH 2021-0307
+                    theDXFData=vdxfGraphics.makeDXF(theGarden, dxfObject)
                     theFileName= simulationName+str(cycleNumber)
                     vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["3d"], theFileName, theDXFData)
-                    print(DXFBlockDefs.entities.__dict__)
-                    print("=============")
 
                 ##############################################################
                 if len(theView)!=0:
