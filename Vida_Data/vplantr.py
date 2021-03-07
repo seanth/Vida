@@ -545,7 +545,7 @@ class genericPlant(object):
             leafRadius=leafRadius*0.7071067812
         self.radiusLeaf=leafRadius
         self.areaPhotosynthesis =3.14*leafRadius*leafRadius
-        if debug==1:print "          calcRadiusLeafFromMassLeaf: Radius of Leaf is %f" % (self.radiusLeaf)
+        if debug==1:print("          calcRadiusLeafFromMassLeaf: Radius of Leaf is %f" % (self.radiusLeaf))
     
     def calcRadiusStemFromMassStem(self):
         Ms=self.massStem
@@ -554,7 +554,7 @@ class genericPlant(object):
         Rs=Ds/2.0
         self.GRs=Rs-self.radiusStem
         self.radiusStem=Rs
-        if debug==1:print "          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem)
+        if debug==1:print("          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem))
     #print "          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem)
 
     def calcHeightStemFromRadiusStem(self, theGarden):
@@ -582,7 +582,7 @@ class genericPlant(object):
         self.GHs=GHs
         self.heightStem=Hs
         if (Hs<0.0 or Hs<self.heightStem):
-            print "oops. stem is shrinking. that's not right. Die"
+            print("oops. stem is shrinking. that's not right. Die")
             #something is wrong. There's either a negative height or it is shrinking
             self.causeOfDeath="impossible height calculation"
             theGarden.kill(self)

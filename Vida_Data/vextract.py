@@ -52,7 +52,7 @@ for i in theConfig.items(theConfigSection):
                     theValue=theConfig.get(theConfigSection, theItem)
                     if theValue=="None": theValue=None
                 except:
-                    print "what the...?"
+                    print("what the...?")
     theDefaults[theItem]=theValue
     theDefaults['produceSummary']=False
     theDefaults['produceGraphics']=False
@@ -167,11 +167,11 @@ if __name__ == '__main__':
         produceVideo=produceVideo[0]
     if produceVideo==True:
         if produceGraphics==False:
-            print "***Warning: A video output was desired, but a graphical option was not specified\n   Graphical output has been set to the default"
+            print("***Warning: A video output was desired, but a graphical option was not specified\n   Graphical output has been set to the default")
             produceGraphics=True
             graphicalView=[theDefaults['graphicalView']]
         if graphicalView==['3d']:
-            print "***Warning: A video can not be auto generated from the '3d' graphical option\n   Video output turned off"
+            print("***Warning: A video can not be auto generated from the '3d' graphical option\n   Video output turned off")
             produceVideo=False
 
 #for x in theOpts:
@@ -207,7 +207,7 @@ if __name__ == '__main__':
     ##I am in a bit of a hurry and did not update this to work correctly
     ##2011.12.08 STH
     if produceGraphics==True:
-        print "#asked to produce graphics"
+        print("#asked to produce graphics")
         if fileSuffix=="pickle":
             ###make the necessary directories, if needed
             outputGraphicsDirectory = theOutputFolder+"../Graphics/"
@@ -232,7 +232,7 @@ if __name__ == '__main__':
             CFDGtext=""
             
             ###this is a saved simulation state
-            print "***Loading Simulation Data and making CFDG...***"
+            print("***Loading Simulation Data and making CFDG...***")
             for aFile in fileOrFolder:
                 ###load in the pickle
                 simulationFile=open(aFile, 'r')
@@ -258,7 +258,7 @@ if __name__ == '__main__':
         #print "###"
         #outputGraphics.outputPNGs(outputGraphicsDirectory, outputGraphicsDirectory)
         if fileSuffix =="cfdg":
-            print "###Producing PNG files...###"
+            print("###Producing PNG files...###")
             outputGraphics.outputPNGs(fileOrFolder, outputGraphicsDirectory)
     
     if produceVideo==True:
@@ -277,7 +277,7 @@ if __name__ == '__main__':
     
     ###only try and make a video if it is wanted and if pngs were made
     if produceVideo and produceGraphics==True:
-        print "Producing MOV file..." 
+        print("Producing MOV file...")
         #print outputGraphicsDirectory
         outputGraphics.outputMOV(outputGraphicsDirectory, simulationName)
         if allFiles==False:
@@ -546,7 +546,7 @@ if __name__ == '__main__':
         #Just concatenate them.
         concatFileName="merged_"+theSimName
         theOutput=open(theStatsFolder+concatFileName+".csv",'w')
-        print "***Merging files...."
+        print("***Merging files....")
         fileList=glob.glob(theOutputFolder+"*.csv")
         theHeader=""
         for aFile in fileList:
@@ -560,7 +560,7 @@ if __name__ == '__main__':
             finally:
                 theFile.close()
         theOutput.close()
-        print "***Finished merging. Removing extra headers..."
+        print("***Finished merging. Removing extra headers...")
         import fileinput
         #print theStatsFolder+concatFileName+".csv"
         theFile=fileinput.input(theStatsFolder+concatFileName+".csv", inplace=1)
@@ -570,7 +570,7 @@ if __name__ == '__main__':
                 line=line.strip('\n')
                 print line
             i=i+1
-        print "***Finished***"
+        print("***Finished***")
 
 
 

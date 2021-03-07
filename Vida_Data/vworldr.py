@@ -30,7 +30,7 @@ debug2=0
 
 def determineShade(theGarden):
     if theGarden.showProgressBar:
-        print "***Generating lists of overlapping plants. This could take a while...***"
+        print("***Generating lists of overlapping plants. This could take a while...***")
         theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
         i=0
     ###populate the overlap list
@@ -70,7 +70,7 @@ def determineShade(theGarden):
     
     ###take the overlap list and start dropping photons onto it.
     if theGarden.showProgressBar:
-        print "***Determining shading. This could take a while...***"
+        print("***Determining shading. This could take a while...***")
         theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
         i=0
     for plant in theGarden.soil:
@@ -83,7 +83,7 @@ def determineShade(theGarden):
             if len(plant.overlapList)>0:
                 thePlantAreaTotal=geometry_utils.areaCircle(plant.r)
                 if thePlantAreaTotal==0.0:
-                    print "name:%s r:%f isSeed:%i massSeed:%f massTotal:%f"%(plant.name, plant.r, plant.isSeed, plant.massSeed, plant.massTotal)
+                    print("name:%s r:%f isSeed:%i massSeed:%f massTotal:%f"%(plant.name, plant.r, plant.isSeed, plant.massSeed, plant.massTotal))
                 if len(plant.overlapList)==1: ###if you are covered by just 1 other, do a direct calc
                     overPlant =plant.overlapList[0]
                     areaCovered=geometry_utils.areaOverlappingCircles(plant.x, plant.y, plant.r, overPlant.x, overPlant.y, overPlant.r)
@@ -339,7 +339,7 @@ class garden(object):
         if not self.allowOverlaps:
             theGarden=self
             if theGarden.showProgressBar:
-                print "***Removing overlapping objects***"
+                print("***Removing overlapping objects***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                 i=0
             for obj in theGarden.soil[:]:
@@ -374,7 +374,7 @@ class garden(object):
         if not self.allowOffWorld:
             theGarden=self
             if theGarden.showProgressBar:
-                print "***Removing plants growing off world...***"
+                print("***Removing plants growing off world...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                 i=0
             ###see if plants or seeds extend over the edge of the world
@@ -391,7 +391,7 @@ class garden(object):
         if not self.allowEulerGreenhillViolations:
             theGarden=self
             if theGarden.showProgressBar:
-                print "***Checking for Greenhill-Euler violations...***"
+                print("***Checking for Greenhill-Euler violations...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                 i=0
             for obj in theGarden.soil[:]:
@@ -406,7 +406,7 @@ class garden(object):
         if self.allowRandomDeath:
             theGarden=self
             if theGarden.showProgressBar:
-                print "***A time to die...***"
+                print("***A time to die...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                 i=0
             for obj in theGarden.soil[:]:
@@ -429,7 +429,7 @@ class garden(object):
         if self.allowSlowGrowthDeath:
             theGarden=self
             if theGarden.showProgressBar:
-                print "***Checking for too slow growth...***"
+                print("***Checking for too slow growth...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                 i=0
             for obj in theGarden.soil[:]:
@@ -460,7 +460,7 @@ class garden(object):
         if self.allowDistanceFromMother and self.janzenConnell>0.0:
             theGarden=self
             if theGarden.showProgressBar:
-                print "***Checking for mortality due to proximity to mother...***"
+                print("***Checking for mortality due to proximity to mother...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
             #print "Name : Distance : Chance"
             for obj in theGarden.soil[:]:
@@ -489,7 +489,7 @@ class garden(object):
         #print sList
         #This block of code came from the main Vida.py. Moved and working on 2008.11.06 to allow for calling during simulation runs at
         #not just at the start.
-        if theGarden.cycleNumber<1: print "***Generating and placing seeds.***"
+        if theGarden.cycleNumber<1: print("***Generating and placing seeds.***")
         ###initialize progress bar###
         if theGarden.showProgressBar or theGarden.cycleNumber<1:
             theProgressBar= progressBarClass.progressbarClass(startPopulationSize-1,"*") #why -1? because index 0. So if total=100, 0-99.
@@ -521,7 +521,7 @@ class garden(object):
                     if sList[i][0] in ymlList:
                         theSpeciesFile=sList[i][0]
                     else:
-                        print "\nWARNING: The desired species %s was not found. \nA random species will be used.\n" % (sList[i][0])
+                        print("\nWARNING: The desired species %s was not found. \nA random species will be used.\n" % (sList[i][0]))
                 else:
                     if sList[i] in ymlList:
                         theSpeciesFile=sList[i]                                    
