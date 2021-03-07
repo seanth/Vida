@@ -58,7 +58,7 @@ class genericPlant(object):
         self.heightStem=0.0
         self.radiusStem=0.0 #meters
         self.radiusLeaf=0.0 #meters
-        self.radiusSeed=0.0 #radius in meters
+        self.radiusSeed=0.1 #radius in meters
         self.areaPhotosynthesis=0.0#meters^2
         self.areaCovered=0.0#meters^2
         self.fractionAreaCovered=0.0
@@ -87,7 +87,8 @@ class genericPlant(object):
         self.z=0.0
         #New property related to elevation
         #0219-2020 STH EKT
-        self.elevation=0.0
+        self.elevation = 0.0
+        self.absHeightStem = 0.0
 
         self.r=0.00        
         self.age=0.0
@@ -155,13 +156,14 @@ class genericPlant(object):
             ##if you lack seeds, make them
             #if (self.heightStem>=self.startMakingSeedsHeight) or (self.age>=self.startMakingSeedsAge) or self.isMature:
             if self.isMature==True:
-                self.makeSomeSeeds(theGarden.maxSeedsPerPlant)
+                self.makeSomeSeeds(theGarden.maxSeedsPerPlant, theGarden)
         
         self.calcMassStemFromMassNew()
         
         self.calcRadiusStemFromMassStem()
         
         self.calcHeightStemFromRadiusStem(theGarden)
+        self.absHeightStem = self.heightStem + self.elevation
         
         self.calcMassLeafFromMassStem()
         
@@ -190,7 +192,7 @@ class genericPlant(object):
         self.age=self.age+1
     
     
-    def makeSeed(self, theSeed):
+    def makeSeed(self, theSeed, theGarden):
         theSeed=copy.deepcopy(self)
         theSeed.zeroSeedValues()
         theNameList= theSeed.name.split()
@@ -237,6 +239,15 @@ class genericPlant(object):
         theSeed.x= seedX +self.x
         theSeed.y= seedY +self.y
         theSeed.z= seedZ
+        ###########################################################
+        #need to compensate for elevation if a terrain file is used
+        if theGarden.terrainImage!=[]:
+            #the seed elevation isn't the elevation if terrain at XY
+            #it's the elevation of the terrain at the mother tree
+            theSeed.z= seedZ+theSeed.motherPlant.elevation
+            #print(theSeed.motherPlant.elevation)
+
+        ###########################################################
         theSeed.r= theSeed.radiusSeed
         self.seedList.append(theSeed)
     
@@ -320,6 +331,9 @@ class genericPlant(object):
             newX=newX+theSeed.x
             newY=newY+theSeed.y
         elif motherPlant.seedDispersalMethod[0]==4:
+            ###########################################
+            ##calculate the distance travelled based on 
+            ##launch velocity and launch angle (relative to ground)
             ###get a random angle based on input###
             angle=motherPlant.seedDispersalMethod[1]
             theVariance=(random.random()*((angle*0.5)-0.0))+ 0.0
@@ -345,33 +359,58 @@ class genericPlant(object):
             tempVar3= ((tempVar2*tempVar2)+(2*g*h))**0.5
             tempVar3= tempVar2+tempVar3
             theDistance=tempVar1*tempVar3
+            ###########################################
+            ###########################################
+            ##calculate the angle the propagule leave canopy
+            ##relative to the center of the stem (like a clock)
             theHypot=geometry_utils.distBetweenPoints(motherPlant.x, motherPlant.y, theSeed.x, theSeed.y)
             theRise=theSeed.y-motherPlant.y
             theRun=theSeed.x-motherPlant.x
             theAngle=math.asin(theRise/theHypot)
             newX=math.cos(theAngle)*theDistance
-            if theRun<0.0:
-                newX=0.0-newX
+            if theRun<0.0:newX=0.0-newX
             newY=math.sin(theAngle)*theDistance
             newX=newX+theSeed.x
             newY=newY+theSeed.y
 
+            ###################
+            ##do a binary search to find a distance where the propagule is
+            ##not above the starting position of the propagule in the canopy
+            ##STH 2021-0226
+            #look up the pixel grey-scale value at the target x,y
+            #and then use that value to map to an elevation
+            #STH EKT 2020-0212
+            if theGarden.terrainImage!=[]:
+                thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+            else:
+                theElevation = 0.0
+            newZ = theElevation
+            theMin = 0.0
+            theMax = theDistance
+            while newZ>theSeed.z + motherPlant.elevation:
+                theTestDist = (theMin+theMax)/2.0
+                #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
+                #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
+                newX = (math.cos(theAngle)*theTestDist)
+                if theRun<0.0: newX=(0.0-newX)
+                newY = (math.sin(theAngle)*theTestDist)
+                newX=newX+theSeed.x
+                newY=newY+theSeed.y
+                ##get elevation from pixel value
+                thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+                newZ = theElevation
+                theMax = theTestDist
+                if round(theMax,3) == round(theMin,3): break
+
         #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
         ###Place the seed in xyz space correctly
         ###STH 2020-0226
-        theSeed.x=newX
-        theSeed.y=newY
-        #look up the pixel grey-scale value at the target x,y
-        #and then use that value to map to an elevation
-        #STH EKT 0212-2020
-        if theGarden.terrainImage!=[]:
-            thePixelValue = terrain_utils.getPixelValue(theSeed.x,theSeed.y,theGarden.terrainImage)
-            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
-        else:
-            theElevation = 0.0
-
         theSeed.elevation = theElevation
-        theSeed.z = theSeed.z + theSeed.elevation
+        theSeed.x = newX
+        theSeed.y = newY
+        theSeed.z = newZ
 
         theSeed.countToGerm=self.delayInGermination
         theGarden.plantSeed(theSeed)
@@ -587,7 +626,7 @@ class genericPlant(object):
     #             self.heightStem=Hs
     
     
-    def makeSomeSeeds(self, maxSeedsPerPlant):
+    def makeSomeSeeds(self, maxSeedsPerPlant, theGarden):
         #make a seed on yourself if you don't have the max number of seeds
         theNum=float(sum(self.massFixedRecord))
         theDenom=float(len(self.massFixedRecord))
@@ -613,4 +652,4 @@ class genericPlant(object):
         if makeThisManySeeds>maxSeedsPerPlant:
             makeThisManySeeds=maxSeedsPerPlant
         for i in range(makeThisManySeeds):
-            self.makeSeed(self)
+            self.makeSeed(self, theGarden)
