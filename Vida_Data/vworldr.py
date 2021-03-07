@@ -1,6 +1,6 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2019, Sean T. Hammond
+    Copyright 2021, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
@@ -17,7 +17,7 @@ import uuid
 sys.path.append("Vida_Data")
 import geometry_utils
 import list_utils
-import yaml
+import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 import progressBarClass
 
 ###experimental terrain import
@@ -57,7 +57,10 @@ def determineShade(theGarden):
                         if not plantTwo==plantOne:
                             plantOne.overlapList.append(plantTwo)
             ###sort the overlap list by height of the plants. Ordered shortest to tallest
-            plantOne.overlapList = list_utils.sort_by_attr(plantOne.overlapList, "heightStem")
+            #plantOne.overlapList = list_utils.sort_by_attr(plantOne.overlapList, "heightStem")
+            ###use absHeightStem, which is stem heigh + elevetion
+            ###STH 2021.0305
+            plantOne.overlapList = list_utils.sort_by_attr(plantOne.overlapList, "absHeightStem")
             ###flip the list so it's ordered tallest to shortest
             plantOne.overlapList.reverse()
             theIndex=theIndex+1
@@ -147,17 +150,20 @@ def determineShade(theGarden):
 class garden(object):
     def __init__(self):
         super(garden, self).__init__()
-        self.name=""
-        self.theWorldSize=0
-        self.soil=[]
-        self.numbSeeds=0
-        self.numbPlants=0
-        self.deathNote=[]
-        self.cycleNumber=0
-        self.lightIntensity=1.0
-        #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
-        self.terrainImage=[]
-        fileLoc="Vida World Preferences.yml"
+        self.name = ""
+        self.theWorldSize = 0
+        self.soil = []
+        self.numbSeeds = 0
+        self.numbPlants = 0
+        self.deathNote = []
+        self.cycleNumber = 0
+        self.lightIntensity = 1.0
+        ##########################
+        #format of terrainImage is [mode, size tuple, image as bytes] STH 2020-0212
+        self.terrainImage = []
+        self.waterLevel = "none"
+        ##########################
+        fileLoc = "Vida World Preferences.yml"
         self.importPrefs(fileLoc)
         if self.lightIntensity>1.0: self.lightIntensity=1.0
     
