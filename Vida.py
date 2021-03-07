@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """This file is part of Vida.
 --------------------------
-Copyright 2019, Sean T. Hammond
+Copyright 2021, Sean T. Hammond
 
 Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
@@ -35,8 +35,8 @@ import progressBarClass
 sys.path.append("Species")
 
 ###EXPERIMENTS IT WRITING TERRAIN FROM GREYSCALE IMAGE
-import vterrainImport as terrain_utils
-from dxfwrite import DXFEngine as dxf 
+# import vterrainImport as terrain_utils
+# from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 
 sList=[]
 theCLArgs=""
@@ -131,7 +131,7 @@ def saveSimulationPoint(theDirectory, theFileName, theGarden):
 def saveDataPoint (theDirectory, theFileName, theGarden):
     #Added "Area Canopy" at end of list
     #Added basal area to the outputs--STH 2019-0404
-    basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), Yearly Growth Stem+Canopy (kg), Yearly Growth Stem diameter (m), Yearly Growth Stem Height (m), Average Growth Stem (kg), Average Growth Canopy (kg), Average Growth Stem+Canopy (kg), Average Growth Stem diameter (m), Average Growth Stem Height (m), Cause of Death, Functional Area, basal_area \n"
+    basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, absHeighStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), Yearly Growth Stem+Canopy (kg), Yearly Growth Stem diameter (m), Yearly Growth Stem Height (m), Average Growth Stem (kg), Average Growth Canopy (kg), Average Growth Stem+Canopy (kg), Average Growth Stem diameter (m), Average Growth Stem Height (m), Cause of Death, Functional Area, basal_area \n"
     photosynthesisHeaders="leaf is a hemisphere?, area canopy available for photosynthesis, area canopy covered, fraction canopy 100% shaded, canopy transmittance, canopy transmittance impacts photosynthesis?, faction of canopy that needs to be 0% shaded for survival"
 
     reproductionHeaders="make seeds?, age to start making seeds, height to start making seeds, fraction of mass used for seeds, Maximum Seed Mass, Where seeds grow, Seed dispersal method, fraction of seeds which fail to germinate, delay in germination, fraction of maximum seed mass needed to germinate, fraction of seed mass converted to plant mass"
@@ -149,18 +149,18 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
     theCorpseList.append(theHeader)
     for plant in theGarden.soil:
         if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,"na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,"na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
         else:
-            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,"na",0,0)            
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,"na",0,0)            
         if plant.isSeed:
             theSeedList.append(theData)
         else:
             thePlantList.append(theData)            
     for plant in theGarden.deathNote:
         if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
         else:
-            theData="%i,%s,%s,%s,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,plant.causeOfDeath,0,0)
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,plant.causeOfDeath,0,0)
         theCorpseList.append(theData)
     if len(thePlantList)>1:
         saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'wb')
@@ -313,6 +313,7 @@ def main():
     global theCLArgs
     global absMin
     global absMax
+    global waterLevel
 
     
     print "*********Vida version: %s *********" % (vidaVersion)
@@ -323,6 +324,20 @@ def main():
     if debug==1: print "***debug is on***"
 
     theGarden= worldBasics.garden()
+    #####
+    #I am not thrilled with how this works. waterLevel
+    #is property that can be enetered from the command 
+    #line. So it has a default value in the .ini file.
+    #BUT it's also a property of the garden that can be 
+    #altered by event files. This means it can also be 
+    #in the Vida World Preferences.yml file. The command
+    #line value overrides any value in the Vida World 
+    #Preferences.yml file, but then the event file value
+    #if any exists, should be the one used.
+    #I don't like that waterLevel exists in multiple places
+    #STH 2021-0306
+    theGarden.waterLevel = waterLevel
+
     theGarden.platonicSeeds={}
     theGarden.theRegions=[]
     
@@ -436,40 +451,42 @@ def main():
 
 
 
-            ##########################################################################
-            #All of this should be moved to the part where 3d image code is
-            #2020-0226 STH EXPERIMENT IN USING 
-            xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
-            #theData=sdxf.Drawing()
-            dwg = dxf.drawing('mesh.dxf')
+            # ##########################################################################
+            # #All of this should be moved to the part where 3d image code is
+            # #2020-0226 STH EXPERIMENT IN USING 
+            # xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
+            # #theData=sdxf.Drawing()
+            # dwg = dxf.drawing('mesh.dxf')
 
-            if waterLevel != "none":
-                #b=sdxf.Block('world')
-                b = dxf.block(name='WATER')    # create a block-definition
-                #b.append(sdxf.Solid(points=[(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
-                #b.add(dxf.rectangle((0,0,0), 1, 1)) #insertion point(xyz), width, length
-                b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1, color=5))
+            # if waterLevel != "none" and waterLevel != 0.0:
+            #     #b=sdxf.Block('world')
+            #     b = dxf.block(name='WATER')    # create a block-definition
+            #     #b.append(sdxf.Solid(points=[(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
+            #     #b.add(dxf.rectangle((0,0,0), 1, 1)) #insertion point(xyz), width, length
+            #     b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1, color=5))
+            #     #theData.blocks.append(b)
+            #     dwg.blocks.add(b)              # add block-definition to dwg
 
-                #theData.blocks.append(b)
-                dwg.blocks.add(b)              # add block-definition to dwg
 
-                #theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
-                dwg.add(dxf.insert(blockname='WATER', xscale=100, yscale=100, zscale=2))
+            #     #theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
+            #     dwg.add(dxf.insert(blockname='WATER', xscale=100, yscale=100, zscale=waterLevel))
+
                
 
 
-            mesh = dxf.polymesh(xSize, ySize)
-            for x in range(xSize):
-                for y in range(ySize):
-                    #the -50 thing in the following line is a temporary kludge
-                    #has to go away to adjust for world/images of differing sizes
-                    #STH 2020-0226
-                    thePixelValue = terrain_utils.getPixelValue(x-50,y-50,theGarden.terrainImage)
-                    z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-                    mesh.set_vertex(x, y, (x, y, z))
-            dwg.add(mesh)
-            #need to save it to target output folder eventually
-            dwg.save()
+            # mesh = dxf.polymesh(xSize, ySize)
+            # for x in range(xSize):
+            #     for y in range(ySize):
+            #         #the -50 thing in the following line is a temporary kludge
+            #         #has to go away to adjust for world/images of differing sizes
+            #         #STH 2020-0226
+            #         thePixelValue = terrain_utils.getPixelValue(x-50,y-50,theGarden.terrainImage)
+            #         # z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+            #         z = terrain_utils.elevationFromPixel(thePixelValue, 391)
+            #         mesh.set_vertex(x, y, (x, y, z))
+            # dwg.add(mesh)
+            # #need to save it to target output folder eventually
+            # dwg.save()
 
     #####################################
 
@@ -619,10 +636,13 @@ def main():
         if produceGraphics==True and CFDGtextDict=={}:
             for aView in graphicalView:
                 if aView!="3d":
-                    #print aView
+                    #Only call this once to save time in making 2d graphics
                     CFDGtextDict[aView]=outputGraphics.initCFDGText(theGarden, aView, percentTimeStamp, 50.0)
-#print CFDGtextDict
+                else:
+                    #Only call this once to save time in making 3d graphics
+                    DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden.terrainImage)
         #######
+
         cycleNumber=0
         print "\n***Running simulation.***"
         if not showProgressBar:
@@ -883,12 +903,26 @@ def main():
             #generate graphics if requested
             if produceGraphics==True:
                 theView=list(graphicalView)#copy graphicalView list to theView
+                ##############################################################
                 if "3d" in graphicalView:
                     theIndex=theView.index("3d")
                     theView.pop(theIndex)
-                    theData=vdxfGraphics.makeDXF(theGarden)
+                    ###A init call to generate the blocks and, more importantly
+                    ###make the terrain mesh (if needed) should have been called already
+                    ###2021-0306 STH
+
+                    #DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden.terrainImage)
+                    bla=copy.deepcopy(DXFBlockDefs)
+                    print(DXFBlockDefs.entities.__dict__)
+                    print(bla.entities.__dict__)
+                    theDXFData=vdxfGraphics.makeDXF(theGarden, bla)
+                    print(DXFBlockDefs.entities.__dict__)
                     theFileName= simulationName+str(cycleNumber)
-                    vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["3d"], theFileName, theData)
+                    vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["3d"], theFileName, theDXFData)
+                    print(DXFBlockDefs.entities.__dict__)
+                    print("=============")
+
+                ##############################################################
                 if len(theView)!=0:
                     for aView in theView:
                         theData=outputGraphics.makeCFDG(aView, CFDGtextDict[aView], theGarden, cycleNumber)
@@ -1052,7 +1086,7 @@ if __name__ == '__main__':
     #default max and min elevation for a grayscale image given no elevation data)
     parser.add_argument('-imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
     parser.add_argument('-imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
-    parser.add_argument('-iwater', type=int, metavar='int', dest='waterLevel', required=False, help='Elevation at which water exists on terrain')
+    parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Elevation at which water exists on terrain')
 
     ###options that use a code action
     #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
