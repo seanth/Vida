@@ -1,0 +1,16 @@
+2:
+   - Garden:
+     - waterLevel: 2.0
+4:
+   - Garden:
+     - waterLevel: 4.0
+6:
+   - Garden:
+     - waterLevel: 6.0
+8:
+   - Garden:
+     - waterLevel: 8.0
+10:
+   - Garden:
+     - waterLevel: 10.0
+
