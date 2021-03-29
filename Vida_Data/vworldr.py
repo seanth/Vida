@@ -27,6 +27,35 @@ import vterrainImport as terrain_utils
 
 debug1=0
 debug2=0
+def determineWaterlogging(theGarden):
+    i = 0
+    for obj in theGarden.soil:
+        if not obj.isSeed:
+            #distance of 0 is 100% water
+            #hardcode 100m as max distance capillary movement of water up
+            #hard code is to any
+            maxValue = 10
+            distFromWater = obj.elevation-theGarden.waterLevel
+            fractionWater = 1.0-(distFromWater/maxValue)
+            #fractionWater = (distFromWater/maxValue)
+            if fractionWater<0.0: fractionWater = 0.0
+            #water tolerance scale is 0 to 5.
+            #can convert to a water tolerance fraction
+            fractionTolerance = obj.waterTolerance[0]/5.0
+            if fractionWater<=fractionTolerance:
+                growthFraction = 1.0
+            else:
+                #e=2.71
+                twoPi=2.0*3.14
+                stddev=obj.waterTolerance[1]
+                theExponent=-(((fractionWater-fractionTolerance)**2.0)/((2.0*stddev)**2.0))
+                growthFraction=((1/(stddev*(twoPi**0.5)))*2.71)**theExponent
+            #print("plant name: %s; distance: %s; fractWater: %s; fractTol: %s; growthFract: %s" % (obj.nameSpecies, distFromWater, fractionWater, fractionTolerance, growthFraction))
+            obj.waterGrowthFraction = growthFraction
+            if round(growthFraction,5) == 0.0:
+                obj.causeOfDeath="waterlogged"
+                theGarden.kill(obj)
+            
 
 def determineShade(theGarden):
     if theGarden.showProgressBar:
@@ -386,6 +415,29 @@ class garden(object):
                 if theGarden.showProgressBar:
                     i=i+1
                     theProgressBar.update(i)
+
+    def checkSubmergedMortality(self):
+        ###If there is no terrain file, there's no need to check water level
+        if self.terrainImage != []:
+            theGarden = self
+
+            if not theGarden.allowSubmerged:
+                if theGarden.showProgressBar:
+                    print("***Removing seeds that are submerged...***")
+                    theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+                    i=0
+                ###see if seeds are submerged
+                ### if so, kill them off
+                for obj in theGarden.soil[:]:
+                    if (obj.isSeed) and (obj.elevation<=theGarden.waterLevel):
+                        #print("!")
+                        obj.causeOfDeath="submerged in water"
+                        theGarden.kill(obj)
+
+                    if theGarden.showProgressBar:
+                        i=i+1
+                        theProgressBar.update(i)
+
     
     def removeEulerGreenhillViolaters(self):
         if not self.allowEulerGreenhillViolations:
