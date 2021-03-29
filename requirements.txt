@@ -1,3 +1,6 @@
+Pillow==6.2.2
 dxfwrite==1.2.2
+numpy==1.16.6
+pandas==0.24.2
 PyYAML==5.3.1
 xlrd==1.2.0
