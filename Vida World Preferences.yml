@@ -3,18 +3,27 @@ atmosphere: 1.0 #unused
 lightIntensity: 1.0
 maxSeedsPerPlant: 5
 ###Mortality settings###
+allowOffWorld: FALSE
+##experimental mortality##
+allowSubmerged: FALSE
+maxSubmerged: 0.0
+##########################
 ignoreGermDeathAtStart: TRUE
 allowRandomDeath: TRUE
 randomDeathPlant: 0.0075
 randomDeathSeed: 0.0075
 allowSlowGrowthDeath: TRUE
 randomSlowGrowth: 0.05
-allowOverlaps: FALSE
-allowOffWorld: FALSE
-allowEulerGreenhillViolations: FALSE
 ##experimental mortality##
-allowDistanceFromMother: FALSE
-janzenConnell: 0.0
+allowDistanceFromMother: TRUE
+janzenConnell: 0.5
+##########################
+allowEulerGreenhillViolations: FALSE
+allowOverlaps: FALSE
+
+
+
+
 ###To be removed/relocated###
 carbonAllocationMethod: 0 #discontinued
 canopyTransmittanceImpactsConversion: SPECIES #discontinued
