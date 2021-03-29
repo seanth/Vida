@@ -89,6 +89,10 @@ class genericPlant(object):
         #0219-2020 STH EKT
         self.elevation = 0.0
         self.absHeightStem = 0.0
+        #New property related to water tolerance
+        #0329-2021 STH
+        self.waterTolerance = [5.0,0.1]
+        self.waterGrowthFraction = 1.0
 
         self.r=0.00        
         self.age=0.0
@@ -482,14 +486,27 @@ class genericPlant(object):
             fractionAvailable=areaAvailable/self.areaPhotosynthesis
         else:
             fractionAvailable=0.0
+
+
         if fractionAvailable>self.fractionMinimumSurvival:
             #lightConversion=self.photoConstant*(self.massLeaf**self.photoExponent)#in units of kgGrowth/area leaf for photosynthesis
             #newMass= (areaAvailable*lightConversion)
             var1=(self.massLeaf**self.photoExponent)#in units of kgGrowth/area leaf
             var1=areaAvailable*var1#in units of kgGrowth/area leaf
-            var2=(self.photoConstant*fractionAvailable)+(self.photoConstantShade*(1-fractionAvailable))
+            var2=(self.photoConstant*fractionAvailable*self.waterGrowthFraction)+(self.photoConstantShade*(1-fractionAvailable))
             #print "%s: %s" % (self, var2)
             newMass=var2*var1
+            #print("*****")
+            #print(newMass)
+            #New property related to water tolerance
+            #0329-2021 STH
+            # if theGarden.terrainImage!=None:
+            #     newMass=newMass*self.waterGrowthFraction
+                #print(newMass)
+            #print("*****")
+
+
+
             ###decide whether canopy transmission impacts conversion
             alterMassWitTransmission=0
             if theGarden.canopyTransmittanceImpactsConversion==1:
