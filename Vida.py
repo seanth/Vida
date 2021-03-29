@@ -134,7 +134,14 @@ def saveSimulationPoint(theDirectory, theFileName, theGarden):
 def saveDataPoint (theDirectory, theFileName, theGarden):
     #Added "Area Canopy" at end of list
     #Added basal area to the outputs--STH 2019-0404
-    basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, absHeighStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), Yearly Growth Stem+Canopy (kg), Yearly Growth Stem diameter (m), Yearly Growth Stem Height (m), Average Growth Stem (kg), Average Growth Canopy (kg), Average Growth Stem+Canopy (kg), Average Growth Stem diameter (m), Average Growth Stem Height (m), Cause of Death, Functional Area, basal_area \n"
+    basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, elevation above water,\
+    absHeighStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, \
+    # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, \
+    Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), \
+    Yearly Growth Stem+Canopy (kg), Yearly Growth Stem diameter (m), Yearly Growth Stem Height (m), Average Growth Stem (kg), \
+    Average Growth Canopy (kg), Average Growth Stem+Canopy (kg), Average Growth Stem diameter (m), Average Growth Stem Height (m),\
+    Cause of Death, Functional Area, basal_area \n"
+
     photosynthesisHeaders="leaf is a hemisphere?, area canopy available for photosynthesis, area canopy covered, fraction canopy 100% shaded, canopy transmittance, canopy transmittance impacts photosynthesis?, faction of canopy that needs to be 0% shaded for survival"
 
     reproductionHeaders="make seeds?, age to start making seeds, height to start making seeds, fraction of mass used for seeds, Maximum Seed Mass, Where seeds grow, Seed dispersal method, fraction of seeds which fail to germinate, delay in germination, fraction of maximum seed mass needed to germinate, fraction of seed mass converted to plant mass"
@@ -152,18 +159,44 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
     theCorpseList.append(theHeader)
     for plant in theGarden.soil:
         if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,"na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
+            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
+                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
+                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
+                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
+                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
+                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
+                "na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
         else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,"na",0,0)            
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
+            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
+                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
+                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
+                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
+                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
+                "na",0,0)            
         if plant.isSeed:
             theSeedList.append(theData)
         else:
             thePlantList.append(theData)            
     for plant in theGarden.deathNote:
         if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
+            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
+                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
+                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
+                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
+                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
+                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
+                plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
         else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation,plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,plant.causeOfDeath,0,0)
+            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
+            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
+                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
+                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
+                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
+                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
+                plant.causeOfDeath,0,0)
         theCorpseList.append(theData)
     if len(thePlantList)>1:
         saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'wb')
@@ -631,6 +664,12 @@ def main():
         if resumeSim==None and resumeSimReload==None:
             #2008.11.06 Moved a huge block of code related to placing seeds to vworldr.py
             theGarden.placeSeed(seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList)
+            ################
+            #if there is a terrain file and water level then the initial placement of seeds 
+            #should be checked to see if any of them are below water
+            #STH 0328-2021
+            theGarden.checkSubmergedMortality()
+            ################
         if produceGraphics==True and CFDGtextDict=={}:
             for aView in graphicalView:
                 if aView!="3d":
@@ -774,6 +813,12 @@ def main():
                                         theGarden.platonicSeeds[j]=theSeed
 
                             theGarden.placeSeed(seedPlacement, sList, addPopulationSize, useDefaultYml, ymlList)
+                            ################
+                            #if there is a terrain file and water level then the initial placement of seeds 
+                            #should be checked to see if any of them are below water
+                            #STH 0328-2021
+                            theGarden.checkSubmergedMortality()
+                            ################
                             sList= [] #reset the sList to what it was when we started
 
                         elif aKey=="Region":
@@ -951,18 +996,33 @@ def main():
                     theBar=theBar+1
                     theProgressBar.update(theBar)
 
+            #######################################
             ###deal with violaters of basic physics
+            theGarden.removeOffWorldViolaters()
+            ##experimental water mortality##
+            theGarden.checkSubmergedMortality()
+            ##########################
             theGarden.causeRandomDeath()
             theGarden.checkSenescence()
+            ##experimental mortality##
             theGarden.checkDistanceMortality()
-            theGarden.removeOffWorldViolaters()
+            ##########################
             theGarden.removeEulerGreenhillViolaters()
             theGarden.removeOverlaps()
+            #######################################
             
-            ###sort the garden.soil by height of the plants.Ordered shortest to tallest
-            theGarden.soil= list_utils.sort_by_attr(theGarden.soil, "heightStem")
-            ###flip the list so it's ordered tallest to shortest
-            theGarden.soil.reverse()
+            #######################################
+            ###working on waterlogging
+            #2021-0328
+            worldBasics.determineWaterlogging(theGarden)
+
+
+
+            ########This routine is done in worldBasics.determineShade
+            # ###sort the garden.soil by height of the plants.Ordered shortest to tallest
+            # theGarden.soil= list_utils.sort_by_attr(theGarden.soil, "heightStem")
+            # ###flip the list so it's ordered tallest to shortest
+            # theGarden.soil.reverse()
 
             ###work out shading
             worldBasics.determineShade(theGarden)
