@@ -85,10 +85,10 @@ def makeDXF(theGarden, theBlockData):
         y=obj.y
         z=obj.z
         theElevation=obj.elevation
-        aicLeaf=colour_utils.HSV_to_AIC(obj.colourLeaf)
-        aicStem=colour_utils.HSV_to_AIC(obj.colourStem)
-        aicSeedDispersed=colour_utils.HSV_to_AIC(obj.colourSeedDispersed)
-        aicSeedAttached=colour_utils.HSV_to_AIC(obj.colourSeedAttached)
+        aicLeaf=colour_utils.HSV_to_ACI(obj.colourLeaf)
+        aicStem=colour_utils.HSV_to_ACI(obj.colourStem)
+        aicSeedDispersed=colour_utils.HSV_to_ACI(obj.colourSeedDispersed)
+        aicSeedAttached=colour_utils.HSV_to_ACI(obj.colourSeedAttached)
         if obj.isSeed:
             theSeedRadius=obj.radiusSeed*obj.radiusSeedMultiplier
             #This should offset the seeds to match the image elevation
