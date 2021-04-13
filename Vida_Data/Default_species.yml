@@ -74,6 +74,10 @@ speciesConstant7: 100.064153 #65.5589222  #100.064199  #analysis of [2]
 speciesExponent7: 1.08090778 #0.8518291 #1.08090778  #analysis of [2]
 speciesConstant8: 15.508049 #analysis of [2]
 
+###waterlogging
+waterTolerance: [5.0,0.25] #[watertol value, stdDev] #[7]
+
 #Citations
 #[1] Lavers 1967 Wood properties
 #[2] Cannell, 1982
+#[7] Ülo Niinemets and Fernando Valladares. 2006. Tolerance to shade, drought, and waterlogging of temperate Northern Hemisphere trees and shrubs. Ecological Monographs 76:521–547
