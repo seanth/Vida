@@ -32,28 +32,34 @@ def determineWaterlogging(theGarden):
     for obj in theGarden.soil:
         if not obj.isSeed:
             #distance of 0 is 100% water
-            #hardcode 100m as max distance capillary movement of water up
+            #hardcode 10m as max distance capillary movement of water up
             #hard code is to any
             maxValue = 10
             distFromWater = obj.elevation-theGarden.waterLevel
             fractionWater = 1.0-(distFromWater/maxValue)
-            #fractionWater = (distFromWater/maxValue)
+            #obj.fractionWater = fractionWater #just for debugging
+            #fractionWater = (distFromWater/maxValue) #this is how you would define a species that is sensitive to drought
             if fractionWater<0.0: fractionWater = 0.0
             #water tolerance scale is 0 to 5.
             #can convert to a water tolerance fraction
             fractionTolerance = obj.waterTolerance[0]/5.0
-            if fractionWater<=fractionTolerance:
+            #print("%s %s" % (fractionWater,fractionTolerance))
+            if fractionWater<fractionTolerance:
+                #print("%s grow!" % theGarden.cycleNumber)
                 growthFraction = 1.0
             else:
                 #e=2.71
                 twoPi=2.0*3.14
                 stddev=obj.waterTolerance[1]
                 theExponent=-(((fractionWater-fractionTolerance)**2.0)/((2.0*stddev)**2.0))
-                growthFraction=((1/(stddev*(twoPi**0.5)))*2.71)**theExponent
+                growthFraction=((1.0/(stddev*(twoPi**0.5)))*2.71)**theExponent
+                #growthFraction=1.0-growthFraction
+                #print(growthFraction)
             #print("plant name: %s; distance: %s; fractWater: %s; fractTol: %s; growthFract: %s" % (obj.nameSpecies, distFromWater, fractionWater, fractionTolerance, growthFraction))
             obj.waterGrowthFraction = growthFraction
             if round(growthFraction,5) == 0.0:
-                obj.causeOfDeath="waterlogged"
+                obj.causeOfDeath="waterlogged growth"
+                #print("here")
                 theGarden.kill(obj)
             
 
