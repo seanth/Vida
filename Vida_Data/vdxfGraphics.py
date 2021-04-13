@@ -26,7 +26,7 @@ def initDXFBlocks(terrainImage):
     theData.blocks.add(b)
     
     b = dxf.block(name='WATER')
-    b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1, color=5))
+    b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1.0, color=5))
     theData.blocks.add(b)
 
     b = dxf.block(name='STEM')
@@ -49,21 +49,22 @@ def initDXFBlocks(terrainImage):
     theFaceList=""
     theData.blocks.add(b)
 
-    
-    b = dxf.block(name='MESHTERRAIN')
-    xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
-    mesh = dxf.polymesh(xSize, ySize)
-    for x in range(xSize):
-        for y in range(ySize):
-            #the -50 thing in the following line is a temporary kludge
-            #has to go away to adjust for world/images of differing sizes
-            #STH 2020-0226
-            thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
-            #z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-            z = terrain_utils.elevationFromPixel(thePixelValue)
-            mesh.set_vertex(x, y, (x, y, z))
-    b.add(mesh)
-    theData.blocks.add(b)
+    #only do this if there is a terrain image to use
+    if(terrainImage!=[]):
+        b = dxf.block(name='MESHTERRAIN')
+        xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
+        mesh = dxf.polymesh(xSize, ySize)
+        for x in range(xSize):
+            for y in range(ySize):
+                #the -50 thing in the following line is a temporary kludge
+                #has to go away to adjust for world/images of differing sizes
+                #STH 2020-0226
+                thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
+                #z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+                z = terrain_utils.elevationFromPixel(thePixelValue)
+                mesh.set_vertex(x, y, (x, y, z))
+        b.add(mesh)
+        theData.blocks.add(b)
 
     return theData
 
@@ -77,7 +78,8 @@ def makeDXF(theGarden, theBlockData):
 
     if len(theGarden.terrainImage)==3:
         theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
-        theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0))
+        if(theGarden.waterLevel>0.0):
+            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0))
 
     #dictColoursUsed={}
     for obj in theGarden.soil:
