@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.995 #0.46 #[6]
+fractionFailGerminate: 0.46 #0.995 used in chestnut project #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [255.6, 0.75, 0.49]
-colourLeaf: [330.5, 0.75, 0.49] #[116.6, 1.0, 1.0]
+colourSpecies: [231.8, 0.597,1.0] #
+colourLeaf: [231.8, 0.597,1.0] #[116.6, 1.0, 1.0] #green
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -65,7 +65,7 @@ speciesExponent7: 1.0 #0.803966
 speciesConstant8: 8.500000
 
 ###waterlogging
-waterTolerance: [4.59,0.25] #[watertol value, stdDev] #[7]
+waterTolerance: [2.59,0.25] #[watertol value, stdDev] #[7]
 
 #[1] https://www.wood-database.com/white-ash/
 #[2] set the 50% densityStem

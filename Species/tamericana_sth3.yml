@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.9425 #0.7 #[6]
+fractionFailGerminate: 0.7 #0.9425 used in chestnut project #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [68.4, 0.4, 1.0] 
-colourLeaf: [90.7, 0.4, 1.0] #[116.6, 1.0, 1.0]
+colourSpecies: [197.0, 0.5556, 1.0] #[68.4, 0.4, 1.0] 
+colourLeaf: [197.0, 0.5556, 1.0] #[116.6, 1.0, 1.0] #green
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]

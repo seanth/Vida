@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [175.0, 0.86, 0.9] 
-colourLeaf: [293.8, 0.86, 0.9] #[116.6, 1.0, 1.0]
+colourSpecies: [241.8, 0.597,1.0] #
+colourLeaf: [241.8, 0.597,1.0] #[116.6, 1.0, 1.0] #green
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -65,7 +65,7 @@ speciesExponent7: 0.837747
 speciesConstant8: 5.400000
 
 ###waterlogging
-waterTolerance: [4.08,0.25] #[watertol value, stdDev] #[7]
+waterTolerance: [3.08,0.25] #[watertol value, stdDev] #[7]
 
 #[1] https://www.wood-database.com/red-maple/
 #[2] set the 50% densityStem
