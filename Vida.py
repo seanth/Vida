@@ -668,7 +668,8 @@ def main():
             #if there is a terrain file and water level then the initial placement of seeds 
             #should be checked to see if any of them are below water
             #STH 0328-2021
-            theGarden.checkSubmergedMortality()
+            if(theGarden.terrainImage != []):
+                theGarden.checkSubmergedMortality()
             ################
         if produceGraphics==True and CFDGtextDict=={}:
             for aView in graphicalView:
@@ -817,7 +818,8 @@ def main():
                             #if there is a terrain file and water level then the initial placement of seeds 
                             #should be checked to see if any of them are below water
                             #STH 0328-2021
-                            theGarden.checkSubmergedMortality()
+                            if(theGarden.terrainImage != []):
+                                theGarden.checkSubmergedMortality()
                             ################
                             sList= [] #reset the sList to what it was when we started
 
@@ -1000,7 +1002,8 @@ def main():
             ###deal with violaters of basic physics
             theGarden.removeOffWorldViolaters()
             ##experimental water mortality##
-            theGarden.checkSubmergedMortality()
+            if(theGarden.terrainImage != []):
+                theGarden.checkSubmergedMortality()
             ##########################
             theGarden.causeRandomDeath()
             theGarden.checkSenescence()
@@ -1014,7 +1017,8 @@ def main():
             #######################################
             ###working on waterlogging
             #2021-0328
-            worldBasics.determineWaterlogging(theGarden)
+            if(theGarden.terrainImage != [] and theGarden.waterLevel>0.0):
+                worldBasics.determineWaterlogging(theGarden)
 
 
 
