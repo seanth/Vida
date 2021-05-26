@@ -1,16 +1,16 @@
-nameSpecies: %s
-creator: %s
-comments: Generated from file %s on %s
+nameSpecies: Betula_alleghaniensis
+creator: miniVida2yml.py
+comments: Generated from file Betula alleghaniensis.xls on 2021-0407
 
 ###Basic
-densityStem: %f #[1]
-densityLeaf: %f
-densitySeed: %f #[2]
+densityStem: 690.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 345.000000 #[2]
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
-heightLeafMax: %f
-heightStemMax: %f #[3]
-youngsModulusStem: %f #[5]
+heightLeafMax: 0.000296
+heightStemMax: 30.500000 #[3]
+youngsModulusStem: 13.860000 #[5]
 
 ###Reproduction
 makeSeeds: TRUE
@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.0 #[6]
+fractionFailGerminate: 0.8 #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [0.0, 0.0, 0.0] #black
-colourLeaf: [116.6, 1.0, 1.0]
+colourSpecies: [187.0, 0.5556, 1.0] #[0.0, 0.0, 0.0] #black
+colourLeaf: [187.0, 0.5556, 1.0] #[116.6, 1.0, 1.0] #green
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -42,30 +42,30 @@ crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA
 boleHeight: 80 #used only when the 3dCrownShape is not ELIP. Percent of total plant height
 
 ###Photosynthesis
-photoConstant: %f #[5]
-photoExponent: %f #[5]
+photoConstant: 1.050000 #[5]
+photoExponent: -0.448300 #[5]
 canopyTransmittanceImpactsConversion: FALSE
 
 ###Allometry
 fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg #[7]
-fractionCarbonToStem: %f
-speciesConstant1: %f #[8]
-speciesExponent1: %f #[8]
-speciesConstant2: %f #[9]
-speciesExponent2: %f #[9]
-speciesConstant3: %f #[10]
-speciesExponent3: %f #[10]
-speciesConstant20: %f #[11]
-speciesExponent20: %f #[11]
-speciesConstant6: %f 
-speciesConstant7: %f #[12]
-speciesExponent7: %f #[12]
-speciesConstant8: %f #[13]
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.863700 #[8]
+speciesExponent1: 1.022100 #[8]
+speciesConstant2: 0.116400 #[9]
+speciesExponent2: 0.881900 #[9]
+speciesConstant3: 0.190000 #[10]
+speciesExponent3: 0.771900 #[10]
+speciesConstant20: 0.026214 #[11]
+speciesExponent20: 0.408644 #[11]
+speciesConstant6: 0.000000 
+speciesConstant7: 65.687377 #[12]
+speciesExponent7: 1.000000 #[12]
+speciesConstant8: 10.900000 #[13]
 
 ###waterlogging
-waterTolerance: [0.0 ,0.25] #[watertol value, stdDev] #[14]
+waterTolerance: [2.0 ,0.25] #[watertol value, stdDev] #[14]
 
 #[1] 
 #[2] set the 50 percent densityStem

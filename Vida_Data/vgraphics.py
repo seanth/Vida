@@ -547,7 +547,7 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 	#theArg = "ffmpeg -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
 	theArg=theArg % (framesPerSec, absolutePath, firstFile, absolutePath, firstFile)
 	os.system(theArg)
-	print "     mp4 video made"
+	print("     mp4 video made")
 	###Delete png files if requested
 	#if deletePngFiles:
 	#	allTargetFiles =glob.glob(outputDirectory+"*.png")

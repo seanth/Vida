@@ -1,6 +1,6 @@
-nameSpecies: Abies alba
+nameSpecies: Short1
 creator: seanth@gmail.com
-comments: Species generated using Cannell data set. Revised 08.09.11. Minor change to seed mass and fraction to plant on 8.9.17. Considered final.
+comments: Based on Abies alba, but much shorter. Just a species for testing
 
 ###Basic
 densityStem: 718.90 #Lavers 1967 Wood properties
@@ -9,7 +9,7 @@ densitySeed: 359.45 #assume density is half as stem
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
-heightStemMax: 42.69821
+heightStemMax: 10
 youngsModulusStem: 7.4 #GPa-Lavers 1967 Wood properties
 
 ###Reproduction
@@ -24,13 +24,13 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 1.0 #value of 1.0 will not allow any seeds to germinate #0.0
+fractionFailGerminate: 0.0 #value of 1.0 will not allow any seeds to germinate #0.0
 
 ###Graphics
 leafIsHemisphere: TRUE
-radiusStemMultiplier: 1
-radiusLeafMultiplier: 1
-radiusSeedMultiplier: 5
+radiusStemMultiplier: 1.0
+radiusLeafMultiplier: 1.0
+radiusSeedMultiplier: 1.0
 borderImagePercent: 25
 colourSpecies: [0.0, 0.0, 0.0] #black
 colourLeaf: [116.6, 1.0, 1.0]
@@ -58,17 +58,16 @@ speciesExponent1: 1.00133354
 speciesConstant2: 0.03970297
 speciesExponent2: 1.19822771
 
-speciesConstant3: 0.24834698
+speciesConstant3: 0.15
 speciesExponent3: 0.73063124
 
 speciesConstant20: 0.029 #0.03599987
 speciesExponent20: 0.39415386
 
 speciesConstant6: 0.0 #0.15
-speciesConstant7: 100.064153
+speciesConstant7: 37.3
 speciesExponent7: 1.08090778
-speciesConstant8: 15.508049
+speciesConstant8: 3
 
-
-###Evolution
-status: Currently unimplemented
+###waterlogging
+waterTolerance: [1.0,0.1] #[watertol value, stdDev] #[7]

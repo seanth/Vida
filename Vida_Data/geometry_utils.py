@@ -37,10 +37,10 @@ def python_circle_circle_overlap(x,y,r,xx,yy,rr):
 try:
 	import circtest
 	circleOverlap = circtest.circle_circle_overlap
-	print "*********Will use gib's code**************"
+	print("*********Will use gib's code**************")
 except ImportError:
 	circleOverlap = python_circle_circle_overlap
-	print "*********Will use straight python*********"
+	print("*********Will use straight python*********")
 	pass
 
 def placePointsInGrid(numbPoints, lengthSquareSide):

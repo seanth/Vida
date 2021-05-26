@@ -1,0 +1,69 @@
+0:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: Abies_balsamea
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: A_rubrum
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: Betula_alleghaniensis
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: F_americana
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: T_americana
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: Ulmus_americana
+500:
+   - Seed:
+     - species: betula_alleghaniensis.yml
+       placement: random
+       number: 100
+   - Seed:
+     - species: abies_balsamea.yml
+       placement: random
+       number: 100
+   - Seed:
+     - species: tamericana_sth3.yml
+       placement: random
+       number: 100
+1500:
+   - Seed:
+     - species: famericana_sth3.yml
+       placement: random
+       number: 100
+   - Seed:
+     - species: arubrum_sth2.yml
+       placement: random
+       number: 100
+   - Seed:
+     - species: ulmus_americana.yml
+       placement: random
+       number: 100

@@ -1,6 +1,6 @@
-nameSpecies: Abies alba
+nameSpecies: SimpleExample
 creator: seanth@gmail.com
-comments: Species generated using Cannell data set. Revised 08.09.11. Minor change to seed mass and fraction to plant on 8.9.17. Considered final.
+comments: Based off the Abies alba species generated using Cannell data set. 11.11.10
 
 ###Basic
 densityStem: 718.90 #Lavers 1967 Wood properties
@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 1.0 #value of 1.0 will not allow any seeds to germinate #0.0
+fractionFailGerminate: 0.0
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -51,24 +51,15 @@ fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
 fractionCarbonToStem: 0.99
-
 speciesConstant1: 0.94119204
 speciesExponent1: 1.00133354
-
 speciesConstant2: 0.03970297
 speciesExponent2: 1.19822771
-
-speciesConstant3: 0.24834698
-speciesExponent3: 0.73063124
-
+speciesConstant3: 0.03970297 #0.24834698
+speciesExponent3: 1.19822771 #0.73063124
 speciesConstant20: 0.029 #0.03599987
 speciesExponent20: 0.39415386
-
 speciesConstant6: 0.0 #0.15
 speciesConstant7: 100.064153
 speciesExponent7: 1.08090778
 speciesConstant8: 15.508049
-
-
-###Evolution
-status: Currently unimplemented
