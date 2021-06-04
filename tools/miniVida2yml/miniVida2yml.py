@@ -122,4 +122,4 @@ if __name__ == "__main__":
     theOutFile.write(ymlTempTxt)
     theOutFile.close()
 
-    print "\nFile '%s' created" % args.outFile
+    print ("\nFile '%s' created" % args.outFile)
