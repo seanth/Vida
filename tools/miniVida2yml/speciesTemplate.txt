@@ -65,7 +65,7 @@ speciesExponent7: %f #[12]
 speciesConstant8: %f #[13]
 
 ###waterlogging
-waterTolerance: [0.0 ,0.25] #[watertol value, stdDev] #[14]
+waterTolerance: [%f ,0.25] #[watertol value, stdDev] #[14]
 
 #[1] 
 #[2] set the 50 percent densityStem
