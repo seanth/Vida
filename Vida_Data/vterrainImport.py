@@ -10,9 +10,13 @@ def getPixelValue(x,y,theImage):
     theX = x+50.0
     theY = y+50.0
 
+    
+    theX = int(round(theX,0))
+    if theX>=theImage[1][0]:theX=theImage[1][0]-1
+    theY = int(round(theY,0))
+    if theY>=theImage[1][1]:theY=theImage[1][1]-1
     #theX = theX*2.0
     #theY = theY*2.0
-
     #convert the stored image data into something usable
     #format of theImage is [mode, size tuple, image as bytes] STH 0212-2020
     #it is possible that an x or y value will be sent that is out of index for the image.
@@ -20,6 +24,8 @@ def getPixelValue(x,y,theImage):
     try:
         thePixelValue = Image.frombytes(theImage[0], theImage[1], theImage[2]).getpixel((theX,theY)) 
     except IndexError:
+        thePixelValue = 255
+    except ValueError:
         thePixelValue = 255
 
     ###NOTE: The problem with this is that it opens the file every time it needs to check for elevation
