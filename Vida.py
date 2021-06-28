@@ -37,10 +37,6 @@ import progressBarClass
 ###append the path to where species are
 sys.path.append("Species")
 
-###EXPERIMENTS IT WRITING TERRAIN FROM GREYSCALE IMAGE
-# import vterrainImport as terrain_utils
-# from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
-
 sList=[]
 theCLArgs=""
 
@@ -462,73 +458,49 @@ def main():
         if tiffFound == False:
             print("***Tiff terrain image not found. Skipping terrain import***")
         else:
-            from PIL import Image
+            from PIL import Image, ImageOps
             #if type(eventFile)==file:
             print("***Loading terrain file:\n     %s***" % (stupidKludge))
             #theImage = Image.open(terrainFile)
             tmp=Image.open(stupidKludge)
+
+            tmp=ImageOps.flip(tmp)
+
             #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
             #make sure the list is the correct length
             if len(theGarden.terrainImage)<3:
                 theGarden.terrainImage=[0]*3
+
             #store the image mode
             theGarden.terrainImage[0]=tmp.mode
+
+            #the imported image might not be a square. 
+            #If it is not a square, trim it
+            #STH 2021-06-28
+            if tmp.size[0]!=tmp.size[1]:
+                if tmp.size[0]<tmp.size[1]:
+                    smallestDim = tmp.size[0]
+                else:
+                    smallestDim = tmp.size[1]
+                print("******WARNING: imported image is not square. Truncating image to %ix%i..." % (smallestDim, smallestDim))
+                tmp=tmp.crop((0, 0, smallestDim, smallestDim))
+
+            #if the imported image is not the same size as the world size, change it
+            #this assumes the image is a square
+            #STH 2021-0628
+            if tmp.size[1] != theWorldSize:
+                print("******WARNING: imported image is not the same size as the world space.")
+                print("               Resizing image to %ix%i..." % (theWorldSize, theWorldSize))
+            tmp=tmp.resize((theWorldSize,theWorldSize))
+            
             #store the image size
             theGarden.terrainImage[1]=tmp.size
+            
             #store the image as bytes
             theGarden.terrainImage[2]=tmp.tobytes()
             tmp.close()
             tmp=None
-
-
-
-            # ##########################################################################
-            # #All of this should be moved to the part where 3d image code is
-            # #2020-0226 STH EXPERIMENT IN USING 
-            # xSize,ySize = (theGarden.terrainImage[1][0],theGarden.terrainImage[1][1])
-            # #theData=sdxf.Drawing()
-            # dwg = dxf.drawing('mesh.dxf')
-
-            # if waterLevel != "none" and waterLevel != 0.0:
-            #     #b=sdxf.Block('world')
-            #     b = dxf.block(name='WATER')    # create a block-definition
-            #     #b.append(sdxf.Solid(points=[(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
-            #     #b.add(dxf.rectangle((0,0,0), 1, 1)) #insertion point(xyz), width, length
-            #     b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1, color=5))
-            #     #theData.blocks.append(b)
-            #     dwg.blocks.add(b)              # add block-definition to dwg
-
-
-            #     #theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
-            #     dwg.add(dxf.insert(blockname='WATER', xscale=100, yscale=100, zscale=waterLevel))
-
-               
-
-
-            # mesh = dxf.polymesh(xSize, ySize)
-            # for x in range(xSize):
-            #     for y in range(ySize):
-            #         #the -50 thing in the following line is a temporary kludge
-            #         #has to go away to adjust for world/images of differing sizes
-            #         #STH 2020-0226
-            #         thePixelValue = terrain_utils.getPixelValue(x-50,y-50,theGarden.terrainImage)
-            #         # z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-            #         z = terrain_utils.elevationFromPixel(thePixelValue, 391)
-            #         mesh.set_vertex(x, y, (x, y, z))
-            # dwg.add(mesh)
-            # #need to save it to target output folder eventually
-            # dwg.save()
-
-    #####################################
-
-
-
-
-
-
-
-    
-    ####
+    ####################################
 
     #########Check for multiple species. If none, use default
     fileList=os.listdir("Species")

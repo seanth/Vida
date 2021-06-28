@@ -51,15 +51,14 @@ def initDXFBlocks(terrainImage):
 
     #only do this if there is a terrain image to use
     if(terrainImage!=[]):
+        print("***Generating terrain mesh...***")
         b = dxf.block(name='MESHTERRAIN')
         xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
         mesh = dxf.polymesh(xSize, ySize)
         for x in range(xSize):
             for y in range(ySize):
-                #the -50 thing in the following line is a temporary kludge
-                #has to go away to adjust for world/images of differing sizes
-                #STH 2020-0226
-                thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
+                #thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
+                thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
                 #z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
                 z = terrain_utils.elevationFromPixel(thePixelValue)
                 mesh.set_vertex(x, y, (x, y, z))

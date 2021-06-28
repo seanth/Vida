@@ -401,8 +401,9 @@ class genericPlant(object):
                 newY = (math.sin(theAngle)*theTestDist)
                 newX=newX+theSeed.x
                 newY=newY+theSeed.y
+                coordAdjust = theGarden.theWorldSize/2.0
                 ##get elevation from pixel value
-                thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
+                thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
                 theElevation = terrain_utils.elevationFromPixel(thePixelValue)
                 newZ = theElevation
                 theMax = theTestDist

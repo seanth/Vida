@@ -645,7 +645,8 @@ class garden(object):
             #and then use that value to map to an elevation
             #STH EKT 0212-2020
             if theGarden.terrainImage!=[]:
-                thePixelValue = terrain_utils.getPixelValue(theSeed.x,theSeed.y,theGarden.terrainImage)
+                coordAdjust = theGarden.theWorldSize/2.0
+                thePixelValue = terrain_utils.getPixelValue(theSeed.x-coordAdjust,theSeed.y-coordAdjust,theGarden.terrainImage)
                 theElevation = terrain_utils.elevationFromPixel(thePixelValue)
             else:
                 theElevation = 0.0
