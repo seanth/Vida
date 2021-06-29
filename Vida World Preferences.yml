@@ -20,7 +20,9 @@ janzenConnell: 0.5
 ##########################
 allowEulerGreenhillViolations: FALSE
 allowOverlaps: FALSE
-
+##########################
+useWaterTol: TRUE
+useDroughtTol: FALSE
 
 
 

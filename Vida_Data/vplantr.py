@@ -85,14 +85,17 @@ class genericPlant(object):
         self.x=0.0
         self.y=0.0
         self.z=0.0
+
         #New property related to elevation
         #0219-2020 STH EKT
         self.elevation = 0.0
         self.absHeightStem = 0.0
         #New property related to water tolerance
         #0329-2021 STH
-        #self.waterTolerance = [5.0,0.1]
         self.waterGrowthFraction = 1.0
+        #New property related to water tolerance
+        #2021-0628 STH
+        self.droughtGrowthFraction = 1.0
 
         self.r=0.00        
         self.age=0.0
@@ -377,37 +380,39 @@ class genericPlant(object):
             newX=newX+theSeed.x
             newY=newY+theSeed.y
 
-            ###################
-            ##do a binary search to find a distance where the propagule is
-            ##not above the starting position of the propagule in the canopy
-            ##STH 2021-0226
-            #look up the pixel grey-scale value at the target x,y
-            #and then use that value to map to an elevation
-            #STH EKT 2020-0212
-            if theGarden.terrainImage!=[]:
-                thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
-                theElevation = terrain_utils.elevationFromPixel(thePixelValue)
-            else:
-                theElevation = 0.0
+        ###################
+        ##do a binary search to find a distance where the propagule is
+        ##not above the starting position of the propagule in the canopy
+        ##STH 2021-0226
+        #look up the pixel grey-scale value at the target x,y
+        #and then use that value to map to an elevation
+        #STH EKT 2020-0212
+        if theGarden.terrainImage!=[]:
+            coordAdjust = theGarden.theWorldSize/2.0
+            #thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
+            thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
+            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+        else:
+            theElevation = 0.0
+        newZ = theElevation
+        theMin = 0.0
+        theMax = theDistance
+        while newZ>theSeed.z + motherPlant.elevation:
+            theTestDist = (theMin+theMax)/2.0
+            #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
+            #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
+            newX = (math.cos(theAngle)*theTestDist)
+            if theRun<0.0: newX=(0.0-newX)
+            newY = (math.sin(theAngle)*theTestDist)
+            newX=newX+theSeed.x
+            newY=newY+theSeed.y
+            coordAdjust = theGarden.theWorldSize/2.0
+            ##get elevation from pixel value
+            thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
+            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
             newZ = theElevation
-            theMin = 0.0
-            theMax = theDistance
-            while newZ>theSeed.z + motherPlant.elevation:
-                theTestDist = (theMin+theMax)/2.0
-                #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
-                #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
-                newX = (math.cos(theAngle)*theTestDist)
-                if theRun<0.0: newX=(0.0-newX)
-                newY = (math.sin(theAngle)*theTestDist)
-                newX=newX+theSeed.x
-                newY=newY+theSeed.y
-                coordAdjust = theGarden.theWorldSize/2.0
-                ##get elevation from pixel value
-                thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-                theElevation = terrain_utils.elevationFromPixel(thePixelValue)
-                newZ = theElevation
-                theMax = theTestDist
-                if round(theMax,3) == round(theMin,3): break
+            theMax = theTestDist
+            if round(theMax,3) == round(theMin,3): break
 
         #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
         ###Place the seed in xyz space correctly
@@ -494,7 +499,8 @@ class genericPlant(object):
             #newMass= (areaAvailable*lightConversion)
             var1=(self.massLeaf**self.photoExponent)#in units of kgGrowth/area leaf
             var1=areaAvailable*var1#in units of kgGrowth/area leaf
-            var2=(self.photoConstant*fractionAvailable*self.waterGrowthFraction)+(self.photoConstantShade*(1-fractionAvailable))
+            #var2=(self.photoConstant*fractionAvailable*self.waterGrowthFraction)+(self.photoConstantShade*(1-fractionAvailable))
+            var2=(self.photoConstant*fractionAvailable*self.waterGrowthFraction*self.droughtGrowthFraction)+(self.photoConstantShade*(1-fractionAvailable))
             #var2=(self.photoConstant*fractionAvailable+(self.photoConstantShade*(1-fractionAvailable)))
             #print "%s: %s" % (self, var2)
             newMass=var2*var1
