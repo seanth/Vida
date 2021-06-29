@@ -990,8 +990,10 @@ def main():
             ###working on waterlogging
             #2021-0328
             if(theGarden.terrainImage != [] and theGarden.waterLevel>0.0):
+                #this could be sped up
+                #if the water level doesn't change, this only need to be calculated once
                 worldBasics.determineWaterlogging(theGarden)
-
+                worldBasics.determineDroughtTol(theGarden)
 
 
             ########This routine is done in worldBasics.determineShade
