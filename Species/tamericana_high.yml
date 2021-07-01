@@ -1,4 +1,4 @@
-nameSpecies: T_americana
+nameSpecies: T_americana_high
 creator: miniVida2yml.py
 comments: Generated from file t americana new miniVida ^0 graphs.xls on 2019-0219
 
@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [197.0, 0.5556, 1.0] #[68.4, 0.4, 1.0] 
-colourLeaf: [197.0, 0.5556, 1.0] #[116.6, 1.0, 1.0] #green
+colourSpecies: [50.0, 0.5556, 1.0] #[68.4, 0.4, 1.0] 
+colourLeaf: [50.0, 0.5556, 1.0] #[116.6, 1.0, 1.0] #green
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -65,7 +65,8 @@ speciesExponent7: 1.0 #0.753311
 speciesConstant8: 8.6
 
 ###waterlogging
-waterTolerance: [1.26,0.25] #[watertol value, stdDev] #[7]
+waterTolerance: 5.0 #[7]
+droughtTolerance: 5.0 #[7]
 
 #[1] https://www.wood-database.com/basswood/
 #[2] set the 50% densityStem

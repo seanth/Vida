@@ -70,4 +70,4 @@ speciesExponent7: 1.08090778
 speciesConstant8: 3
 
 ###waterlogging
-waterTolerance: [1.0,0.1] #[watertol value, stdDev] #[7]
+waterTolerance: 1.0 #[7]

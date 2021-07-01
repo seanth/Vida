@@ -1,0 +1,76 @@
+nameSpecies: A_rubrum
+creator: miniVida2yml.py
+comments: Generated from file a rubrum new miniVida with graphs.xls on 2019-0223. Revised by STH 2019-1002
+
+###Basic
+densityStem: 610.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 305.000000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 24.500000 #[3]
+youngsModulusStem: 11.310000 #[4]
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943 #analysis of [5]
+reproductionExponent: 1.09777536 #analysis of [5]
+numYearsGrowthMemory: 2
+massSeedMax: 0.09 #0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.13 #[6]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [241.8, 0.597,1.0] #
+colourLeaf: [241.8, 0.597,1.0] #[116.6, 1.0, 1.0] #green
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+###testing different canopy shapes in 3d output
+crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
+
+###Photosynthesis
+photoConstant: 1.505600
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.698213
+speciesExponent1: 1.002060
+speciesConstant2: 0.116400
+speciesExponent2: 0.881900
+speciesConstant3: 0.150000
+speciesExponent3: 0.771900
+speciesConstant20: 0.025310
+speciesExponent20: 0.422062
+speciesConstant6: 0.000000
+speciesConstant7: 88.205967
+speciesExponent7: 0.837747
+speciesConstant8: 5.400000
+
+###waterlogging
+waterTolerance: 3.08 #[7]
+
+#[1] https://www.wood-database.com/red-maple/
+#[2] set the 50% densityStem
+#[3] height
+#[4] https://www.wood-database.com/red-maple/
+#[5] Cannell, 1982
+#[6] https://www.srs.fs.usda.gov/pubs/misc/ag_654/volume_2/acer/rubrum.htm
+#[7] Ülo Niinemets and Fernando Valladares. 2006. Tolerance to shade, drought, and waterlogging of temperate Northern Hemisphere trees and shrubs. Ecological Monographs 76:521–547
