@@ -22,7 +22,7 @@ allowEulerGreenhillViolations: FALSE
 allowOverlaps: FALSE
 ##########################
 useWaterTol: TRUE
-useDroughtTol: FALSE
+useDroughtTol: TRUE
 
 
 
