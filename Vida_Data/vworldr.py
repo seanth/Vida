@@ -32,6 +32,7 @@ debug2=0
 def determineWaterlogging(theGarden):
     if theGarden.useWaterTol:
         i = 0
+        #print("distance,fractWater,fractTol,growthFract")
         for obj in theGarden.soil:
             if not obj.isSeed:
                 #distance of 0 is 100% water
@@ -45,20 +46,17 @@ def determineWaterlogging(theGarden):
                 if fractionWater<0.0: fractionWater = 0.0
                 #water tolerance scale is 0 to 5.
                 #can convert to a water tolerance fraction
-                fractionTolerance = obj.waterTolerance[0]/5.0
-                #print("waterlogging %s %s" % (fractionWater,fractionTolerance))
+                fractionTolerance = obj.waterTolerance/5.0
                 if fractionWater<fractionTolerance:
-                    #print("     waterlogging happiness")
                     growthFraction = 1.0
                 else:
-                    #e=2.71
                     twoPi=2.0*3.14
-                    stddev=obj.waterTolerance[1]
-                    theExponent=-(((fractionWater-fractionTolerance)**2.0)/((2.0*stddev)**2.0))
+                    stddev=abs(fractionTolerance)
+                    #theExponent=-(((fractionWater-fractionTolerance)**2.0)/((2.0*stddev)**2.0))
+                    theExponent=-((((distFromWater-maxValue)*0.05)**2.0)/((2.0*stddev)**2.0))
                     growthFraction=((1.0/(stddev*(twoPi**0.5)))*2.71)**theExponent
-                    #growthFraction=1.0-growthFraction
-                    #print(growthFraction)
-                #print("plant name: %s; distance: %s; fractWater: %s; fractTol: %s; growthFract: %s" % (obj.nameSpecies, distFromWater, fractionWater, fractionTolerance, growthFraction))
+
+                #print("%s,%s,%s,%s" % (distFromWater, fractionWater, fractionTolerance, growthFraction))
                 obj.waterGrowthFraction = growthFraction
                 if round(growthFraction,5) == 0.0:
                     obj.causeOfDeath="waterlogged growth"
@@ -69,6 +67,7 @@ def determineWaterlogging(theGarden):
 def determineDroughtTol(theGarden):
     if theGarden.useDroughtTol:
         i = 0
+        #print("distance,fractWater,fractTol,growthFract")
         for obj in theGarden.soil:
             if not obj.isSeed:
                 #distance of 0 is 100% water
@@ -79,23 +78,19 @@ def determineDroughtTol(theGarden):
                 fractionWater = 1.0-(distFromWater/maxValue)
                 #obj.fractionWater = fractionWater #just for debugging
                 if fractionWater<0.0: fractionWater = 0.0
-
                 #drought tolerance scale is 0 to 5.
                 #can convert to a drought tolerance fraction
-                fractionTolerance = obj.droughtTolerance[0]/5.0
+                fractionTolerance = obj.droughtTolerance/5.0
                 #print("drought %s %s" % (fractionWater,fractionTolerance))
-                if fractionWater<fractionTolerance:
-                    #print("drought happiness")
+                if fractionWater>fractionTolerance:
                     growthFraction = 1.0
                 else:
                     twoPi=2.0*3.14
-                    stddev=obj.droughtTolerance[1]
-                    #theExponent=-(((fractionWater-fractionTolerance)**2.0)/((2.0*stddev)**2.0))
-                    theExponent=-(((1.0-fractionWater)**2.0)/((2.0*stddev)**2.0))
+                    stddev=abs(fractionTolerance)
+                    theExponent=-((((distFromWater-maxValue)*0.05)**2.0)/((2.0*stddev)**2.0))
                     growthFraction=((1.0/(stddev*(twoPi**0.5)))*2.71)**theExponent
-                    #growthFraction=1.0-growthFraction
-                    #print(growthFraction)
-                #print("plant name: %s; distance: %s; fractWater: %s; fractTol: %s; growthFract: %s" % (obj.nameSpecies, distFromWater, fractionWater, fractionTolerance, growthFraction))
+
+                #print("%s,%s,%s,%s" % (distFromWater, fractionWater, fractionTolerance, growthFraction))
                 obj.droughtGrowthFraction = growthFraction
                 if round(growthFraction,5) == 0.0:
                     obj.causeOfDeath="drought"
