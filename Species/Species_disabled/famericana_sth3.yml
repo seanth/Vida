@@ -1,16 +1,16 @@
-nameSpecies: Q_rubra
+nameSpecies: F_americana
 creator: miniVida2yml.py
-comments: Generated from file q rubra new miniVida with graphs.xls on 2019-0219
+comments: Generated from file f americana new miniVida graphs.xls on 2019-0220
 
 ###Basic
-densityStem: 700.000000 #[1]
+densityStem: 675.000000 #[1], in kg/m3
 densityLeaf: 923.430000
-densitySeed: 350.000000 #[2]
+densitySeed: 337.500000 #[2]
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
-heightStemMax: 30.000000 #[3]
-youngsModulusStem: 12.140000 #[4]
+heightStemMax: 32.000000 #[3]
+youngsModulusStem: 12.000000 #[4], in GPa
 
 ###Reproduction
 makeSeeds: TRUE
@@ -18,13 +18,13 @@ fractionSelfishness: 0.5
 reproductionConstant: 0.09974943 #analysis of [5]
 reproductionExponent: 1.09777536 #analysis of [5]
 numYearsGrowthMemory: 2
-massSeedMax: 0.55 #0.6
+massSeedMax:  0.4 #0.60
 locSeedFormation: [1.0, 0.0]
 seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.08 #0.13 used in chestnut project #[6]
+fractionFailGerminate: 0.46 #0.995 used in chestnut project #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [135.8,0.6188,1] #[64.8, 0.18, 0.5] 
-colourLeaf: [135.8,0.6188,1] #[116.6, 1.0, 1.0]
+colourSpecies: [231.8, 0.597,1.0] #
+colourLeaf: [231.8, 0.597,1.0] #[116.6, 1.0, 1.0] #green
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -42,7 +42,7 @@ crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA
 boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
 
 ###Photosynthesis
-photoConstant: 1.5 #1.300000
+photoConstant: 1.5 #0.760000
 photoExponent: -0.448340
 canopyTransmittanceImpactsConversion: FALSE
 
@@ -51,26 +51,26 @@ fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
 fractionCarbonToStem: 0.990000
-speciesConstant1: 0.818820
-speciesExponent1: 0.988134
-speciesConstant2: 0.100000
+speciesConstant1: 0.810450
+speciesExponent1: 1.037282
+speciesConstant2: 0.116400
 speciesExponent2: 0.881900
 speciesConstant3: 0.150000
 speciesExponent3: 0.771900
-speciesConstant20: 0.024842
-speciesExponent20: 0.415746
+speciesConstant20: 0.027943
+speciesExponent20: 0.387955
 speciesConstant6: 0.000000
-speciesConstant7: 48.725101
-speciesExponent7: 0.667835
+speciesConstant7: 130 #77.224650
+speciesExponent7: 1.0 #0.803966
 speciesConstant8: 8.500000
 
 ###waterlogging
-waterTolerance: [1.12,0.25] #[watertol value, stdDev] #[7]
+waterTolerance: 2.59 #[7]
 
-#[1] https://www.wood-database.com/red-oak/
+#[1] https://www.wood-database.com/white-ash/
 #[2] set the 50% densityStem
 #[3] height
-#[4] https://www.wood-database.com/red-oak/
+#[4] https://www.wood-database.com/white-ash/
 #[5] Cannell, 1982
-#[6] 1992. Population dynamics and growth patterns for a cohort of northern red oak (Quercus rubra) seedlings
+#[6] https://www.srs.fs.usda.gov/pubs/misc/ag_654/volume_2/fraxinus/americana.htm
 #[7] Ülo Niinemets and Fernando Valladares. 2006. Tolerance to shade, drought, and waterlogging of temperate Northern Hemisphere trees and shrubs. Ecological Monographs 76:521–547
