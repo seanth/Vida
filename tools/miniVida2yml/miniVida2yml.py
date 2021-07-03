@@ -109,6 +109,10 @@ if __name__ == "__main__":
     waterloggingTol = firstSheet.cell(38,2).value
     #print(waterloggingTol)
 
+    #drought tolerance:
+    droughtTol = firstSheet.cell(39,2).value
+    #print(droughtTol)
+
 
     theYear = datetime.date.today().year
     theMonth = '%02d' % datetime.date.today().month #makes sure two digits
@@ -120,7 +124,7 @@ if __name__ == "__main__":
     scriptName = os.path.basename(__file__)
 
     ymlTempTxt = ymlTempTxt % (shortBaseName, scriptName, theBaseName, theCreationDate, densityStem, densityLeaf, densityStem/2.0, heightLeaf, B7, youngsModulusStem, 
-    	B9, A6, fractStem, B1, A1, B2, A2, B3, A3, B4, A4, B6, B5, A5, B8, waterloggingTol)
+    	B9, A6, fractStem, B1, A1, B2, A2, B3, A3, B4, A4, B6, B5, A5, B8, waterloggingTol, droughtTol)
     #print ymlTempTxt
 
     theOutFile = open(args.outFile, "w")
