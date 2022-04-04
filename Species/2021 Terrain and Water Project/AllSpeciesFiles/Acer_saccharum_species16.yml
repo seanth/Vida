@@ -18,13 +18,13 @@ fractionSelfishness: 0.5
 reproductionConstant: 0.09974943 #[5]
 reproductionExponent: 1.09777536 #[5]
 numYearsGrowthMemory: 2
-massSeedMax:  0.60
+massSeedMax:  0.09 #0.60
 locSeedFormation: [1.0, 0.0]
 seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.0 #[6]
+fractionFailGerminate: 0.4 #[6] #0.0 v1
 
 ###Graphics
 leafIsHemisphere: TRUE

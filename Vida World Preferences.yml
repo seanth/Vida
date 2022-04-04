@@ -21,8 +21,8 @@ janzenConnell: 0.5
 allowEulerGreenhillViolations: FALSE
 allowOverlaps: FALSE
 ##########################
-useWaterTol: TRUE
-useDroughtTol: TRUE
+useWaterTol: FALSE
+useDroughtTol: FALSE
 
 
 

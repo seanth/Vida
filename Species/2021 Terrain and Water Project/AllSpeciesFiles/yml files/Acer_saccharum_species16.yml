@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.0 #[6]
+fractionFailGerminate: 0.4 #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
