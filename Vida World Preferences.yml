@@ -20,4 +20,4 @@ carbonAllocationMethod: 0 #discontinued
 canopyTransmittanceImpactsConversion: SPECIES #discontinued
 fractionWorldGraphicEdgeSpacer: 0.3 #to be moved
 fractionWorldBetweenLRGraphicsSpacer: 0.0 #to be moved
-fractionWorldBetweenTBGraphicsSpacer: 0.5 #to be moved
+fractionWorldBetweenTBGraphicsSpacer: 1.5 #to be moved
