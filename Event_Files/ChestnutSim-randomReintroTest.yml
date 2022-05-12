@@ -1,0 +1,72 @@
+0:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: A_rubrum
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: B_lenta
+12:
+   - Species:
+     - name: Q_prinus
+       fractionFailGerminate: 0.5
+       randomSlowGrowth: 0.0
+12:
+   - Species:
+     - name: Q_rubra
+       fractionFailGerminate: 0.17
+       randomSlowGrowth: 0.0
+20:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: all
+       species: C_dentata
+   - Species:
+     - name: Q_alba
+       fractionFailGerminate: 0.91
+       randomSlowGrowth: 0.4
+   - Seed:
+     - species: arubrum_sth2.yml
+       placement: random
+       number: 250
+   - Seed:
+     - species: blenta_sth1.yml
+       placement: random
+       number: 40
+30:
+   - Species:
+     - name: Q_prinus
+       fractionFailGerminate: 0.7
+       randomSlowGrowth: 0.0
+31:
+   - Seed:
+     - species: cdentata_sth3.yml
+       placement: random
+       number: 100
+   - Seed:
+     - species: blenta_sth1.yml
+       placement: random
+       number: 40
+   - Species:
+     - name: A_rubrum
+       fractionFailGerminate: 0.7
+       randomSlowGrowth: 0.0
+#32:
+#   - Species:
+#     - name: C_dentata
+#       fractionFailGerminate: 0.905
+#39:
+#   - Species:
+#     - name: Q_alba
+#       fractionFailGerminate: 0.2
+#       randomSlowGrowth: 0.0
