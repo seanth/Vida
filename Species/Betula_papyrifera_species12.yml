@@ -1,16 +1,16 @@
-nameSpecies: Abies_balsamea_species4
+nameSpecies: Betula_papyrifera_species12
 creator: miniVida2yml.py
-comments: Generated from file Abies_balsamea_species4.xls on 2021-0606
+comments: Generated from file Betula_papyrifera_species12.xlsx on 2021-0606
 
 ###Basic
-densityStem: 400.000000 #[1]
+densityStem: 610.000000 #[1]
 densityLeaf: 923.430000
-densitySeed: 200.000000 #[2]
+densitySeed: 305.000000 #[2]
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
-heightStemMax: 28.956000 #[3]
-youngsModulusStem: 9.570000 #[5]
+heightStemMax: 26.822400 #[3]
+youngsModulusStem: 10.970000 #[5]
 
 ###Reproduction
 makeSeeds: TRUE
@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.0 #[6]
+fractionFailGerminate: 0.70 #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -32,8 +32,8 @@ radiusStemMultiplier: 1
 radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
-colourSpecies: [137.0, 0.85, 0.85] #green
-colourLeaf: [137.0, 0.85, 0.85]
+colourSpecies: [50.0, 0.85, 0.85] #mustard
+colourLeaf: [50.0, 0.85, 0.85]
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
@@ -42,8 +42,8 @@ crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA
 boleHeight: 80 #used only when the 3dCrownShape is not ELIP. Percent of total plant height
 
 ###Photosynthesis
-photoConstant: 1.000000 #[5]
-photoExponent: -0.457700 #[5]
+photoConstant: 1.140000 #[5]
+photoExponent: -0.448300 #[5]
 canopyTransmittanceImpactsConversion: FALSE
 
 ###Allometry
@@ -52,23 +52,23 @@ fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg #[7]
 fractionCarbonToStem: 0.990000
 speciesConstant1: 0.600000 #[8]
-speciesExponent1: 1.043600 #[8]
-speciesConstant2: 0.290200 #[9]
-speciesExponent2: 0.971500 #[9]
-speciesConstant3: 0.550000 #[10]
-speciesExponent3: 0.709200 #[10]
-speciesConstant20: 0.037010 #[11]
-speciesExponent20: 0.378647 #[11]
+speciesExponent1: 1.022100 #[8]
+speciesConstant2: 0.116400 #[9]
+speciesExponent2: 0.881900 #[9]
+speciesConstant3: 0.140000 #[10]
+speciesExponent3: 0.771900 #[10]
+speciesConstant20: 0.026161 #[11]
+speciesExponent20: 0.407987 #[11]
 speciesConstant6: 0.000000 
-speciesConstant7: 82.102743 #[12]
-speciesExponent7: 0.931395 #[12]
-speciesConstant8: 8.400000 #[13]
+speciesConstant7: 66.098537 #[12]
+speciesExponent7: 0.722233 #[12]
+speciesConstant8: 6.400000 #[13]
 
 ###waterlogging
-waterTolerance: 2.000000 #[watertol value] #[14]
+waterTolerance: 1.250000 #[watertol value] #[14]
 
 ###waterscarcity
-droughtTolerance: 1.880000 #[droughttol value] #[15]
+droughtTolerance: 2.020000 #[droughttol value] #[15]
 
 #[1] 
 #[2] set the 50 percent densityStem

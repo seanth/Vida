@@ -1,16 +1,16 @@
-nameSpecies: Picea_mariana_species7
+nameSpecies: Populus_grandidentata_species5
 creator: miniVida2yml.py
-comments: Generated from file Picea_mariana_species7.xls on 2021-0606
+comments: Generated from file Populus_grandidentata_species5.xls on 2021-0606
 
 ###Basic
-densityStem: 450.000000 #[1]
+densityStem: 435.000000 #[1]
 densityLeaf: 923.430000
-densitySeed: 225.000000 #[2]
+densitySeed: 217.500000 #[2]
 canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
-heightStemMax: 21.336000 #[3]
-youngsModulusStem: 10.500000 #[5]
+heightStemMax: 34.137600 #[3]
+youngsModulusStem: 9.860000 #[5]
 
 ###Reproduction
 makeSeeds: TRUE
@@ -24,7 +24,7 @@ seedDispersalMethod: [4, 45, 5]
 delayInGermination: 0
 randomSlowGrowth: 0.0
 minimumLightForGermination: 0.0 #unused
-fractionFailGerminate: 0.0 #[6]
+fractionFailGerminate: 0.95 #[6]
 
 ###Graphics
 leafIsHemisphere: TRUE
@@ -42,8 +42,8 @@ crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA
 boleHeight: 80 #used only when the 3dCrownShape is not ELIP. Percent of total plant height
 
 ###Photosynthesis
-photoConstant: 0.780000 #[5]
-photoExponent: -0.457700 #[5]
+photoConstant: 1.505600 #[5]
+photoExponent: -0.448300 #[5]
 canopyTransmittanceImpactsConversion: FALSE
 
 ###Allometry
@@ -51,24 +51,24 @@ fractionCarbonToSeeds: 1.0
 fractMassSeedMaxToGerm: 0.8
 fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg #[7]
 fractionCarbonToStem: 0.990000
-speciesConstant1: 0.724000 #[8]
-speciesExponent1: 1.043600 #[8]
-speciesConstant2: 0.290200 #[9]
-speciesExponent2: 0.971500 #[9]
-speciesConstant3: 0.350000 #[10]
-speciesExponent3: 0.709200 #[10]
-speciesConstant20: 0.033285 #[11]
-speciesExponent20: 0.401687 #[11]
+speciesConstant1: 0.863700 #[8]
+speciesExponent1: 1.022100 #[8]
+speciesConstant2: 0.116400 #[9]
+speciesExponent2: 0.881900 #[9]
+speciesConstant3: 0.150000 #[10]
+speciesExponent3: 0.771900 #[10]
+speciesConstant20: 0.030892 #[11]
+speciesExponent20: 0.404531 #[11]
 speciesConstant6: 0.000000 
-speciesConstant7: 79.462956 #[12]
-speciesExponent7: 0.920817 #[12]
-speciesConstant8: 5.400000 #[13]
+speciesConstant7: 84.518594 #[12]
+speciesExponent7: 0.791597 #[12]
+speciesConstant8: 8.900000 #[13]
 
 ###waterlogging
 waterTolerance: 2.000000 #[watertol value] #[14]
 
 ###waterscarcity
-droughtTolerance: 2.000000 #[droughttol value] #[15]
+droughtTolerance: 2.500000 #[droughttol value] #[15]
 
 #[1] 
 #[2] set the 50 percent densityStem
