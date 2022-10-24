@@ -16,7 +16,11 @@ import os.path
 import glob
 import sys
 import argparse
-import ConfigParser
+if (sys.version_info.major)==2:
+    import ConfigParser
+else:
+    import configparser as ConfigParser
+    import pathlib
 
 
 import copy
@@ -438,10 +442,10 @@ def main():
                 				
                 theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
                 if len(matchFiles)==1:
-                    print "***xlsx file found"
+                    print("***xlsx file found")
                 else:
-                    print "      Multiple xlsx files found. Using:"
-                    print "       %s" % os.path.basename(theExcelFile)
+                    print("      Multiple xlsx files found. Using:")
+                    print("       %s" % os.path.basename(theExcelFile))
 
                 import pandas
                 fileData = pandas.read_excel(theExcelFile, skiprows=7)
@@ -1108,24 +1112,27 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
-    parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
-    parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
-    parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
-    #parser.add_argument('-i', metavar='file', type=file, dest='terrainFile', required=False, help='Load an image as a terrain file')    
-    parser.add_argument('-i', metavar='file', type=dirPath, dest='terrainFile', required=False, help='Load an image as a terrain file')    
+    # parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
+    # parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
+    # parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
+    parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
+    parser.add_argument('-rl', type=open, metavar='file', dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
+    parser.add_argument('-e', type=open, metavar='file', dest='eventFile', required=False, help='Load an event file')
+    parser.add_argument('-i', type=pathlib.Path, metavar='file', dest='terrainFile', required=False, help='Load an image as a terrain file')    
+
+
     #default max and min elevation for a grayscale image given no elevation data)
     parser.add_argument('-imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
     parser.add_argument('-imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
     parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Elevation at which water exists on terrain')
 
     ###options that use a code action
-    #parser.add_argument('-rl', metavar='file', type=file, dest='resumeSim', action=parseAction, required=False, help='NOT FULLY IMPLEMENTED')
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
     parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','3d' ], help='Graphical view desired')    
     parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with')
     parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
-    parser.add_argument('-sf', type=file, metavar='file', dest='startPopulationSize', action=parseAction)
+    parser.add_argument('-sf', type=open, metavar='file', dest='startPopulationSize', action=parseAction)
     ###slighly overloaded options
     parser.add_argument('-a', type=str, dest='archive', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
     parser.add_argument('-ai', type=str, dest='archive', action=parseAction, nargs=1 )
