@@ -64,8 +64,8 @@ for i in theConfig.items(theConfigSection):
     theDefaults['allFiles']=False
     theDefaults['fileOrFolder']=None
 
-#print theDefaults
-#print "#################"
+#print (theDefaults)
+#print ("#################")
 #import vdefaults as thePrefs
 #produceGraphics=thePrefs.produceGraphics
 #produceVideo=thePrefs.produceVideo
@@ -188,24 +188,18 @@ if __name__ == '__main__':
     #need to parse the -n to see if it's a file or folder
     theLastChar= fileOrFolder[0][len(fileOrFolder[0])-1]
     theOutputFolder=os.path.dirname(fileOrFolder[0])+"/"
-    #print theOutputFolder
+
     if theLastChar=="/":
         theOutputFolder=os.path.abspath(fileOrFolder[0])+"/"
         fileOrFolder=os.listdir(theOutputFolder)
         fileOrFolder=[i for i in fileOrFolder if not i.startswith('.')]	
-    #print theOutputFolder
+
     if len(fileOrFolder)>0:
         fileName=fileOrFolder[0].split("/")[-1]
         #what is the file suffux?
-        #fileSuffix=fileOrFolder[0].split("/")[-1]
-        #fileSuffix=fileSuffix.split(".")[-1]
         fileSuffix=fileName.split(".")[-1]
-        #print fileSuffix
+
         #try and get a simulation name
-        #simulationName= fileOrFolder[0]
-        #simulationName= simulationName.split("/")
-        #simulationName=simulationName[-1]
-        #simulationName= simulationName.split("-")[0]
         simulationName=fileName.split("-")[0]
     
     ##I am in a bit of a hurry and did not update this to work correctly
@@ -257,10 +251,6 @@ if __name__ == '__main__':
         theData=""
         cfdgFileName=""
         ###make the png
-        #print "Producing PNG files..."
-        #print outputGraphicsDirectory
-        #print "###"
-        #outputGraphics.outputPNGs(outputGraphicsDirectory, outputGraphicsDirectory)
         if fileSuffix =="cfdg":
             print("###Producing PNG files...###")
             outputGraphics.outputPNGs(fileOrFolder, outputGraphicsDirectory)
@@ -282,14 +272,12 @@ if __name__ == '__main__':
     ###only try and make a video if it is wanted and if pngs were made
     if produceVideo and produceGraphics==True:
         print("Producing MOV file...")
-        #print outputGraphicsDirectory
         outputGraphics.outputMOV(outputGraphicsDirectory, simulationName)
         if allFiles==False:
             ###delete the temp folder and files
             shutil.rmtree(outputGraphicsDirectory)	
     
     if produceSummary==True and len(fileOrFolder)>0:
-        #print "yes"
         theSummaryOutput=[]
         statDictList=[]
         theSummaryOutputHeader=""
@@ -320,10 +308,7 @@ if __name__ == '__main__':
                 allText=tempList
                 ###turn the read file into a 1 list/line (2d array)
                 tempList=[aLine.split(",") for aLine in allText]
-                allText=tempList
-                #print "#######"
-                #print allText
-                
+                allText=tempList                
                 
                 
                 #this makes sure the files are in the correct format
@@ -331,7 +316,6 @@ if __name__ == '__main__':
                 #allows for backward compatability
                 if not tempList[0][0]=="Cycle #":
                     for line in tempList:
-                        #print line
                         line=line.insert(0, str(theSequenceNumb))
                     tempList[0][0]="Cycle #"
                     saveDataToCSVFile(theOutputFolder, theFileName, tempList)
@@ -345,8 +329,6 @@ if __name__ == '__main__':
                 ##In general, most of the things that are numbers should be used
                 ##some should be ignored
                 theIndex=0
-                #print allText[0]
-                #print allText
                 while theIndex<len(allText[0]):
                     theColumn=[row[theIndex] for row in allText]
                     #print theColumn
@@ -364,18 +346,15 @@ if __name__ == '__main__':
                     #print theSpeciesNames
                     if not theColumn[0] in ignoreTheseColumns:
                         try:
-                            #print theColumn[0]
                             if theColumn[0]=="X Location":
                                 theIndex=theIndex
                             else:
                                 float(theColumn[1])
                         except:
                             #do nothing
-                            #print "it's string"
                             theIndex=theIndex
                         else:
                             theColumnTitle=theColumn.pop(0).strip()
-                            #print theColumnTitle
                             theColumn=[float(theRow) for theRow in theColumn]
                             theColumnMin=min(theColumn)
                             theColumnMax=max(theColumn)
@@ -387,7 +366,6 @@ if __name__ == '__main__':
                                 theOutput[0].append("sum community "+theColumnTitle)
                                 theOutput[1].append(theColumnSum)
                     theIndex=theIndex+1
-                    #print theOutput
                 
                 #How many seeds on the ground?
                 try:
@@ -405,7 +383,6 @@ if __name__ == '__main__':
                     theOutput[0].append("# of seeds in soil")
                     theOutput[1].append(theCount)
                 
-                #print allText[0]
                 #how many alive?
                 try:
                     theIndex=allText[0].index(" Cause of Death")
@@ -417,7 +394,7 @@ if __name__ == '__main__':
                     thePopulationDead=len(theColumn)-1-thePopulationAlive
                     theOutput[0].extend(["# Alive", "# Dead"])
                     theOutput[1].extend([thePopulationAlive, thePopulationDead])
-                    #print theColumn
+
                     theDeathNames=[]
                     theDeathCount=[]
                     for i in range(len(theColumn)):
@@ -460,35 +437,24 @@ if __name__ == '__main__':
                     theDataIndex=allText[0].index(" Functional Area")
                     theData=[row[theDataIndex] for row in allText]
                     theData.pop(0)
-                    #print theSpeciesNames
-                    #print theColumn
-                    #print theData
                     theSpeciesDict=dict.fromkeys(theSpeciesNames,[])
                     #for aSpeciesName in theSpeciesNames:
                     SpeciesData = []
-                    #print theColumn
                     for anElement in theColumn:
                         theListTemp=[]
-                        #print theListTemp
-                        #print anElement
-                    #   if anElement== aSpeciesName:
                         datum = float(theData[theColumn.index(anElement)])
-                        #print datum
-                    #             print aSpeciesName
-                    #             print "****"
+
                         import copy
                         theListTemp=copy.copy(theSpeciesDict[anElement])
                         theListTemp.append(datum)
-                        #print theListTemp
+
                         theSpeciesDict[anElement]=theListTemp
                         #theSpeciesDict.setdefault(anElement, SpeciesData).append(datum)
-                    #print theSpeciesDict
-                    #print sum(theSpeciesDict[anElement])
+
                     for theName in theSpeciesNames:
-                        #print theName
                         theOutput[0].append(("Total Functional Area of %s") % theName)
                         theOutput[1].append(sum(theSpeciesDict[theName]))
-                    #print "*****"
+
 
                     #allSpeciesFunctionalArea = dict(zip(theColumn,theData))
                     #print allSpeciesFunctionalArea
@@ -556,7 +522,6 @@ if __name__ == '__main__':
         for aFile in fileList:
             if theHeader=="":
                 theHeader=linecache.getline(aFile,1)
-            #print "this is the header: %s" % (theHeader)
             theFile=open(aFile)
             try:
                 fileData=theFile.read()
@@ -566,13 +531,12 @@ if __name__ == '__main__':
         theOutput.close()
         print("***Finished merging. Removing extra headers...")
         import fileinput
-        #print theStatsFolder+concatFileName+".csv"
         theFile=fileinput.input(theStatsFolder+concatFileName+".csv", inplace=1)
         i=0
         for line in theFile:
             if not line==theHeader or i==0:
                 line=line.strip('\n')
-                print line
+                print(line)
             i=i+1
         print("***Finished***")
 
