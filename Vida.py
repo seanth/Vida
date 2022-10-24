@@ -199,15 +199,15 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
                 plant.causeOfDeath,0,0)
         theCorpseList.append(theData)
     if len(thePlantList)>1:
-        saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'wb')
+        saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'w')
         saveDataFile.writelines(thePlantList)
         saveDataFile.close()
     if len(theSeedList)>1:
-        saveDataFile =open(theDirectory+"Seeds/"+ theFileName, 'wb')
+        saveDataFile =open(theDirectory+"Seeds/"+ theFileName, 'w')
         saveDataFile.writelines(theSeedList)
         saveDataFile.close()
     if len(theCorpseList)>1:
-        saveDataFile =open(theDirectory+"Corpses/"+ theFileName, 'wb')
+        saveDataFile =open(theDirectory+"Corpses/"+ theFileName, 'w')
         saveDataFile.writelines(theCorpseList)
         saveDataFile.close()
     thePlantList=[]
