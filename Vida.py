@@ -1057,12 +1057,16 @@ def main():
                             
 #if produceStats:
         if saveData=="a":
-            ###the real solution is to refaction vextract so it can be
+            ###the real solution is to refactor vextract so it can be
             ###command line OR imported
-            if "PyPy" in sys.version:
-                theRunEnv="pypy"
-            else:
+            # if "PyPy" in sys.version:
+            #     theRunEnv="pypy"
+            # else:
+            #     theRunEnv="python"
+            if (sys.version_info.major)==2:
                 theRunEnv="python"
+            else:
+                theRunEnv="python3"
             theArgument="-n '%s' -fs" % (dataDirectory+"Seeds/")
             print("\n***sending to Extract: %s" % (theArgument))
             os.system("%s Vida_Data/vextract.py %s" % (theRunEnv, theArgument))
