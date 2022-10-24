@@ -1184,11 +1184,11 @@ if __name__ == '__main__':
             print("***Warning: A video can not be auto generated from the '3d' graphical option\n   Video output turned off")
             produceVideo=False
     ##parse resume sim option a bit more
-    if type(resumeSimReload)==file:
+    if type(resumeSimReload)=='_io.TextIOWrapper':
         simulationFile=resumeSimReload
         resumeSimReload=True
         reloadSpeciesData=False
-    if type(resumeSim)==file:
+    if type(resumeSim)=='_io.TextIOWrapper':
         simulationFile=resumeSim
         resumeSim=True
         reloadSpeciesData=False
@@ -1200,7 +1200,7 @@ if __name__ == '__main__':
     if type(startPopulationSize)==list:
         seedPlacement=startPopulationSize[1]
         startPopulationSize=startPopulationSize[0]
-    if type(startPopulationSize)==file:
+    if type(startPopulationSize)=='_io.TextIOWrapper':
         sList=startPopulationSize.readlines()
         ##send the file off to make sure it's in the correct format
         sList=checkSeedPlacementList(sList)
