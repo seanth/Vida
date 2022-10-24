@@ -1,11 +1,11 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2009, Sean T. Hammond
+    Copyright 2022, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
-    You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
-    """
+    You should have received a copy of academic software agreement along with Vida. If not, see <https://github.com/seanth/Vida/blob/master/LICENSE.txt>.
+"""
 
 import sys
 import os
@@ -15,7 +15,11 @@ import glob
 import linecache
 import pickle
 import argparse
-import ConfigParser
+if (sys.version_info.major)==2:
+    import ConfigParser
+else:
+    import configparser as ConfigParser
+    import pathlib
 ###append the path to basic data files
 sys.path.append("Vida_Data")
 import vgraphics as outputGraphics

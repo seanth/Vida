@@ -1,3 +1,12 @@
+"""This file is part of Vida.
+    --------------------------
+    Copyright 2022, Sean T. Hammond
+    
+    Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+    
+    You should have received a copy of academic software agreement along with Vida. If not, see <https://github.com/seanth/Vida/blob/master/LICENSE.txt>.
+"""
+
 from PIL import Image
 
 def getPixelValue(x,y,theImage):
