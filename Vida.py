@@ -598,7 +598,7 @@ def main():
         outputDirectory=makeDirectory(outputDirectory)
         ###save the command line arguments
         theCLArgs=" ".join(map(str, theCLArgs))
-        theCLIfile=open(outputDirectory+"CLI_arguments.txt", 'wb')
+        theCLIfile=open(outputDirectory+"CLI_arguments.txt", 'w')
         theCLIfile.writelines(theCLArgs)
         theCLIfile.close()
         #if produceGraphics==1 or produceDXFGraphics==1:
@@ -762,7 +762,13 @@ def main():
                                     ###so it can be added to theGarden
                                     for j in sList:
                                         jj=j[0]
-                                        if not theGarden.platonicSeeds.has_key(jj):
+                                        if (sys.version_info.major)==2:
+                                            if not theGarden.platonicSeeds.has_key(jj):
+                                                speciesIsMissing==True
+                                        else:
+                                            if not jj in theGarden.platonicSeeds:
+                                                speciesIsMissing==True
+                                        if speciesIsMissing==True:
                                             if debug == 1: print("debug: Desired species missing from loaded simulation")
                                             if debug == 1: print("debug: Adding species %s" % (jj))
                                             theSeed=Species1()

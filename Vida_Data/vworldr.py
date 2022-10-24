@@ -647,9 +647,15 @@ class garden(object):
                     fileLoc= "Species/"+ymlList[whichSpecies]
                     theSpeciesFile=ymlList[whichSpecies]
                 #print theSpeciesFile
-                if theGarden.platonicSeeds.has_key(theSpeciesFile):
-                    platonicSeed=theGarden.platonicSeeds[theSpeciesFile]
-                    theSeed=copy.deepcopy(platonicSeed)
+                if (sys.version_info.major)==2:
+                    if theGarden.platonicSeeds.has_key(theSpeciesFile):
+                        platonicSeed=theGarden.platonicSeeds[theSpeciesFile]
+                        theSeed=copy.deepcopy(platonicSeed)
+                else:
+                    if theSpeciesFile in theGarden.platonicSeeds:
+                        platonicSeed=theGarden.platonicSeeds[theSpeciesFile]
+                        theSeed=copy.deepcopy(platonicSeed)
+                
             #else:
             #print "something is very wrong"
             else:
