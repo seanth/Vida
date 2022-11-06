@@ -111,7 +111,8 @@ def saveDataToCSVFile (theDirectory, theFileName, theData):
     makeDirectory(theDirectory)
     if not theFileName.endswith(".csv"):
         theFileName=theFileName+".csv"
-    saveDataFile =csv.writer(file(theDirectory + theFileName, 'w'),delimiter=',',lineterminator='\n')
+    #saveDataFile =csv.writer(file(theDirectory + theFileName, 'w'),delimiter=',',lineterminator='\n')
+    saveDataFile =csv.writer(open(theDirectory + theFileName, 'w'),delimiter=',',lineterminator='\n')
     for l in theData:
         saveDataFile.writerow(l)
 
