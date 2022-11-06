@@ -102,6 +102,8 @@ class parseAction(argparse.Action):
                 theValues=[True, theValues]
         ###seed placement option
         if self.dest=="startPopulationSize":
+            #this adds a second item defining if the placement is
+            #as a square, hex, defined in a placement file, or random
             theOpt=self.option_strings
             if theOpt==['-ss']: theOpt='square'
             elif theOpt==['-sh']: theOpt='hex'
@@ -242,8 +244,8 @@ def makeDirectory(theDirectory):
         os.mkdir(theDirectory)
     return theDirectory
 
-def dirPath(thePath):
-    return thePath
+# def dirPath(thePath):
+#     return thePath
 
         
 def correctType(theItem):
@@ -261,38 +263,33 @@ def correctType(theItem):
     return returnValue
     
 def checkSeedPlacementList(seedPlacementList):
-    #remove blank lines that are just \n
+    ###################
+    ######STH 2022-1105
+    ###remove trailing "\n"
+    seedPlacementList = [aLine.rstrip() for aLine in seedPlacementList]
+    ###remove blank lines
+    seedPlacementList = [aLine for aLine in seedPlacementList if aLine!=""]
+    ###break the CSV on each line into a list
+    seedPlacementList = [aLine.split(",") for aLine in seedPlacementList]
     i=0
     for aLine in seedPlacementList:
-        if aLine=="\n":seedPlacementList[i]=""
-        i=i+1
-    i=0
-    for aLine in seedPlacementList:
-        if not aLine=="":
-            aLine=aLine.rstrip("\n")
-            aLine=aLine.split(",")
-            for j in range(len(aLine)):
-                if not j==0: aLine[j]=aLine[j].strip()
-            theLength=len(aLine)
-            if theLength>5: del aLine[5:theLength] #if it is too long, just chop it
-            #if too short, make it longer
-            if theLength<5:
-                toAdd=5-theLength
-                for k in range(toAdd):
-                    aLine.append("0.0")
-            aLine= map(correctType, aLine)
-            seedPlacementList[i]=aLine
+        aLine = [x.strip() for x in aLine] #remove any leading or trailing white spaces
+        theLength=len(aLine)
+        if theLength>4: del aLine[4:theLength] #if it is too long, just chop it
+        aLine = aLine+["0.0"]*(4-theLength) #if too short, make it longer
+        #check item in the list and convert from string to correct type
+        aLine = [correctType(x) for x in aLine]
+        seedPlacementList[i]=aLine
         i=i+1
     i=0
     printErrorMessage=0
     for aLine in seedPlacementList:
-        if aLine=="":
-            del seedPlacementList[i]
-            i=i+1
-        elif not type(aLine[0])==str or not type(aLine[1])==float or not type(aLine[2])==float or not type(aLine[3])==int or not type(aLine[4])==float:
+        if type(aLine[3])==float:
+            aLine[3]=int(aLine[3])
+        if (type(aLine[0])!=str) or (type(aLine[1])!=float) or (type(aLine[2])!=float) or (type(aLine[3])!=int):
             printErrorMessage=1
             del seedPlacementList[i]
-            i=i+1
+        i=i+1
     if printErrorMessage:
         print("***Improper seeding file format...")
         print("     Questionable lines will be ignored.")
@@ -406,7 +403,7 @@ def main():
         #STH 23 Sept 2020
         elif os.path.isdir(terrainFile) == True:
             print("***Checking directory for tif terrain image...***")
-            tmpPath = os.path.join(terrainFile,'*.tif') #assumes file ssuffix is 'tif'
+            tmpPath = os.path.join(terrainFile,'*.tif') #assumes file suffix is 'tif'
             matchFiles = glob.glob(tmpPath)
             #print matchFiles
             if not matchFiles:
@@ -526,6 +523,7 @@ def main():
             pythonList.append(file)
     fileList=[]
     ##########
+
     if (resumeSim==True or resumeSimReload==True) and not simulationFile=="":
         print("***Loading simulation: %s...***" % (simulationFile.name))
         #simulationFile=open(simulationFile, 'r')
@@ -1140,10 +1138,13 @@ if __name__ == '__main__':
     ###options that use a code action
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
     parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','3d' ], help='Graphical view desired')    
-    parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with')
-    parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
-    parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction)
-    parser.add_argument('-sf', type=open, metavar='file', dest='startPopulationSize', action=parseAction)
+    # parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with')
+    parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted randomly')
+    parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted in a square')
+    parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted in a hex')
+    # parser.add_argument('-sf', type=open, metavar='file', dest='startPopulationSize', action=parseAction)
+    parser.add_argument('-sf', type=pathlib.Path, metavar='file', dest='startPopulationSize', action=parseAction, required=False, help='Path to placement csv file')
+
     ###slighly overloaded options
     parser.add_argument('-a', type=str, dest='archive', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
     parser.add_argument('-ai', type=str, dest='archive', action=parseAction, nargs=1 )
@@ -1208,14 +1209,28 @@ if __name__ == '__main__':
         reloadSpeciesData=resumeSim[1]
         resumeSim=True
     ###parse seed placement options a bit more
+    #index 0 is the file path, if a placement file is used
+    if os.path.isfile(startPopulationSize[0]) == True:
+        theExtension=os.path.splitext(startPopulationSize[0])[1]
+        if theExtension==".csv":
+            theFile = open(startPopulationSize[0])
+            sList=theFile.readlines()
+            #print(sList)
+            #print(type(sList))
+            sList=checkSeedPlacementList(sList)
+            startPopulationSize=len(sList)
+            seedPlacement="fromFile"
+    print(startPopulationSize)
+
+
     if type(startPopulationSize)==list:
         seedPlacement=startPopulationSize[1]
         startPopulationSize=startPopulationSize[0]
-    if type(startPopulationSize)=='_io.TextIOWrapper':
-        sList=startPopulationSize.readlines()
-        ##send the file off to make sure it's in the correct format
-        sList=checkSeedPlacementList(sList)
-        startPopulationSize=len(sList)
+    # if type(startPopulationSize)=='_io.TextIOWrapper':
+    #     sList=startPopulationSize.readlines()
+    #     ##send the file off to make sure it's in the correct format
+    #     sList=checkSeedPlacementList(sList)
+    #     startPopulationSize=len(sList)
     
     
     
