@@ -1,6 +1,6 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2022, Sean T. Hammond
+    Copyright 2023, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
@@ -15,7 +15,10 @@ import colour_utils
 import vterrainImport as terrain_utils
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 
-def initDXFBlocks(terrainImage):
+def initDXFBlocks(theGarden):
+    terrainImage=theGarden.terrainImage
+    theWorldSize=theGarden.theWorldSize
+    theElevDelta=theGarden.maxElevation
     # theData = sdxf.Drawing()
     theData = dxf.drawing()
 
@@ -53,14 +56,15 @@ def initDXFBlocks(terrainImage):
     if(terrainImage!=[]):
         print("***Generating terrain mesh...***")
         b = dxf.block(name='MESHTERRAIN')
-        xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
+        #xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
+        xSize,ySize = (theWorldSize+1,theWorldSize+1)
         mesh = dxf.polymesh(xSize, ySize)
         for x in range(xSize):
             for y in range(ySize):
                 #thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
                 thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
-                #z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-                z = terrain_utils.elevationFromPixel(thePixelValue)
+                z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+                #z = terrain_utils.elevationFromPixel(thePixelValue)
                 mesh.set_vertex(x, y, (x, y, z))
         b.add(mesh)
         theData.blocks.add(b)
