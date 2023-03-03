@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 """This file is part of Vida.
     --------------------------
-    Copyright 2022, Sean T. Hammond
+    Copyright 2023, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
     You should have received a copy of academic software agreement along with Vida. If not, see <https://github.com/seanth/Vida/blob/master/LICENSE.txt>.
 """
 
-vidaVersion = "0.9.1"  
+vidaVersion = "0.10.0"  
 
 import random
 import math
@@ -425,19 +425,9 @@ def main():
             print("***Checking directory for xlsx terrain data...***")
             tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
             matchFiles = glob.glob(tmpPath)
-            #needs to have some default max, min values defined in Vida.ini
-            #could allow for command line -imin and -imax, so you can define max
-            #and min elevation at command line run STH 23 Sept 2020
-
 
             if matchFiles:
-            #     #no matching files found
-            #     #provide some default values until the above is implemented
-            #     absMax = 10
-            #     absMin = 0
-            # else:
-                #9/28/2020 ET-test of default absMax and absMin values from vida.ini
-                				
+                #9/28/2020 ET-test of default absMax and absMin values from vida.ini                				
                 theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
                 if len(matchFiles)==1:
                     print("***xlsx file found")
@@ -446,16 +436,51 @@ def main():
                     print("       %s" % os.path.basename(theExcelFile))
 
                 import pandas
-                fileData = pandas.read_excel(theExcelFile, skiprows=7)
+                fileData = pandas.read_excel(theExcelFile, header=None)
+                #each row in the header will have a single value
+                #but we're not entirely sure exactly what cell the value will be in
+                #STH 2023-0302
+                #this too a while to figure out, so I'm explaining to future me:
+                #I'm getting the row (index starts 0), and then excluding the
+                #first value on the row. Then getting the max value in that 
+                #remaining row. STH 2023-0302
+                theNCols = fileData.iloc[1][1:].max()
+                theNRows = fileData.iloc[2][1:].max()
+                theCellSize = fileData.iloc[5][1:].max()
+                print("ncols: %s" % theNCols)
+                print("nrows: %s" % theNRows)
+                print("cellsize: %s" % theCellSize)
+                
+                #use the smaller axis to calculate the scaling based on
+                #number of cells and cellsize
+                if theNCols<theNRows:
+                    theScaledDistance = theCellSize*theNCols
+                else:
+                    theScaledDistance = theCellSize*theNRows
+                terrainScale=theWorldSize/theScaledDistance
+
+                #sometimes there columns of NaN beyond the defined column max
+                fileData = fileData.drop(theNCols, axis=1)
+
+                #trim off those first few rows
+                fileData = fileData.tail(-7)
+
+                #make sure all the values are numbers
+                fileData = fileData.astype(float)
 
                 allMaxForEachColumn = fileData.max()
                 absMax = allMaxForEachColumn.max()
-                print("absMax: as %s" % absMax)
+                print("absMax: %s" % absMax)
 
                 allMinForEachColumn = fileData.min()
                 absMin = allMinForEachColumn.min()
-                print("absMin: as %s" % absMin)
+                print("absMin: %s" % absMin)
+                print("terrainScale: %s" % terrainScale)
 
+                theMaxElevation = absMax-absMin
+                theMaxElevation = theMaxElevation*terrainScale
+                print("therefore max: %s" % (theMaxElevation))
+                theGarden.maxElevation = theMaxElevation
 
         if tiffFound == False:
             print("***Tiff terrain image not found. Skipping terrain import***")
@@ -556,15 +581,18 @@ def main():
     theGarden.showProgressBar=showProgressBar
 
     print("     World size: %ix%i" % (theWorldSize, theWorldSize))
+    if tiffFound == True:
+        print("     Terrain file: %s" % (stupidKludge))
+        print("       Terrain scaling: %f" % (terrainScale))
     print("     Maximum population size will be: %i" % (maxPopulation))
     print("              and")
     print("     Running simulation for %i cycles" % (maxCycles))
     print("              (whichever comes first)")
     print("     Starting population size: %i" % (startPopulationSize))
-    if theGarden.carbonAllocationMethod==0:
-        print("     Plants will allocate carbon to stem and leaf using methods defined by the species.")
-    else:
-        print("     All plants will allocate carbon to stem and leaf using method %i" % (theGarden.carbonAllocationMethod))
+    # if theGarden.carbonAllocationMethod==0:
+    #     print("     Plants will allocate carbon to stem and leaf using methods defined by the species.")
+    # else:
+    #     print("     All plants will allocate carbon to stem and leaf using method %i" % (theGarden.carbonAllocationMethod))
 
     print("")
     if produceGraphics==True: 
@@ -653,13 +681,14 @@ def main():
                     CFDGtextDict[aView]=outputGraphics.initCFDGText(theGarden, aView, percentTimeStamp, 50.0)
                 else:
                     #Only call this once to save time in making 3d graphics
-                    DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden.terrainImage)
+                    DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden)
         #######
 
         cycleNumber=0
         print("\n***Running simulation.***")
         if not showProgressBar:
             theProgressBar= progressBarClass.progressbarClass(maxCycles,"*") #why -1? because index 0. So if total=100, 0-99.
+
         while (theGarden.numbPlants<=maxPopulation and cycleNumber<=maxCycles) and (theGarden.numbPlants+theGarden.numbSeeds)>0:
             ###################################################################################
             ####Experimental scripting event stuff                                            #
@@ -925,7 +954,7 @@ def main():
 
             if debug==1: print("number of plants: "+str(theGarden.numbPlants))
             if debug==1: print("number of seeds: "+str(theGarden.numbSeeds))
-            
+
             #generate graphics if requested
             if produceGraphics==True:
                 theView=list(graphicalView)#copy graphicalView list to theView
@@ -1057,14 +1086,13 @@ def main():
         if saveData=="a":
             ###the real solution is to refactor vextract so it can be
             ###command line OR imported
-            # if "PyPy" in sys.version:
-            #     theRunEnv="pypy"
-            # else:
-            #     theRunEnv="python"
             if (sys.version_info.major)==2:
                 theRunEnv="python"
             else:
-                theRunEnv="python3"
+                if sys.platform=="win32":
+                    theRunEnv="py -3"
+                else:
+                    theRunEnv="python3"
             theArgument="-n '%s' -fs" % (dataDirectory+"Seeds/")
             print("\n***sending to Extract: %s" % (theArgument))
             os.system("%s Vida_Data/vextract.py %s" % (theRunEnv, theArgument))
@@ -1133,6 +1161,7 @@ if __name__ == '__main__':
     #default max and min elevation for a grayscale image given no elevation data)
     parser.add_argument('-imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
     parser.add_argument('-imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
+    parser.add_argument('-iscale', type=int, metavar='float', dest='terrainScale', required=False, help='The fractional value (0 to 1) to scale the elevation by')
     parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Elevation at which water exists on terrain')
 
     ###options that use a code action
@@ -1220,7 +1249,7 @@ if __name__ == '__main__':
             sList=checkSeedPlacementList(sList)
             startPopulationSize=len(sList)
             seedPlacement="fromFile"
-    print(startPopulationSize)
+    #print(startPopulationSize)
 
 
     if type(startPopulationSize)==list:
