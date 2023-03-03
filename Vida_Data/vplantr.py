@@ -1,6 +1,6 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2022, Sean T. Hammond
+    Copyright 2023, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
@@ -391,7 +391,7 @@ class genericPlant(object):
             coordAdjust = theGarden.theWorldSize/2.0
             #thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
             thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+            theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
         else:
             theElevation = 0.0
         newZ = theElevation
