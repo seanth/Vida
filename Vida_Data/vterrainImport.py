@@ -1,6 +1,6 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2022, Sean T. Hammond
+    Copyright 2023, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
@@ -54,6 +54,5 @@ def elevationFromPixel(thePixelValue, theElevDelta=-1):
         thePixelValue = thePixelValue[0]
 
     theElevation = theSlope*thePixelValue
-
     return theElevation
 
