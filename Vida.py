@@ -714,6 +714,8 @@ def main():
                             zoneTarget=theDict['target']
                             if 'species' in theDict:
                                 zoneSpecies=theDict['species']
+                                #student requested addition to accept list of species. 0323-2023
+                                zoneSpecies=zoneSpecies.split(",")
                             else:
                                 zoneSpecies = 'all'
                             if zoneShape not in ['circle','square']:
@@ -733,7 +735,9 @@ def main():
                                         r=theObject.radiusStem
                                     theResult=geometry_utils.checkOverlap(theObject.x, theObject.y, r, zoneX, zoneY, zoneSize)
                                     if theResult>0 and aKey=='Killzone':
-                                        if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):                                            
+                                        #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
+                                        #student requested addition to accept list of species. 0323-2023   
+                                        if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                    
                                             if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
                                                 killThese.append(theObject)   
                                     elif aKey=='Safezone':
@@ -749,7 +753,9 @@ def main():
                                     objectY=theObject.y
                                     theResult=geometry_utils.pointInsideSquare(zoneX, zoneY, zoneSize, objectX, objectY)
                                     if theResult>0 and aKey=='Killzone':
-                                        if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):                                      
+                                        #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
+                                        #student requested addition to accept list of species. 0323-2023
+                                        if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                       
                                             if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
                                                 killThese.append(theObject) 
                                     elif aKey=='Safezone':
