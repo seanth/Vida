@@ -231,6 +231,7 @@ class garden(object):
         #format of terrainImage is [mode, size tuple, image as bytes] STH 2020-0212
         self.terrainImage = []
         self.waterLevel = "none"
+        self.maxElevation = 0
         ##########################
         fileLoc = "Vida World Preferences.yml"
         self.importPrefs(fileLoc)
@@ -463,7 +464,7 @@ class garden(object):
 
             if not theGarden.allowSubmerged:
                 if theGarden.showProgressBar:
-                    print("***Removing seeds that are submerged...***")
+                    print("***Removing seeds that are submerged...***")                   
                     theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                     i=0
                 ###see if seeds are submerged
@@ -685,9 +686,12 @@ class garden(object):
             #and then use that value to map to an elevation
             #STH EKT 0212-2020
             if theGarden.terrainImage!=[]:
-                coordAdjust = theGarden.theWorldSize/2.0
-                thePixelValue = terrain_utils.getPixelValue(theSeed.x-coordAdjust,theSeed.y-coordAdjust,theGarden.terrainImage)
+                coordAdjust = (theGarden.theWorldSize)/2.0
+                theAdjX = theSeed.x + coordAdjust
+                theAdjY = theSeed.y + coordAdjust
+                thePixelValue = terrain_utils.getPixelValue(theAdjX,theAdjY,theGarden.terrainImage)
                 theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+                #print("%s seedX: %s seedY: %s coordAdjust: %s xpixel: %s thePixelValue: %s theElevation: %s" % (theGarden.terrainImage[1], theSeed.x, theSeed.y, coordAdjust, (theSeed.x-coordAdjust), thePixelValue, theElevation))
             else:
                 theElevation = 0.0
 
