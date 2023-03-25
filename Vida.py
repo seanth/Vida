@@ -348,6 +348,7 @@ def main():
     global absMin
     global absMax
     global waterLevel
+    global terrainScale
 
     
     print("*********Vida version: %s *********" % (vidaVersion))
@@ -394,11 +395,11 @@ def main():
     ####################################
     ###experiments in importing a terrain file
     if terrainFile!=None:
-        tiffFound = False
-        theElevDelta = -1 #just making the variable so it exists
+        print("***Checking for tif terrain image...***")
         if os.path.isfile(terrainFile) == True:
+            theTerrainFile = terrainFile
             tiffFound = True
-            stupidKludge = terrainFile
+            print("      Tif file found")
         #reworked checking for file types in a directory
         #STH 23 Sept 2020
         elif os.path.isdir(terrainFile) == True:
@@ -410,87 +411,24 @@ def main():
                 #no matching files found
                 tiffFound = False
             else:
-                stupidKludge = matchFiles[0] #no matter what, grab the first item in the list
+                theTerrainFile = matchFiles[0] #no matter what, grab the first item in the list
                 if len(matchFiles)==1:
-                    print("***Tif file found")
+                    print("      Tif file found")
                 else:
                     print("      Multiple tif files found. Using:")
-                    print("       %s" % os.path.basename(stupidKludge))
+                    print("       %s" % os.path.basename(theTerrainFile))
                 tiffFound = True
-
-
-            #Now look for a .xlsx file 
-            #.xlsx files have headers of six lines, followed by tabular data
-            #ET addition 9-15-2020
-            print("***Checking directory for xlsx terrain data...***")
-            tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
-            matchFiles = glob.glob(tmpPath)
-
-            if matchFiles:
-                #9/28/2020 ET-test of default absMax and absMin values from vida.ini                				
-                theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
-                if len(matchFiles)==1:
-                    print("***xlsx file found")
-                else:
-                    print("      Multiple xlsx files found. Using:")
-                    print("       %s" % os.path.basename(theExcelFile))
-
-                import pandas
-                fileData = pandas.read_excel(theExcelFile, header=None)
-                #each row in the header will have a single value
-                #but we're not entirely sure exactly what cell the value will be in
-                #STH 2023-0302
-                #this too a while to figure out, so I'm explaining to future me:
-                #I'm getting the row (index starts 0), and then excluding the
-                #first value on the row. Then getting the max value in that 
-                #remaining row. STH 2023-0302
-                theNCols = fileData.iloc[1][1:].max()
-                theNRows = fileData.iloc[2][1:].max()
-                theCellSize = fileData.iloc[5][1:].max()
-                print("ncols: %s" % theNCols)
-                print("nrows: %s" % theNRows)
-                print("cellsize: %s" % theCellSize)
-                
-                #use the smaller axis to calculate the scaling based on
-                #number of cells and cellsize
-                if theNCols<theNRows:
-                    theScaledDistance = theCellSize*theNCols
-                else:
-                    theScaledDistance = theCellSize*theNRows
-                terrainScale=theWorldSize/theScaledDistance
-
-                #sometimes there columns of NaN beyond the defined column max
-                fileData = fileData.drop(theNCols, axis=1)
-
-                #trim off those first few rows
-                fileData = fileData.tail(-7)
-
-                #make sure all the values are numbers
-                fileData = fileData.astype(float)
-
-                allMaxForEachColumn = fileData.max()
-                absMax = allMaxForEachColumn.max()
-                print("absMax: %s" % absMax)
-
-                allMinForEachColumn = fileData.min()
-                absMin = allMinForEachColumn.min()
-                print("absMin: %s" % absMin)
-                print("terrainScale: %s" % terrainScale)
-
-                theMaxElevation = absMax-absMin
-                theMaxElevation = theMaxElevation*terrainScale
-                print("therefore max: %s" % (theMaxElevation))
-                theGarden.maxElevation = theMaxElevation
-
-        if tiffFound == False:
-            print("***Tiff terrain image not found. Skipping terrain import***")
         else:
+           print("      Tiff terrain image not found. Skipping terrain import")
+           tiffFound = False 
+
+        if tiffFound == True:
+            #########################################################################
             from PIL import Image, ImageOps
             #if type(eventFile)==file:
-            print("***Loading terrain file:\n     %s***" % (stupidKludge))
+            print("***Loading terrain file:\n     %s***" % (theTerrainFile))
             #theImage = Image.open(terrainFile)
-            tmp=Image.open(stupidKludge)
-
+            tmp=Image.open(theTerrainFile)
             tmp=ImageOps.flip(tmp)
 
             #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
@@ -509,15 +447,18 @@ def main():
                     smallestDim = tmp.size[0]
                 else:
                     smallestDim = tmp.size[1]
-                print("******WARNING: imported image is not square. Truncating image to %ix%i..." % (smallestDim, smallestDim))
+                print("***WARNING: imported image is not square.")
+                print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
+                print("      Truncating image to %ix%i..." % (smallestDim, smallestDim))
                 tmp=tmp.crop((0, 0, smallestDim, smallestDim))
 
             #if the imported image is not the same size as the world size, change it
             #this assumes the image is a square
             #STH 2021-0628
             if tmp.size[1] != theWorldSize:
-                print("******WARNING: imported image is not the same size as the world space.")
-                print("               Resizing image to %ix%i..." % (theWorldSize, theWorldSize))
+                print("***WARNING: imported image is not the same size as the world space.")
+                print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
+                print("      Resizing image to %ix%i..." % (theWorldSize, theWorldSize))
             tmp=tmp.resize((theWorldSize,theWorldSize))
             
             #store the image size
@@ -527,6 +468,73 @@ def main():
             theGarden.terrainImage[2]=tmp.tobytes()
             tmp.close()
             tmp=None
+            #########################################################################
+            if os.path.isdir(terrainFile) == True:
+                #Now look for a .xlsx file 
+                #.xlsx files have headers of six lines, followed by tabular data
+                #ET addition 9-15-2020
+                print("***Checking directory for xlsx terrain data...***")
+                tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
+                matchFiles = glob.glob(tmpPath)
+                if matchFiles:
+                    #9/28/2020 ET-test of default absMax and absMin values from vida.ini                				
+                    theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
+                    if len(matchFiles)==1:
+                        print("      xlsx file found")
+                    else:
+                        print("      Multiple xlsx files found. Using:")
+                        print("       %s" % os.path.basename(theExcelFile))
+
+                    import pandas
+                    fileData = pandas.read_excel(theExcelFile, header=None)
+                    #each row in the header will have a single value
+                    #but we're not entirely sure exactly what cell the value will be in
+                    #STH 2023-0302
+                    #this too a while to figure out, so I'm explaining to future me:
+                    #I'm getting the row (index starts 0), and then excluding the
+                    #first value on the row. Then getting the max value in that 
+                    #remaining row. STH 2023-0302
+                    theNCols = fileData.iloc[1][1:].max()
+                    theNRows = fileData.iloc[2][1:].max()
+                    theCellSize = fileData.iloc[5][1:].max()
+                    print("        ncols: %s" % theNCols)
+                    print("        nrows: %s" % theNRows)
+                    print("        cellsize: %s" % theCellSize)
+                    
+                    #use the smaller axis to calculate the scaling based on
+                    #number of cells and cellsize
+                    if theNCols<theNRows:
+                        theScaledDistance = theCellSize*theNCols
+                    else:
+                        theScaledDistance = theCellSize*theNRows
+                    terrainScale=theWorldSize/theScaledDistance
+
+                    #sometimes there columns of NaN beyond the defined column max
+                    fileData = fileData.drop(theNCols, axis=1)
+
+                    #trim off those first few rows
+                    fileData = fileData.tail(-7)
+
+                    #make sure all the values are numbers
+                    fileData = fileData.astype(float)
+
+                    allMaxForEachColumn = fileData.max()
+                    absMax = allMaxForEachColumn.max()
+
+                    allMinForEachColumn = fileData.min()
+                    absMin = allMinForEachColumn.min()
+
+                else:
+                    print("***xlsx terrain data terrain data not found. Using default values***")
+
+        theMaxElevation = absMax-absMin
+        theMaxElevation = theMaxElevation*terrainScale
+        theGarden.maxElevation = theMaxElevation    
+        print("      absMax: %s" % absMax)
+        print("      absMin: %s" % absMin)
+        print("      terrainScale: %s" % terrainScale)
+        print("      therefore max: %s" % (theMaxElevation))
+        
     ####################################
 
     #########Check for multiple species. If none, use default
@@ -581,9 +589,9 @@ def main():
     theGarden.showProgressBar=showProgressBar
 
     print("     World size: %ix%i" % (theWorldSize, theWorldSize))
-    if tiffFound == True:
-        print("     Terrain file: %s" % (stupidKludge))
-        print("       Terrain scaling: %f" % (terrainScale))
+    if (terrainFile!=None and tiffFound == True):
+        print("     Terrain file: %s" % (theTerrainFile))
+        print("     Terrain scaling: %f" % (terrainScale))
     print("     Maximum population size will be: %i" % (maxPopulation))
     print("              and")
     print("     Running simulation for %i cycles" % (maxCycles))
@@ -1167,7 +1175,7 @@ if __name__ == '__main__':
     #default max and min elevation for a grayscale image given no elevation data)
     parser.add_argument('-imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
     parser.add_argument('-imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
-    parser.add_argument('-iscale', type=int, metavar='float', dest='terrainScale', required=False, help='The fractional value (0 to 1) to scale the elevation by')
+    parser.add_argument('-iscale', type=float, metavar='float', dest='terrainScale', required=False, help='The fractional value (0 to 1) to scale the elevation by')
     parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Elevation at which water exists on terrain')
 
     ###options that use a code action
@@ -1266,8 +1274,10 @@ if __name__ == '__main__':
     #     ##send the file off to make sure it's in the correct format
     #     sList=checkSeedPlacementList(sList)
     #     startPopulationSize=len(sList)
-    
-    
+
+    theMaxElevation = absMax-absMin
+    theMaxElevation = theMaxElevation*terrainScale
+
     
         #for x in theOpts:
 #print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
