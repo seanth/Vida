@@ -1,0 +1,105 @@
+nameSpecies: species17
+creator: miniVida2yml.py
+comments: Generated from file species17.xls on 2022-1130
+
+#################
+###Basic
+densityStem: 595.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 297.500000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 26.517600 #[3]
+youngsModulusStem: 11.310000 #[4]
+
+#################
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+numYearsGrowthMemory: 2
+massSeedMax:  0.086319 #[5]
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+randomSlowGrowth: 0.0
+
+#################
+###Germination
+delayInGermination: 0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.98 #[6]
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000016 #[7]
+fractionCarbonToStem: 0.990000 #[8]
+
+#################
+###Photosynthesis
+photoConstant: 0.584080 #[9]
+photoExponent: -0.457700 #[9]
+canopyTransmittanceImpactsConversion: FALSE
+
+#################
+###Allometry
+fractionCarbonToSeeds: 1.000000
+reproductionConstant: 0.099700 #[10]
+reproductionExponent: 1.097700 #[10]
+
+speciesConstant1: 0.610000 #[11]
+speciesExponent1: 1.043600 #[11]
+
+speciesConstant2: 0.290200 #[12]
+speciesExponent2: 0.971500 #[12]
+
+speciesConstant3: 0.380000 #[13]
+speciesExponent3: 0.709200 #[13]
+
+speciesConstant20: 0.033281 #[14]
+speciesExponent20: 0.416301 #[14]
+
+speciesConstant6: 0.000000 #[15]
+speciesConstant7: 87.488700 #[15]
+speciesExponent7: 0.902438 #[15]
+
+speciesConstant8: 6.900000 #[16]
+
+###waterlogging
+waterTolerance: 3.000000 #watertol value #[17]
+
+###drought tolerance
+droughtTolerance: 2.000000 #droughtTol value #[18]
+
+#################
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [0.0, 0.0, 0.0] #black
+colourLeaf: [116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+###testing different canopy shapes in 3d output
+crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+boleHeight: 80 #used only when the 3dCrownShape is not ELIP. Percent of total plant height
+
+
+#[1] (wood density)
+#[2] (set to 50 percent densityStem)
+#[3] (height in m)
+#[4] (young's modulus)
+#[5] 2011 Hammond In the Garden of Vida chapter 2
+#[6] 
+#[7] 2011 Hammond In the Garden of Vida chapter 2
+#[8] 2011 Hammond In the Garden of Vida chapter 2
+#[9] Cannell, 1982; 2011 Hammond In the Garden of Vida chapter 2
+#[10] Cannell, 1982; 2011 Hammond In the Garden of Vida chapter 2
+#[11] 
+#[12]
+#[13] 
+#[14]
+#[15] 
+#[16]
+#[17] Ulo Niinemets and Fernando Valladares. 2006. Tolerance to shade, drought, and waterlogging of temperate Northern Hemisphere trees and shrubs. Ecological Monographs 76:521–547
+#[18] Ulo Niinemets and Fernando Valladares. 2006. Tolerance to shade, drought, and waterlogging of temperate Northern Hemisphere trees and shrubs. Ecological Monographs 76:521–547
