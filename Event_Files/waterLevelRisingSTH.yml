@@ -1,0 +1,32 @@
+25:
+   - Garden:
+     - waterLevel: 1.0
+30:
+   - Garden:
+     - waterLevel: 5.0
+35:
+   - Garden:
+     - waterLevel: 10.0
+40:
+   - Garden:
+     - waterLevel: 15.0
+45:
+   - Garden:
+     - waterLevel: 20.0
+50:
+   - Garden:
+     - waterLevel: 25.0
+55:
+   - Garden:
+     - waterLevel: 30.0
+60:
+   - Garden:
+     - waterLevel: 35.0
+65:
+   - Garden:
+     - waterLevel: 40.0
+70:
+   - Garden:
+     - waterLevel: 45.0
+
+
