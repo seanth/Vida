@@ -6,7 +6,7 @@ maxSeedsPerPlant: 5
 allowOffWorld: FALSE
 ##experimental mortality##
 allowSubmerged: FALSE
-maxSubmerged: 0.0
+maxSubmerged: 0.05 #0.5 means 50% of the tree height is submerged
 ##########################
 ignoreGermDeathAtStart: TRUE
 allowRandomDeath: TRUE
@@ -27,8 +27,6 @@ useDroughtTol: FALSE
 
 
 ###To be removed/relocated###
-carbonAllocationMethod: 0 #discontinued
-canopyTransmittanceImpactsConversion: SPECIES #discontinued
 fractionWorldGraphicEdgeSpacer: 0.3 #to be moved
 fractionWorldBetweenLRGraphicsSpacer: 0.0 #to be moved
 fractionWorldBetweenTBGraphicsSpacer: 0.5 #to be moved
