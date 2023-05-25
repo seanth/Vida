@@ -462,18 +462,36 @@ class garden(object):
         if self.terrainImage != []:
             theGarden = self
 
-            if not theGarden.allowSubmerged:
+            if theGarden.allowSubmerged == False:
                 if theGarden.showProgressBar:
-                    print("***Removing seeds that are submerged...***")                   
+                    print("***Removing seeds or plants that are submerged...***")                   
                     theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                     i=0
                 ###see if seeds are submerged
                 ### if so, kill them off
                 for obj in theGarden.soil[:]:
-                    if (obj.isSeed) and (obj.elevation<=theGarden.waterLevel):
-                        #print("!")
+                    if (obj.isSeed==True) and (obj.elevation<=theGarden.waterLevel):
+                        #print("seed submerged. die!")
                         obj.causeOfDeath="submerged in water"
                         theGarden.kill(obj)
+                    #because of the order in which things are executed, absHeightStem has not
+                    #been updated. This means the code can't just look at absHeightStem.
+                    #Instead, look at heightStem+elevation (which equals absHeight)
+                    #STH 2023-0524
+                    if (obj.isSeed==False) and ((obj.heightStem+obj.elevation) <=theGarden.waterLevel):
+                            #this is for when a tree is completely submerged
+                            #STH 2023-0524
+                            #print("plant completely submerged. die!")
+                            obj.causeOfDeath="submerged in water"
+                            theGarden.kill(obj)
+                    if (obj.isSeed==False) and (((obj.heightStem*theGarden.maxSubmerged)+obj.elevation) <=theGarden.waterLevel):
+                            #this is for when a tree is _partly_ submerged. It has to do with the
+                            #world maxSubmerged value. Maybe this should be a species specific value
+                            #but for now it is a global
+                            #STH 2023-0524
+                            #print("plant partly submerged. die!")
+                            obj.causeOfDeath="submerged in water"
+                            theGarden.kill(obj)                        
 
                     if theGarden.showProgressBar:
                         i=i+1
@@ -555,6 +573,7 @@ class garden(object):
             if theGarden.showProgressBar:
                 print("***Checking for mortality due to proximity to mother...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+                i=0
             #print "Name : Distance : Chance"
             for obj in theGarden.soil[:]:
                 if not obj.isSeed:
@@ -568,7 +587,7 @@ class garden(object):
                         #print "%s : %s :%s" % (obj.name, theDistance, theDeathChance)
                         tooBad=random.random()
                         if tooBad<theDeathChance:
-                            obj.causeOfDeath="experimental death due to distance from mother"
+                            obj.causeOfDeath="Janzen mortality"
                             theGarden.kill(obj)
                 if theGarden.showProgressBar:
                     i=i+1
@@ -582,6 +601,7 @@ class garden(object):
         #print sList
         #This block of code came from the main Vida.py. Moved and working on 2008.11.06 to allow for calling during simulation runs at
         #not just at the start.
+        #NOTE: this is called at the start of the simulation or via event files, not when trees disperse propagules
         if theGarden.cycleNumber<1: print("***Generating and placing seeds.***")
         ###initialize progress bar###
         if theGarden.showProgressBar or theGarden.cycleNumber<1:
