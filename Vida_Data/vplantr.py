@@ -514,19 +514,20 @@ class genericPlant(object):
             #print("*****")
 
             ###decide whether canopy transmission impacts conversion
-            alterMassWitTransmission=0
-            if theGarden.canopyTransmittanceImpactsConversion==1:
-                alterMassWitTransmission=1
-            elif theGarden.canopyTransmittanceImpactsConversion==0:
-                alterMassWitTransmission=0
-            else:
-                if self.canopyTransmittanceImpactsConversion:
-                    alterMassWitTransmission=1
-                else: 
-                    alterMassWitTransmission=0
-            if alterMassWitTransmission==1:
-                newMass=newMass*(1-self.canopyTransmittance)
-            #print "mass new: %s" % (newMass)
+            # alterMassWitTransmission=0
+            # if theGarden.canopyTransmittanceImpactsConversion==1:
+            #     alterMassWitTransmission=1
+            # elif theGarden.canopyTransmittanceImpactsConversion==0:
+            #     alterMassWitTransmission=0
+            # else:
+            #     if self.canopyTransmittanceImpactsConversion:
+            #         alterMassWitTransmission=1
+            #     else: 
+            #         alterMassWitTransmission=0
+            
+            # if alterMassWitTransmission==1:
+            #     newMass=newMass*(1-self.canopyTransmittance)
+            # #print "mass new: %s" % (newMass)
             return newMass
         else:
             return -1.0
@@ -612,43 +613,7 @@ class genericPlant(object):
         else:
             self.GHs=GHs
             self.heightStem=Hs
-
-
-    
-    # def calcHeightStemFromRadiusStemOld(self, theGarden):
-    #     Ds=self.radiusStem*2
-    #     ##there is a weird, very rare bug
-    #     if (Ds<=0.0):
-    #         self.causeOfDeath="impossible diameter calculation(Ds<=0.0)"
-    #         theGarden.kill(self)
-    #     #mature allocation method
-    #     try:
-    #         Hs=(self.speciesConstant8*math.log(Ds))+self.heightStemMax
-    #     except:
-    #         self.causeOfDeath="impossible diameter calculation. Ds=%f" % (Ds)
-    #         theGarden.kill(self)
-    #     else:
-    #         if Hs<self.heightStem:
-    #             #young method
-    #             #Hs=(self.speciesConstant7*math.pow(Ds, self.speciesExponent7))-self.speciesConstant6
-    #             Hs=(self.speciesConstant7*(Ds**self.speciesExponent7))-self.speciesConstant6
-    #         elif self.isMature==False:
-    #             self.isMature=True
-    #             self.matureAge=self.age
-    #         #print "mature at: %i" % (self.age)
-    #         GHs=Hs-self.heightStem
-    #         if (Hs<0.0 or Hs<self.heightStem):
-    #             print "oops. stem is shrinking. that's not right. Die"
-    #             self.GHs=GHs
-    #             self.heightStem=Hs
-    #             #something is wrong. There's either a negative height or it is shrinking
-    #             self.causeOfDeath="impossible height calculation"
-    #             theGarden.kill(self)
-    #         else:
-    #             self.GHs=GHs
-    #             self.heightStem=Hs
-    
-    
+ 
     def makeSomeSeeds(self, maxSeedsPerPlant, theGarden):
         #make a seed on yourself if you don't have the max number of seeds
         theNum=float(sum(self.massFixedRecord))
