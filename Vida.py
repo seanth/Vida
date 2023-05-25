@@ -138,7 +138,7 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
     #Added "Area Canopy" at end of list
     #Added basal area to the outputs--STH 2019-0404
     basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, elevation above water,\
-    absHeighStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, \
+    absHeightStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, \
     # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, \
     Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), \
     Yearly Growth Stem+Canopy (kg), Yearly Growth Stem diameter (m), Yearly Growth Stem Height (m), Average Growth Stem (kg), \
