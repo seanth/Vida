@@ -3,7 +3,7 @@ atmosphere: 1.0 #unused
 lightIntensity: 1.0
 maxSeedsPerPlant: 5
 ###Mortality settings###
-ignoreGermDeathAtStart: TRUE
+ignoreGermDeathAtStart: FALSE
 allowRandomDeath: TRUE
 randomDeathPlant: 0.0075
 randomDeathSeed: 0.0075
