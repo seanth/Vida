@@ -1,0 +1,62 @@
+nameSpecies: FarahA
+creator: miniVida2yml.py
+comments: Generated from file miniVida-withGraphsFarahA.xls on 2023-0314
+
+###Basic
+densityStem: 718.900000
+densityLeaf: 923.430000
+densitySeed: 359.450000
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 47.900000
+youngsModulusStem: 7.400000
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943
+reproductionExponent: 1.09777536
+numYearsGrowthMemory: 2
+massSeedMax:  0.2 #0.60
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.0
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [0.0, 0.0, 0.0] #black
+colourLeaf: [120.0, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+
+###Photosynthesis
+photoConstant: 1.531000
+photoExponent: -0.460200
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.941192
+speciesExponent1: 1.100000
+speciesConstant2: 0.040000
+speciesExponent2: 1.119823
+speciesConstant3: 0.170000
+speciesExponent3: 0.730631
+speciesConstant20: 0.050000
+speciesExponent20: 0.403000
+speciesConstant6: 0.000000
+speciesConstant7: 125.000000
+speciesExponent7: 1.000000
+speciesConstant8: 15.508049
