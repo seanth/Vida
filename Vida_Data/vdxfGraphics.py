@@ -15,18 +15,23 @@ import colour_utils
 import vterrainImport as terrain_utils
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 
+###########
+#new method
+# import ezdxf #pip install ezdxf #https://pypi.org/project/ezdxf/
+# from ezdxf import units
+###########
+
 def initDXFBlocks(theGarden):
     terrainImage=theGarden.terrainImage
     theWorldSize=theGarden.theWorldSize
     theElevDelta=theGarden.maxElevation
-    # theData = sdxf.Drawing()
     theData = dxf.drawing()
 
     ############################
     #Blocks
-    b = dxf.block(name='WORLD')
-    #b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
-    #theData.blocks.add(b)
+    b = dxf.block(name='THEGARDEN')
+    # b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
+    # theData.blocks.add(b)
     #Keep having problems with tools that convert DXF to STL not identifying
     #SOLID, so made it a 3dface
     #sth 2024.01.15
@@ -36,14 +41,32 @@ def initDXFBlocks(theGarden):
         b.add(the3dFace)
     theFaceList=""
     theData.blocks.add(b)
+
     
+    #Keep having problems with tools that convert DXF to STL not identifying
+    #SOLID, so made it a 3dface
+    #sth 2024.01.15
     b = dxf.block(name='WATER')
-    b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1.0, color=5))
+    # b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1.0, color=5))
+    # theData.blocks.add(b)
+    theFaceList = Cube()
+    for x in theFaceList:
+        the3dFace = dxf.face3d(x , flags=0)
+        b.add(the3dFace)
+    theFaceList=""
     theData.blocks.add(b)
 
+
     b = dxf.block(name='STEM')
-    b.add(dxf.circle(center=(0.0,0.0,0.0),radius=1.0,thickness=1.0))
+    # b.add(dxf.circle(center=(0.0,0.0,0.0),radius=1.0,thickness=1.0))
+    # theData.blocks.add(b)
+    theFaceList = Sphere()
+    for x in theFaceList[0:480]:
+        the3dFace = dxf.face3d(x , flags=0)
+        b.add(the3dFace)
+    theFaceList=""
     theData.blocks.add(b)
+
 
     b = dxf.block(name='SEED')
     theFaceList = Sphere()
@@ -53,6 +76,7 @@ def initDXFBlocks(theGarden):
     theFaceList=""
     theData.blocks.add(b)
 
+
     b = dxf.block(name='CANOPY')
     theFaceList = Sphere()
     for x in theFaceList[0:480]:
@@ -60,6 +84,7 @@ def initDXFBlocks(theGarden):
         b.add(the3dFace)
     theFaceList=""
     theData.blocks.add(b)
+
 
     #only do this if there is a terrain image to use
     if(terrainImage!=[]):
@@ -78,7 +103,60 @@ def initDXFBlocks(theGarden):
         b.add(mesh)
         theData.blocks.add(b)
 
+    # ############################
+    # #New method
+    # doc = ezdxf.new('R2010')
+    # # Set meter as document/modelspace units
+    # doc.units = units.M
+    # # which is a shortcut (including validation) for
+    # #doc.header['$INSUNITS'] = units.M
+    # doc.header['$MEASUREMENT'] = 1 #0==Imperial, 1==Metric
+
+    # #make the modelspace (msp)
+    # msp = doc.modelspace()
+    # msp.units = doc.units
+    # #
+    # #Blocks
+    # #Keep having problems with tools that convert DXF to STL not identifying
+    # #SOLID, so made it a 3dface
+    # #sth 2024.01.15
+    # aBlock = doc.blocks.new(name='THEGARDEN')
+    # theFaceList = Cube()
+    # for x in theFaceList:
+    #     aBlock.add_3dface(x)
+    # theFaceList=""
+
+    # aBlock = doc.blocks.new(name='WATER')
+    # theFaceList = Cube()
+    # for x in theFaceList:
+    #     aBlock.add_3dface(x)
+    # theFaceList=""
+
+    # aBlock = doc.blocks.new(name='STEM')
+    # theFaceList = Cube()
+    # for x in theFaceList:
+    #     aBlock.add_3dface(x)
+    # theFaceList=""
+
+    # aBlock = doc.blocks.new(name='SEED')
+    # theFaceList = Sphere()
+    # for x in theFaceList:
+    #     aBlock.add_3dface(x)
+    # theFaceList=""
+
+    # aBlock = doc.blocks.new(name='CANOPY')
+    # theFaceList = Sphere()
+    # for x in theFaceList[0:480]:
+    #     aBlock.add_3dface(x)
+    # theFaceList=""
+    ############################
+
     return theData
+
+    
+
+
+    
 
 
 
@@ -86,14 +164,14 @@ def initDXFBlocks(theGarden):
 def makeDXF(theGarden, theBlockData):
     theWorldSize=theGarden.theWorldSize
     # theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
-    print(0-(theWorldSize/2.0))
+    #print(0-(theWorldSize/2.0))
 
-    theBlockData.add(dxf.insert(blockname='WORLD', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=0))
+    theBlockData.add(dxf.insert(blockname='THEGARDEN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=5))
 
     if len(theGarden.terrainImage)==3:
         theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
         if(theGarden.waterLevel>0.0):
-            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0))
+            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0, color=5))
 
     #dictColoursUsed={}
     for obj in theGarden.soil:
