@@ -25,7 +25,16 @@ def initDXFBlocks(theGarden):
     ############################
     #Blocks
     b = dxf.block(name='WORLD')
-    b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
+    #b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
+    #theData.blocks.add(b)
+    #Keep having problems with tools that convert DXF to STL not identifying
+    #SOLID, so made it a 3dface
+    #sth 2024.01.15
+    theFaceList = Cube()
+    for x in theFaceList:
+        the3dFace = dxf.face3d(x , flags=0)
+        b.add(the3dFace)
+    theFaceList=""
     theData.blocks.add(b)
     
     b = dxf.block(name='WATER')
@@ -77,7 +86,9 @@ def initDXFBlocks(theGarden):
 def makeDXF(theGarden, theBlockData):
     theWorldSize=theGarden.theWorldSize
     # theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
-    theBlockData.add(dxf.insert(blockname='WORLD', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0, rotation=0, color=0))
+    print(0-(theWorldSize/2.0))
+
+    theBlockData.add(dxf.insert(blockname='WORLD', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=0))
 
     if len(theGarden.terrainImage)==3:
         theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
@@ -125,6 +136,16 @@ def makeDXF(theGarden, theBlockData):
 def writeDXF(outputDirectory, fileName, theData):
     ###writes the files to a destination folder
     theData.saveas(outputDirectory + fileName+".dxf")
+
+def Cube():
+    return [
+            [(0,0,0),(1,0,0),(1,0,1),(0,0,1)],
+            [(1,0,0),(1,1,0),(1,1,1),(1,0,1)],
+            [(1,1,0),(0,1,0),(0,1,1),(1,1,1)],
+            [(0,1,0),(0,0,0),(0,0,1),(0,1,1)],
+            [(0,0,1),(1,0,1),(1,1,1),(0,1,1)],
+            [(0,1,0),(1,1,0),(1,0,0),(0,0,0)]
+            ]
 
 
 def Sphere():
