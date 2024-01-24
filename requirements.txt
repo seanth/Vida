@@ -5,3 +5,4 @@ pandas
 PyYAML
 xlrd
 openpyxl
+rioxarray
