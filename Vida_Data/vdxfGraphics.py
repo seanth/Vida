@@ -88,20 +88,23 @@ def initDXFBlocks(theGarden):
 
     #only do this if there is a terrain image to use
     if(terrainImage!=[]):
-        print("***Generating terrain mesh...***")
-        b = dxf.block(name='MESHTERRAIN')
-        #xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
-        xSize,ySize = (theWorldSize+1,theWorldSize+1)
-        mesh = dxf.polymesh(xSize, ySize)
-        for x in range(xSize):
-            for y in range(ySize):
-                #thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
-                thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
-                z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-                #z = terrain_utils.elevationFromPixel(thePixelValue)
-                mesh.set_vertex(x, y, (x, y, z))
-        b.add(mesh)
-        theData.blocks.add(b)
+        ###move this to its own function so it can be called in the middle of a sim run if needed
+        ###STH 2024-0124
+        theData = makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta)
+        # print("***Generating terrain mesh...***")
+        # b = dxf.block(name='MESHTERRAIN')
+        # #xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
+        # xSize,ySize = (theWorldSize+1,theWorldSize+1)
+        # mesh = dxf.polymesh(xSize, ySize)
+        # for x in range(xSize):
+        #     for y in range(ySize):
+        #         #thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
+        #         thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
+        #         z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+        #         #z = terrain_utils.elevationFromPixel(thePixelValue)
+        #         mesh.set_vertex(x, y, (x, y, z))
+        # b.add(mesh)
+        # theData.blocks.add(b)
 
     # ############################
     # #New method
@@ -153,7 +156,20 @@ def initDXFBlocks(theGarden):
 
     return theData
 
-    
+
+def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
+    print("***Generating terrain mesh...***")
+    b = dxf.block(name='MESHTERRAIN')
+    xSize,ySize = (theWorldSize+1,theWorldSize+1)
+    mesh = dxf.polymesh(xSize, ySize)
+    for x in range(xSize):
+        for y in range(ySize):
+            thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
+            z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+            mesh.set_vertex(x, y, (x, y, z))
+    b.add(mesh)
+    theData.blocks.add(b)
+    return theData
 
 
     
