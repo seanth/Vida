@@ -8,7 +8,7 @@
     You should have received a copy of academic software agreement along with Vida. If not, see <https://github.com/seanth/Vida/blob/master/LICENSE.txt>.
 """
 
-vidaVersion = "0.10.0"  
+vidaVersion = "0.10.1 augmented reality branch"  
 
 import random
 import math
@@ -375,6 +375,7 @@ def main():
 
     theGarden.platonicSeeds={}
     theGarden.theRegions=[]
+    theGarden.theWorldSize = theWorldSize
     
     ####################################
     ###experiments in importing events
@@ -391,151 +392,13 @@ def main():
         eventTimes=[]
     #####################################
 
-
-    ####################################
-    ###experiments in importing a terrain file
     if terrainFile!=None:
-        print("***Checking for tif terrain image...***")
-        if os.path.isfile(terrainFile) == True:
-            theTerrainFile = terrainFile
-            tiffFound = True
-            print("      Tif file found")
-        #reworked checking for file types in a directory
-        #STH 23 Sept 2020
-        elif os.path.isdir(terrainFile) == True:
-            print("***Checking directory for tif terrain image...***")
-            tmpPath = os.path.join(terrainFile,'*.tif') #assumes file suffix is 'tif'
-            matchFiles = glob.glob(tmpPath)
-            #print matchFiles
-            if not matchFiles:
-                #no matching files found
-                tiffFound = False
-            else:
-                theTerrainFile = matchFiles[0] #no matter what, grab the first item in the list
-                if len(matchFiles)==1:
-                    print("      Tif file found")
-                else:
-                    print("      Multiple tif files found. Using:")
-                    print("       %s" % os.path.basename(theTerrainFile))
-                tiffFound = True
-        else:
-           print("      Tiff terrain image not found. Skipping terrain import")
-           tiffFound = False 
+        ###code moved to vterrainImport
+        ###STH 2024-0124
+        import vterrainImport
+        theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
 
-        if tiffFound == True:
-            #########################################################################
-            from PIL import Image, ImageOps
-            #if type(eventFile)==file:
-            print("***Loading terrain file:\n     %s***" % (theTerrainFile))
-            #theImage = Image.open(terrainFile)
-            tmp=Image.open(theTerrainFile)
-            tmp=ImageOps.flip(tmp)
 
-            #format of terrainImage is [mode, size tuple, image as bytes] STH 0212-2020
-            #make sure the list is the correct length
-            if len(theGarden.terrainImage)<3:
-                theGarden.terrainImage=[0]*3
-
-            #store the image mode
-            theGarden.terrainImage[0]=tmp.mode
-
-            #the imported image might not be a square. 
-            #If it is not a square, trim it
-            #STH 2021-06-28
-            if tmp.size[0]!=tmp.size[1]:
-                if tmp.size[0]<tmp.size[1]:
-                    smallestDim = tmp.size[0]
-                else:
-                    smallestDim = tmp.size[1]
-                print("***WARNING: imported image is not square.")
-                print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
-                print("      Truncating image to %ix%i..." % (smallestDim, smallestDim))
-                tmp=tmp.crop((0, 0, smallestDim, smallestDim))
-
-            #if the imported image is not the same size as the world size, change it
-            #this assumes the image is a square
-            #STH 2021-0628
-            if tmp.size[1] != theWorldSize:
-                print("***WARNING: imported image is not the same size as the world space.")
-                print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
-                print("      Resizing image to %ix%i..." % (theWorldSize, theWorldSize))
-            tmp=tmp.resize((theWorldSize,theWorldSize))
-            
-            #store the image size
-            theGarden.terrainImage[1]=tmp.size
-            
-            #store the image as bytes
-            theGarden.terrainImage[2]=tmp.tobytes()
-            tmp.close()
-            tmp=None
-            #########################################################################
-            if os.path.isdir(terrainFile) == True:
-                #Now look for a .xlsx file 
-                #.xlsx files have headers of six lines, followed by tabular data
-                #ET addition 9-15-2020
-                print("***Checking directory for xlsx terrain data...***")
-                tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
-                matchFiles = glob.glob(tmpPath)
-                if matchFiles:
-                    #9/28/2020 ET-test of default absMax and absMin values from vida.ini                				
-                    theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
-                    if len(matchFiles)==1:
-                        print("      xlsx file found")
-                    else:
-                        print("      Multiple xlsx files found. Using:")
-                        print("       %s" % os.path.basename(theExcelFile))
-
-                    import pandas
-                    fileData = pandas.read_excel(theExcelFile, header=None)
-                    #each row in the header will have a single value
-                    #but we're not entirely sure exactly what cell the value will be in
-                    #STH 2023-0302
-                    #this too a while to figure out, so I'm explaining to future me:
-                    #I'm getting the row (index starts 0), and then excluding the
-                    #first value on the row. Then getting the max value in that 
-                    #remaining row. STH 2023-0302
-                    theNCols = fileData.iloc[1][1:].max()
-                    theNRows = fileData.iloc[2][1:].max()
-                    theCellSize = fileData.iloc[5][1:].max()
-                    print("        ncols: %s" % theNCols)
-                    print("        nrows: %s" % theNRows)
-                    print("        cellsize: %s" % theCellSize)
-                    
-                    #use the smaller axis to calculate the scaling based on
-                    #number of cells and cellsize
-                    if theNCols<theNRows:
-                        theScaledDistance = theCellSize*theNCols
-                    else:
-                        theScaledDistance = theCellSize*theNRows
-                    terrainScale=theWorldSize/theScaledDistance
-
-                    #sometimes there columns of NaN beyond the defined column max
-                    fileData = fileData.drop(theNCols, axis=1)
-
-                    #trim off those first few rows
-                    fileData = fileData.tail(-7)
-
-                    #make sure all the values are numbers
-                    fileData = fileData.astype(float)
-
-                    allMaxForEachColumn = fileData.max()
-                    absMax = allMaxForEachColumn.max()
-
-                    allMinForEachColumn = fileData.min()
-                    absMin = allMinForEachColumn.min()
-
-                else:
-                    print("***xlsx terrain data terrain data not found. Using default values***")
-
-        theMaxElevation = absMax-absMin
-        theMaxElevation = theMaxElevation*terrainScale
-        theGarden.maxElevation = theMaxElevation    
-        print("      absMax: %s" % absMax)
-        print("      absMin: %s" % absMin)
-        print("      terrainScale: %s" % terrainScale)
-        print("      therefore max: %s" % (theMaxElevation))
-        
-    ####################################
 
     #########Check for multiple species. If none, use default
     fileList=os.listdir("Species")
@@ -589,8 +452,9 @@ def main():
     theGarden.showProgressBar=showProgressBar
 
     print("     World size: %ix%i" % (theWorldSize, theWorldSize))
-    if (terrainFile!=None and tiffFound == True):
-        print("     Terrain file: %s" % (theTerrainFile))
+    #if (terrainFile!=None and tiffFound == True):
+    if (terrainFile!=None and theGarden.terrainImage != []):
+        print("     Terrain file: %s" % (terrainFile))
         print("     Terrain scaling: %f" % (terrainScale))
     print("     Maximum population size will be: %i" % (maxPopulation))
     print("              and")
@@ -1169,9 +1033,9 @@ if __name__ == '__main__':
     parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
     parser.add_argument('-rl', type=open, metavar='file', dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
     parser.add_argument('-e', type=open, metavar='file', dest='eventFile', required=False, help='Load an event file')
+
+
     parser.add_argument('-i', type=pathlib.Path, metavar='file', dest='terrainFile', required=False, help='Load an image as a terrain file')    
-
-
     #default max and min elevation for a grayscale image given no elevation data)
     parser.add_argument('-imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
     parser.add_argument('-imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
@@ -1197,7 +1061,7 @@ if __name__ == '__main__':
     ##########
     
     parser.set_defaults(**theDefaults)
-    
+
     theOptsVals=vars(parser.parse_args())#have it presented as a dict
     theOpts=theOptsVals.keys()#this returns a list of the arguments entered
     
@@ -1275,8 +1139,8 @@ if __name__ == '__main__':
     #     sList=checkSeedPlacementList(sList)
     #     startPopulationSize=len(sList)
 
-    theMaxElevation = absMax-absMin
-    theMaxElevation = theMaxElevation*terrainScale
+    #theMaxElevation = absMax-absMin
+    #theMaxElevation = theMaxElevation*terrainScale
 
     
         #for x in theOpts:
