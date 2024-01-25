@@ -140,15 +140,18 @@ def importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden):
     otherSuffixList = ['.dem']
     fileSuffixList = imageSuffixList + otherSuffixList
     if terrainFile!=None:
-        print("***Checking for terrain file...***")
+        #only print at startup, not during event file insertion
+        if theGarden.cycleNumber<1: print("***Checking for terrain file...***") 
         if os.path.isfile(terrainFile) == True:
             theFileSuffix = os.path.splitext(terrainFile)[1]
             if (theFileSuffix in fileSuffixList):
                 theTerrainFile = terrainFile
                 tiffFound = True
-                print("      terrain file found")
+                #only print at startup, not during event file insertion
+                if theGarden.cycleNumber<1: print("      terrain file found") 
             else:
-                print("      Terrain file not found. Skipping terrain import")
+                #only print at startup, not during event file insertion
+                if theGarden.cycleNumber<1: print("      Terrain file not found. Skipping terrain import") 
                 tiffFound = False 
                 return theGarden
         #reworked checking for file types in a directory
@@ -172,15 +175,16 @@ def importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden):
                 theFileSuffix = os.path.splitext(theTerrainFile)[1]
                 tiffFound = True
         else:
-           print("      Terrain file not found. Skipping terrain import")
-           tiffFound = False 
-           return theGarden
+            #only print at startup, not during event file insertion
+            if theGarden.cycleNumber<1: print("      Terrain file not found. Skipping terrain import")
+            tiffFound = False 
+            return theGarden
 
         if tiffFound == True:
             #########################################################################
             from PIL import Image, ImageOps
             #if type(eventFile)==file:
-            print("***Loading terrain file:\n     %s***" % (theTerrainFile))
+            if theGarden.cycleNumber<1: print("***Loading terrain file:\n     %s***" % (theTerrainFile))
             #theImage = Image.open(terrainFile)
 
             if theFileSuffix in otherSuffixList:
@@ -207,9 +211,10 @@ def importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden):
                     smallestDim = tmp.size[0]
                 else:
                     smallestDim = tmp.size[1]
-                print("***WARNING: imported image is not square.")
-                print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
-                print("      Truncating image to %ix%i..." % (smallestDim, smallestDim))
+                if theGarden.cycleNumber<1: 
+                    print("***WARNING: imported image is not square.")
+                    print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
+                    print("      Truncating image to %ix%i..." % (smallestDim, smallestDim))
                 tmp=tmp.crop((0, 0, smallestDim, smallestDim))
 
             #if the imported image is not the same size as the world size, change it
@@ -217,9 +222,10 @@ def importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden):
             #STH 2021-0628
 
             if tmp.size[1] != theGarden.theWorldSize:
-                print("***WARNING: imported image is not the same size as the world space.")
-                print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
-                print("      Resizing image to %ix%i..." % (theGarden.theWorldSize, theGarden.theWorldSize))
+                if theGarden.cycleNumber<1:  
+                    print("***WARNING: imported image is not the same size as the world space.")
+                    print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
+                    print("      Resizing image to %ix%i..." % (theGarden.theWorldSize, theGarden.theWorldSize))
             tmp=tmp.resize((theGarden.theWorldSize,theGarden.theWorldSize))
             
             #store the image size
@@ -291,10 +297,11 @@ def importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden):
             theMaxElevation = absMax-absMin
             theMaxElevation = theMaxElevation*terrainScale
             theGarden.maxElevation = theMaxElevation    
-            print("      absMax: %s" % absMax)
-            print("      absMin: %s" % absMin)
-            print("      terrainScale: %s" % terrainScale)
-            print("      scaled max: %s" % (theMaxElevation))
+            if theGarden.cycleNumber<1: 
+                print("      absMax: %s" % absMax)
+                print("      absMin: %s" % absMin)
+                print("      terrainScale: %s" % terrainScale)
+                print("      scaled max: %s" % (theMaxElevation))
             return theGarden
     ####################################
 

@@ -34,6 +34,7 @@ import vplantr as defaultSpecies
 import vgraphics as outputGraphics
 import list_utils as list_utils
 import geometry_utils as geometry_utils
+import vterrainImport as vterrainImport
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
@@ -349,7 +350,7 @@ def main():
     global absMax
     global waterLevel
     global terrainScale
-
+    global terrainFile
     
     print("*********Vida version: %s *********" % (vidaVersion))
 
@@ -395,7 +396,6 @@ def main():
     if terrainFile!=None:
         ###code moved to vterrainImport
         ###STH 2024-0124
-        import vterrainImport
         theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
 
 
@@ -563,17 +563,28 @@ def main():
 
         while (theGarden.numbPlants<=maxPopulation and cycleNumber<=maxCycles) and (theGarden.numbPlants+theGarden.numbSeeds)>0:
             ###################################################################################
-            ####Experimental scripting event stuff                                            #
-            if cycleNumber in eventTimes:                                                     # 
-                for aItem in eventData[cycleNumber]:                                          #
-                    for aKey in aItem.keys():                                                 #
-                        if aKey=="Garden":                                                    #
-                            if debug==1: print("debug: A garden related event has been triggered.")   #
-                            theDict=aItem[aKey][0]                                            #
-                            gardenAttrs=theDict.keys()                                        #
-                            for theGardenAttr in gardenAttrs:                                 #
-                                setattr(theGarden, theGardenAttr, theDict[theGardenAttr])     #
-                            gardenAttrs=""    
+            ####Experimental scripting event stuff                                   
+            if cycleNumber in eventTimes:                                                     
+                for aItem in eventData[cycleNumber]:                                          
+                    for aKey in aItem.keys():                                                 
+                        if aKey=="Garden":                                                    
+                            if debug==1: print("debug: A garden related event has been triggered.")   
+                            theDict=aItem[aKey][0]                                            
+                            gardenAttrs=theDict.keys()                                      
+                            for theGardenAttr in gardenAttrs:                                 
+                                setattr(theGarden, theGardenAttr, theDict[theGardenAttr])
+                            ###Adding in an event that allows for a new terrain file to be loaded
+                            ###STH 2024-0124     
+                            if "terrainFile" in gardenAttrs:
+                                terrainFile = theDict['terrainFile']
+                                if debug==1: print("debug: terrainFile given in event file:\n   %s" % terrainFile)
+                                theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
+                                if theGarden.terrainImage != []:
+                                    print("testing mesh overwrite")
+                                    DXFBlockDefs = vdxfGraphics.makeTerrainMesh(DXFBlockDefs, theGarden.theWorldSize, theGarden.terrainImage, theGarden.maxElevation)
+                                    ###NEXT NEED TO ADD IN CHECK TO SEE IF TREES ARE BURRIED OR HOVERING
+                                    theGarden.removeTerrainChangeMortality()
+                                gardenAttrs=""
 
                         elif aKey=="Killzone" or aKey=="Safezone":
                             if debug==1: print("debug: generation of a zone event has been triggered.")
@@ -1147,7 +1158,6 @@ if __name__ == '__main__':
 #print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
     
     theDefaults=None#just clear it to free up memory
-
 
     main()
 else:
