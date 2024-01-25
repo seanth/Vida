@@ -329,52 +329,45 @@ class garden(object):
         #forceCritical=0.483736625*E*(Ds*Ds*Ds*Ds)
         #denom=(2.0*heightCritical)*(2.0*heightCritical)
         #forceCritical=forceCritical/denom
-        return heightCritical
+        return heightCritical  
     
-    def checkEulerGreenhillViolation(self, plant):
-        theGarden=self
-        if plant.isSeed==1: return 0 #don't check it if it's a seed.
-        #theGravity=theGarden.gravity
-        #if len(plant.subregion)>0:
-        #    theGravity=plant.subregion[-1].gravity
-        #determine if a plant violates the Euler-Greenhill rule
-        #ps=plant.densityStem
-        #Ds=plant.radiusStem*2.0
-        heightCritical=self.calcEulerGreenhill(plant)
-        ###
-        #massCritical=0.785*ps*heightCritical*Ds*Ds
-        #forceCritical=massCritical*theGravity
-        #massTotal=plant.massTotal+plant.massSeedsTotal
-        #theForce=massTotal*theGravity
-        #if plant.heightStem>=heightCritical or massTotal>=massCritical or theForce>= forceCritical:
-        if plant.heightStem>=heightCritical:
-            #omg! violates euler-greenhill!
-            return 1
-        else:
-            return 0
+    #######################################################################################    
+    def removeOverlaps(self):
+        if not self.allowOverlaps:
+            theGarden=self
+            if theGarden.showProgressBar:
+                print("***Removing overlapping objects***")
+                theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+                i=0
+            for obj in theGarden.soil[:]:
+                ###seeds and or stems that overlap are violating physics.
+                ##Rules about overlapping objects:
+                #####1.) If 2 objects overlap, the more massive object remains.
+                #####2.) If 2 seeds overlap and they have the same mass, the oldest seed remains.
+                objectList=theGarden.checkOverlaps(obj)
+                for overlappingObject in objectList:
+                    if obj.massTotal>overlappingObject.massTotal:
+                        overlappingObject.causeOfDeath="crushed"
+                        theGarden.kill(overlappingObject)
+                        break
+                    elif obj.massTotal<overlappingObject.massTotal:
+                        obj.causeOfDeath="crushed"
+                        theGarden.kill(obj)
+                        break
+                    elif obj.massTotal==overlappingObject.massTotal:
+                        if obj.timePlanted>overlappingObject.timePlanted:
+                            obj.causeOfDeath="overlap violation"
+                            theGarden.kill(obj)
+                            break
+                        else:
+                            obj.causeOfDeath="overlap violation"
+                            theGarden.kill(overlappingObject)
+                            break
+                if theGarden.showProgressBar:
+                    i=i+1
+                    theProgressBar.update(i)    
     
-    def outOfBounds(self, theObject):
-        ##returns 1 if out of bounds
-        ##returns 0 if in bounds
-        theGarden=self
-        #if the object's radius goes off world, die
-        if theObject.isSeed:
-            r=theObject.radiusSeed
-        else:
-            r=theObject.radiusStem
-        if theObject.x+r>theGarden.theWorldSize/2.0:
-            return 1
-        elif theObject.x-r<0.0-theGarden.theWorldSize/2.0:
-            return 1
-        elif theObject.y+r>theGarden.theWorldSize/2.0:
-            return 1
-        elif theObject.y-r<0.0-theGarden.theWorldSize/2.0:
-            return 1
-        else:
-            return 0
-    
-    
-    def checkForOverlap(self, theObject):
+    def checkOverlaps(self, theObject):
         #specialized routine for detecting overlaps
         #accepts an object (plant or seed)
         #looks at all objects to see if seeds or stems touch
@@ -404,42 +397,12 @@ class garden(object):
                     ###there is partial overlap
                     theOverlapList.append(anObject)
         return theOverlapList
-    
-    def removeOverlaps(self):
-        if not self.allowOverlaps:
-            theGarden=self
-            if theGarden.showProgressBar:
-                print("***Removing overlapping objects***")
-                theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
-                i=0
-            for obj in theGarden.soil[:]:
-                ###seeds and or stems that overlap are violating physics.
-                ##Rules about overlapping objects:
-                #####1.) If 2 objects overlap, the more massive object remains.
-                #####2.) If 2 seeds overlap and they have the same mass, the oldest seed remains.
-                objectList=theGarden.checkForOverlap(obj)
-                for overlappingObject in objectList:
-                    if obj.massTotal>overlappingObject.massTotal:
-                        overlappingObject.causeOfDeath="crushed"
-                        theGarden.kill(overlappingObject)
-                        break
-                    elif obj.massTotal<overlappingObject.massTotal:
-                        obj.causeOfDeath="crushed"
-                        theGarden.kill(obj)
-                        break
-                    elif obj.massTotal==overlappingObject.massTotal:
-                        if obj.timePlanted>overlappingObject.timePlanted:
-                            obj.causeOfDeath="overlap violation"
-                            theGarden.kill(obj)
-                            break
-                        else:
-                            obj.causeOfDeath="overlap violation"
-                            theGarden.kill(overlappingObject)
-                            break
-                if theGarden.showProgressBar:
-                    i=i+1
-                    theProgressBar.update(i)
-    
+    #######################################################################################     
+
+
+
+
+    #######################################################################################    
     def removeOffWorldViolaters(self):
         if not self.allowOffWorld:
             theGarden=self
@@ -450,54 +413,37 @@ class garden(object):
             ###see if plants or seeds extend over the edge of the world
             ### if so, kill them off
             for obj in theGarden.soil[:]:
-                if theGarden.outOfBounds(obj)==1:
+                if theGarden.checkOffWorldViolaters(obj)==1:
                     obj.causeOfDeath="stem off world"
                     theGarden.kill(obj)
                 if theGarden.showProgressBar:
                     i=i+1
                     theProgressBar.update(i)
 
-    def checkSubmergedMortality(self):
-        ###If there is no terrain file, there's no need to check water level
-        if self.terrainImage != []:
-            theGarden = self
+    def checkOffWorldViolaters(self, theObject):
+        ##returns 1 if out of bounds
+        ##returns 0 if in bounds
+        theGarden=self
+        #if the object's radius goes off world, die
+        if theObject.isSeed:
+            r=theObject.radiusSeed
+        else:
+            r=theObject.radiusStem
+        if theObject.x+r>theGarden.theWorldSize/2.0:
+            return 1
+        elif theObject.x-r<0.0-theGarden.theWorldSize/2.0:
+            return 1
+        elif theObject.y+r>theGarden.theWorldSize/2.0:
+            return 1
+        elif theObject.y-r<0.0-theGarden.theWorldSize/2.0:
+            return 1
+        else:
+            return 0
+    #######################################################################################
 
-            if theGarden.allowSubmerged == False:
-                if theGarden.showProgressBar:
-                    print("***Removing seeds or plants that are submerged...***")                   
-                    theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
-                    i=0
-                ###see if seeds are submerged
-                ### if so, kill them off
-                for obj in theGarden.soil[:]:
-                    if (obj.isSeed==True) and (obj.elevation<=theGarden.waterLevel):
-                        #print("seed submerged. die!")
-                        obj.causeOfDeath="submerged in water"
-                        theGarden.kill(obj)
-                    #because of the order in which things are executed, absHeightStem has not
-                    #been updated. This means the code can't just look at absHeightStem.
-                    #Instead, look at heightStem+elevation (which equals absHeight)
-                    #STH 2023-0524
-                    if (obj.isSeed==False) and ((obj.heightStem+obj.elevation) <=theGarden.waterLevel):
-                            #this is for when a tree is completely submerged
-                            #STH 2023-0524
-                            #print("plant completely submerged. die!")
-                            obj.causeOfDeath="submerged in water"
-                            theGarden.kill(obj)
-                    if (obj.isSeed==False) and (((obj.heightStem*theGarden.maxSubmerged)+obj.elevation) <=theGarden.waterLevel):
-                            #this is for when a tree is _partly_ submerged. It has to do with the
-                            #world maxSubmerged value. Maybe this should be a species specific value
-                            #but for now it is a global
-                            #STH 2023-0524
-                            #print("plant partly submerged. die!")
-                            obj.causeOfDeath="submerged in water"
-                            theGarden.kill(obj)                        
 
-                    if theGarden.showProgressBar:
-                        i=i+1
-                        theProgressBar.update(i)
 
-    
+    #######################################################################################
     def removeEulerGreenhillViolaters(self):
         if not self.allowEulerGreenhillViolations:
             theGarden=self
@@ -512,6 +458,91 @@ class garden(object):
                 if theGarden.showProgressBar:
                     i=i+1
                     theProgressBar.update(i)
+
+    def checkEulerGreenhillViolation(self, plant):
+        theGarden=self
+        if plant.isSeed==1: return 0 #don't check it if it's a seed.
+        #theGravity=theGarden.gravity
+        #if len(plant.subregion)>0:
+        #    theGravity=plant.subregion[-1].gravity
+        #determine if a plant violates the Euler-Greenhill rule
+        #ps=plant.densityStem
+        #Ds=plant.radiusStem*2.0
+        heightCritical=self.calcEulerGreenhill(plant)
+        ###
+        #massCritical=0.785*ps*heightCritical*Ds*Ds
+        #forceCritical=massCritical*theGravity
+        #massTotal=plant.massTotal+plant.massSeedsTotal
+        #theForce=massTotal*theGravity
+        #if plant.heightStem>=heightCritical or massTotal>=massCritical or theForce>= forceCritical:
+        if plant.heightStem>=heightCritical:
+            #omg! violates euler-greenhill!
+            return 1
+        else:
+            return 0
+    #######################################################################################
+
+
+
+    #######################################################################################
+    def removeTerrainChangeMortality(self):
+        # if not self.allowYourRoutineHere:
+        theGarden=self
+        if theGarden.showProgressBar:
+            print("***Checking for mortality due to terrain changes...***")
+            theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+            i=0
+        for obj in theGarden.soil[:]:
+            if theGarden.checkTerrainChangeMortality(obj)==1:
+                    obj.causeOfDeath="terrain change"
+                    theGarden.kill(obj)
+            if theGarden.showProgressBar:
+                i=i+1
+                theProgressBar.update(i)
+
+    def checkTerrainChangeMortality(self, plant):
+        theGarden=self
+        coordAdjust = (theGarden.theWorldSize)/2.0
+        theAdjX = plant.x + coordAdjust
+        theAdjY = plant.y + coordAdjust
+        thePixelValue = terrain_utils.getPixelValue(theAdjX,theAdjY,theGarden.terrainImage)
+        theNewElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+        #print(theNewElevation)
+        #print(plant.elevation)
+        ###round the values so there is some wiggle room
+        if round(theNewElevation,2)!=round(plant.elevation,2):
+            #print("plant is different")
+            return 1
+        else:
+            #print("plant is OK")
+            return 0
+    #######################################################################################
+
+
+
+    #######################################################################################
+    # def removeYourRoutineHere(self):
+    #     if not self.allowYourRoutineHere:
+    #         theGarden=self
+    #         if theGarden.showProgressBar:
+    #             print("***Checking for YourRoutineHere violations...***")
+    #             theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+    #             i=0
+    #         for obj in theGarden.soil[:]:
+    #             if theGarden.checkYourRoutineHere(obj)==1:
+    #                 obj.causeOfDeath="violated YourRoutineHere"
+    #                 theGarden.kill(obj)
+    #             if theGarden.showProgressBar:
+    #                 i=i+1
+    #                 theProgressBar.update(i)
+
+    # def checkYourRoutineHere(self, plant):
+    #     theGarden=self
+    #     if violates YourRoutineHere:
+    #         return 1
+    #     else:
+    #         return 0
+    #######################################################################################
     
     def causeRandomDeath(self):
         if self.allowRandomDeath:
@@ -563,6 +594,46 @@ class garden(object):
                 if theGarden.showProgressBar:
                     i=i+1
                     theProgressBar.update(i)
+
+    def checkSubmergedMortality(self):
+        ###If there is no terrain file, there's no need to check water level
+        if self.terrainImage != []:
+            theGarden = self
+
+            if theGarden.allowSubmerged == False:
+                if theGarden.showProgressBar:
+                    print("***Removing seeds or plants that are submerged...***")                   
+                    theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
+                    i=0
+                ###see if seeds are submerged
+                ### if so, kill them off
+                for obj in theGarden.soil[:]:
+                    if (obj.isSeed==True) and (obj.elevation<=theGarden.waterLevel):
+                        #print("seed submerged. die!")
+                        obj.causeOfDeath="submerged in water"
+                        theGarden.kill(obj)
+                    #because of the order in which things are executed, absHeightStem has not
+                    #been updated. This means the code can't just look at absHeightStem.
+                    #Instead, look at heightStem+elevation (which equals absHeight)
+                    #STH 2023-0524
+                    if (obj.isSeed==False) and ((obj.heightStem+obj.elevation) <=theGarden.waterLevel):
+                            #this is for when a tree is completely submerged
+                            #STH 2023-0524
+                            #print("plant completely submerged. die!")
+                            obj.causeOfDeath="submerged in water"
+                            theGarden.kill(obj)
+                    if (obj.isSeed==False) and (((obj.heightStem*theGarden.maxSubmerged)+obj.elevation) <=theGarden.waterLevel):
+                            #this is for when a tree is _partly_ submerged. It has to do with the
+                            #world maxSubmerged value. Maybe this should be a species specific value
+                            #but for now it is a global
+                            #STH 2023-0524
+                            #print("plant partly submerged. die!")
+                            obj.causeOfDeath="submerged in water"
+                            theGarden.kill(obj)                        
+
+                    if theGarden.showProgressBar:
+                        i=i+1
+                        theProgressBar.update(i)
     
     #the following is purely experimental. Testing mortality related to distance from mother plant.
     #use the formula chanceOfDeath= ((1/(stddev*((2*3.14)^0.5)))*2.71)^-((((distance-average)^2))/((2*stddev)^2))
@@ -637,12 +708,13 @@ class garden(object):
                         print("\nWARNING: The desired species %s was not found. \nA random species will be used.\n" % (sList[i][0]))
                 else:
                     if sList[i] in ymlList:
-                        theSpeciesFile=sList[i]                                    
+                        theSpeciesFile=sList[i]                               
             if seedPlacement=="fromFile":
                 x=sList[i][1]
                 y=sList[i][2]
                 countToGerm=sList[i][3]
-            #radius of canopy would be sList[i][4]. Unused, but in place to be built on        
+            #radius of canopy would be sList[i][4]. Unused, but in place to be built on
+
             elif seedPlacement=="random":
                 x=random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
                 y=random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
@@ -724,7 +796,4 @@ class garden(object):
             #print "#######"
             #update the progress meter
             if theGarden.showProgressBar or theGarden.cycleNumber<1:
-                theProgressBar.update(i)
-
-
-
+                theProgressBar.update(i-1)
