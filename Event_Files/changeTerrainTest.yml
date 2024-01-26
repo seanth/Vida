@@ -1,7 +1,7 @@
 30:
    - Garden:
-     - terrainFile: 'Terrain_files/Terrain change test files/b.tiff'
+     - terrainFile: 'Terrain_files/Terrain_changes/b.tiff'
 
 50:
    - Garden:
-     - terrainFile: 'Terrain_files/Terrain change test files/c.tiff'
+     - terrainFile: 'Terrain_files/Terrain_changes/c.tiff'
