@@ -816,6 +816,7 @@ def main():
                             speciesAttrs = ""
                                     
                         theDict=[]#just clear this to free up the memory
+
             ###################################################################################
             theGarden.cycleNumber=cycleNumber
 
@@ -1003,6 +1004,9 @@ def main():
                     if deleteCfdgFiles==True:
                         print("Deleting .cfdg files...")
                         outputGraphics.deleteCFDGFiles(outputGraphicsDirectoryDict[aView])
+                if aView=="3d":
+                    print("\nProducing STL files...")
+                    print(convert3d)
 
         ###only try and make a video if it is wanted and if pngs were made
         if produceVideo==True and produceGraphics==True:
@@ -1037,6 +1041,7 @@ if __name__ == '__main__':
     parser.add_argument('-dd',dest='debug2',action='store_true', required=False, help='Debug level 2')
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
+    parser.add_argument('-convert3d', type=str, metavar='string', dest='convert3d', required=False, help='Convert DXF files to another 3d format')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
     # parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
     # parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
