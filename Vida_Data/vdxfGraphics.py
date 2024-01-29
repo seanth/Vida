@@ -62,7 +62,7 @@ def initDXFBlocks(theGarden):
     # theData.blocks.add(b)
     theFaceList = Sphere()
     for x in theFaceList[0:480]:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=44)
         b.add(the3dFace)
     theFaceList=""
     theData.blocks.add(b)
@@ -71,7 +71,7 @@ def initDXFBlocks(theGarden):
     b = dxf.block(name='SEED')
     theFaceList = Sphere()
     for x in theFaceList:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=6)
         b.add(the3dFace)
     theFaceList=""
     theData.blocks.add(b)
@@ -80,7 +80,7 @@ def initDXFBlocks(theGarden):
     b = dxf.block(name='CANOPY')
     theFaceList = Sphere()
     for x in theFaceList[0:480]:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=3)
         b.add(the3dFace)
     theFaceList=""
     theData.blocks.add(b)
@@ -182,7 +182,7 @@ def makeDXF(theGarden, theBlockData):
     # theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
     #print(0-(theWorldSize/2.0))
 
-    theBlockData.add(dxf.insert(blockname='THEGARDEN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=5))
+    theBlockData.add(dxf.insert(blockname='THEGARDEN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=41))
 
     if len(theGarden.terrainImage)==3:
         theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
@@ -196,6 +196,7 @@ def makeDXF(theGarden, theBlockData):
         z=obj.z
         theElevation=obj.elevation
         aicLeaf=colour_utils.HSV_to_ACI(obj.colourLeaf)
+        print(aicLeaf)
         aicStem=colour_utils.HSV_to_ACI(obj.colourStem)
         aicSeedDispersed=colour_utils.HSV_to_ACI(obj.colourSeedDispersed)
         aicSeedAttached=colour_utils.HSV_to_ACI(obj.colourSeedAttached)
