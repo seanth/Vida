@@ -494,7 +494,7 @@ def outputPNGs(inputDirectory, outputDirectory):
             theArg=theArg % (fileItem, outputDirectory + pngFileName)
         os.system(theArg)
 
-def convertDXF(inputDirectory, outputDirectory):
+#def convertDXF(inputDirectory, outputDirectory):
 
 def deleteCFDGFiles(outputDirectory):
     allTargetFiles=glob.glob(outputDirectory+"*.cfdg")
