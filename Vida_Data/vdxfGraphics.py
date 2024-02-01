@@ -15,6 +15,9 @@ import colour_utils
 import vterrainImport as terrain_utils
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 
+import sys
+import numpy as np
+
 ###########
 #new method
 # import ezdxf #pip install ezdxf #https://pypi.org/project/ezdxf/
@@ -39,7 +42,7 @@ def initDXFBlocks(theGarden):
     for x in theFaceList:
         the3dFace = dxf.face3d(x , flags=0)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
     
@@ -53,7 +56,7 @@ def initDXFBlocks(theGarden):
     for x in theFaceList:
         the3dFace = dxf.face3d(x , flags=0)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
@@ -64,7 +67,7 @@ def initDXFBlocks(theGarden):
     for x in theFaceList[0:480]:
         the3dFace = dxf.face3d(x , flags=0, color=44)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
@@ -73,7 +76,7 @@ def initDXFBlocks(theGarden):
     for x in theFaceList:
         the3dFace = dxf.face3d(x , flags=0, color=6)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
@@ -82,7 +85,7 @@ def initDXFBlocks(theGarden):
     for x in theFaceList[0:480]:
         the3dFace = dxf.face3d(x , flags=0, color=3)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
@@ -158,16 +161,66 @@ def initDXFBlocks(theGarden):
 
 
 def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
-    print("***Generating terrain mesh...***")
+    ##using assimp to make other 3d file types and
+    ##assimp doesn't render mesh correctly
+    ##Keep in case assimp changes and it can read meshes correctly
+    ##STH 2024-0131
+    # print("***Generating terrain mesh...***")
+    # b = dxf.block(name='MESHTERRAIN')
+    # xSize,ySize = (theWorldSize+1,theWorldSize+1)
+    # mesh = dxf.polymesh(xSize, ySize)
+    # for x in range(xSize):
+    #     for y in range(ySize):
+    #         thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
+    #         z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+    #         mesh.set_vertex(x, y, (x, y, z))
+    # b.add(mesh)
+    # theData.blocks.add(b)
+    # return theData
+    ##Generate a 3dface instead of a mesh so assimp can do it correctly
+    print("***Generating terrain 3dface...***")
     b = dxf.block(name='MESHTERRAIN')
-    xSize,ySize = (theWorldSize+1,theWorldSize+1)
-    mesh = dxf.polymesh(xSize, ySize)
+    xSize,ySize = (theWorldSize,theWorldSize)
+    theMesh=[]
     for x in range(xSize):
+        aRow=[]
         for y in range(ySize):
             thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
             z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-            mesh.set_vertex(x, y, (x, y, z))
-    b.add(mesh)
+            aRow.append((x,y,z))
+        theMesh.append(aRow)
+    aRow = None
+
+    theFaceList=[]
+    for theRowNumb in range(ySize-1):
+        i=0
+        j=2
+        for theColNumb in range(xSize-2):
+            #Starting with the mesh, which is a series of coordinates for each point
+            #we need to convert that into grouping of 4 coordinates defining a box
+            #for the 3dface. The creation needs to be done widdershins, starting in
+            #the lower left for the normal face to not be transparent.
+            #https://ezdxf.readthedocs.io/en/stable/dxfentities/3dface.html for example
+            #If the coordinates are:
+            #a b c d
+            #e f g h
+            #then the first box is: e,f,b,a.
+            #row 2, take the first two values, row 1, take the same index values, but reverse them
+            #then advance the column by 1 so the next box is: f,g,c,b
+            #STH 2024-0131
+            theFaceBox=[]
+            #theFaceBox=theFaceBox+theMesh[theRowNumb][i:j]
+            #theFaceBox=theFaceBox+list(reversed(theMesh[theRowNumb+1][i:j]))
+            theFaceBox=theFaceBox+theMesh[theRowNumb+1][i:j]
+            theFaceBox=theFaceBox+list(reversed(theMesh[theRowNumb][i:j]))
+            i=j-1 
+            j=i+2
+            theFaceList.append(theFaceBox)
+    theFaceBox = None
+    for x in theFaceList:
+        the3dFace = dxf.face3d(x , flags=0)
+        b.add(the3dFace)
+    theFaceList = None
     theData.blocks.add(b)
     return theData
 
@@ -196,7 +249,7 @@ def makeDXF(theGarden, theBlockData):
         z=obj.z
         theElevation=obj.elevation
         aicLeaf=colour_utils.HSV_to_ACI(obj.colourLeaf)
-        print(aicLeaf)
+        #print(aicLeaf)
         aicStem=colour_utils.HSV_to_ACI(obj.colourStem)
         aicSeedDispersed=colour_utils.HSV_to_ACI(obj.colourSeedDispersed)
         aicSeedAttached=colour_utils.HSV_to_ACI(obj.colourSeedAttached)
