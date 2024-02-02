@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """This file is part of Vida.
     --------------------------
-    Copyright 2023, Sean T. Hammond
+    Copyright 2024, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
@@ -559,7 +559,7 @@ def main():
         cycleNumber=0
         print("\n***Running simulation.***")
         if not showProgressBar:
-            theProgressBar= progressBarClass.progressbarClass(maxCycles,"*") #why -1? because index 0. So if total=100, 0-99.
+            theProgressBar= progressBarClass.progressbarClass(maxCycles,"*")
 
         while (theGarden.numbPlants<=maxPopulation and cycleNumber<=maxCycles) and (theGarden.numbPlants+theGarden.numbSeeds)>0:
             ###################################################################################
@@ -1005,8 +1005,12 @@ def main():
                         print("Deleting .cfdg files...")
                         outputGraphics.deleteCFDGFiles(outputGraphicsDirectoryDict[aView])
                 if aView=="3d":
-                    print("\nProducing STL files...")
-                    print(convert3d)
+                    theFileType=convert3d[0]
+                    print("\nProducing %s file..." %theFileType)
+                    # print(outputGraphicsDirectory)
+                    # print(graphicalView)
+                    # print(outputGraphicsDirectoryDict)
+                    outputGraphics.output3d(outputGraphicsDirectoryDict[aView], outputGraphicsDirectoryDict[aView], theFileType)
 
         ###only try and make a video if it is wanted and if pngs were made
         if produceVideo==True and produceGraphics==True:
@@ -1030,7 +1034,7 @@ def main():
 if __name__ == '__main__':
     theCLArgs=sys.argv
     ###Argument parsing
-    parser=argparse.ArgumentParser(description='blargity blarg blarg')
+    parser=argparse.ArgumentParser(description='Vida command line options')
     parser.add_argument('-n', type=str, metavar='string', dest='simulationName', required=False, help='Name of the simulation')
     parser.add_argument('-w', type=int, metavar='int', dest='theWorldSize', required=False, help='Size of the world')
     parser.add_argument('-x', type=int, metavar='int', dest='timesToRepeat', required=False, help='Times to repeat simulation')
@@ -1041,7 +1045,7 @@ if __name__ == '__main__':
     parser.add_argument('-dd',dest='debug2',action='store_true', required=False, help='Debug level 2')
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
-    parser.add_argument('-convert3d', type=str, metavar='string', dest='convert3d', required=False, help='Convert DXF files to another 3d format')
+    parser.add_argument('-convert3d', type=str, dest='convert3d', required=False, nargs=1, choices=['glb', 'obj', 'stl'], help='Convert DXF files to another 3d format')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
     # parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
     # parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
@@ -1049,6 +1053,8 @@ if __name__ == '__main__':
     parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
     parser.add_argument('-rl', type=open, metavar='file', dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
     parser.add_argument('-e', type=open, metavar='file', dest='eventFile', required=False, help='Load an event file')
+
+    parser.add_argument('-browser', dest='viewInBrowser', action='store_true', required=False, help='Display outputs of -convert3d to in browser window.')
 
 
     parser.add_argument('-i', type=pathlib.Path, metavar='file', dest='terrainFile', required=False, help='Load an image as a terrain file')    
@@ -1133,7 +1139,7 @@ if __name__ == '__main__':
         resumeSim=True
     ###parse seed placement options a bit more
     #index 0 is the file path, if a placement file is used
-    if os.path.isfile(startPopulationSize[0]) == True:
+    if (type(startPopulationSize)==list) and (os.path.isfile(startPopulationSize[0]) == True):
         theExtension=os.path.splitext(startPopulationSize[0])[1]
         if theExtension==".csv":
             theFile = open(startPopulationSize[0])
@@ -1163,6 +1169,9 @@ if __name__ == '__main__':
 #print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
     
     theDefaults=None#just clear it to free up memory
+
+    print(viewInBrowser)
+    sys.exit()
 
     main()
 else:
