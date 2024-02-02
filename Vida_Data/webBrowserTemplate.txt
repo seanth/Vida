@@ -7,7 +7,6 @@
 <a-scene>
   <a-assets>
     <a-asset-item id="tree-glb" src="../../Output-Default/Graphics/DXF/test.glb"></a-asset-item>
-    <a-asset-item id="tree-obj" src="test.obj"></a-asset-item>
     <!-- <a-asset-item id="tree-obj" src="test.obj"></a-asset-item> -->
   </a-assets>
 
