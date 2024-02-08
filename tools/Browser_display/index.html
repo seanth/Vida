@@ -3,16 +3,36 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   </head>
   <body style="background-color:powderblue;">
-    Cycle: tbd
+    <div class="cycleNumber">
+      Cycle
+    </div>
+    <table width=100%>
+      <tr><td>
+    To do:
+    <ul>
+      <li>figure out websockets</li>
+      <li>provide underside/inner surface for canopies</li>
+      <li>change colour ond seed</li>
+      <li>make sure seed size is correct</li>
+      <li>provide ground color</li>
+    </ul>
+    </td><td>
+      How to interact:
+      <ul>
+        <li>Click on scene</li>
+        <li>Control the direction using the mouse</li>
+        <li>Use WASD or arrow keys to move in that direction</li>
+      </ul>
+    </td></tr>
+  </table>
+
 <a-scene>
   <a-assets>
-    <a-asset-item id="tree-glb" src="../../Output-Default/Graphics/DXF/test.glb"></a-asset-item>
-    <a-asset-item id="tree-obj" src="test.obj"></a-asset-item>
-    <!-- <a-asset-item id="tree-obj" src="test.obj"></a-asset-item> -->
+    <a-asset-item id="tree-glb" src="../../Output-Default/Graphics/DXF/forBrowser.glb"></a-asset-item>
   </a-assets>
 
-  <a-entity light="type:directional; castShadow:true;" position="1 50 1"></a-entity>
-  <!-- <a-entity obj-model="obj: #tree-obj"></a-entity> -->
-  <a-entity position="20 -50 -80" rotation="-6 128 0" gltf-model="#tree-glb"></a-entity>
+  <a-entity light="type:directional; castShadow:true;" position="1 10 1"></a-entity>
+  <a-entity camera="" position="-0.351952409932995 1.6 -3.770186909902555" wasd-controls="fly: true" rotation="-32.887777440509254 -1.7188733853924705 0" look-controls="pointerLockEnabled: true" aframe-injected="" data-aframe-inspector-original-camera=""></a-entity>
+  <a-entity position="0 -60 -80" rotation="-0 -130 0" gltf-model="#tree-glb"></a-entity>
 </a-scene>
 </html>
