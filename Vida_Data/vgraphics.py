@@ -494,7 +494,7 @@ def outputPNGs(inputDirectory, outputDirectory):
             theArg=theArg % (fileItem, outputDirectory + pngFileName)
         os.system(theArg)
 
-def output3d(inputDirectory, outputDirectory, theFileType):
+def output3d(inputDirectory, outputDirectory, theFileType, viewInBrowser=False):
     #can supply a directory or list of files
     #theInput should either be a list of files or a directory
     if type(inputDirectory)==list:
@@ -503,17 +503,20 @@ def output3d(inputDirectory, outputDirectory, theFileType):
         allTargetFiles=sorted(glob.glob(inputDirectory +"*.dxf"))
     inputDirectory=os.path.dirname(allTargetFiles[0])+"/"
     for fileItem in allTargetFiles:
-        outFileName =fileItem.replace(outputDirectory, "")
-        outFileName = outFileName.replace(".dxf", "."+theFileType)
+        if viewInBrowser==False:
+            outFileName =fileItem.replace(outputDirectory, "")
+            outFileName = outFileName.replace(".dxf", "."+theFileType)
+        else:
+            outFileName = "forBrowser."+theFileType
         if sys.platform=="win32":
             print("!!!This feature is currently untested on Windows!!!")
             break
         else:
             theArg="assimp export %s %s > nul"
             #theArg="cfdg -c -b 0 -s 500 %s %s"
-            outFileName="test.glb"
+            #outFileName="test.glb"
             theArg=theArg % (fileItem, outputDirectory+outFileName)
-            print("     Produced: %s" % outFileName)
+            #print("     Produced: %s" % outFileName)
         os.system(theArg)
 
 

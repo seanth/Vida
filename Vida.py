@@ -467,11 +467,17 @@ def main():
     #     print("     All plants will allocate carbon to stem and leaf using method %i" % (theGarden.carbonAllocationMethod))
 
     print("")
+
     if produceGraphics==True: 
         print("     Graphical output will be produced.")
         for aView in graphicalView:
             if aView=="3d":
                 print("       Graphical output will be 3d.")
+                ######################
+                if viewInBrowser==True:
+                    print("          Graphical output will be viewable via a browser.")
+                    print("          Graphical output will be generate for each cycle.")
+                ######################
             if aView==1:
                 print("       Graphical output will be a bottom-up view.")
             if aView==2:
@@ -563,7 +569,8 @@ def main():
 
         while (theGarden.numbPlants<=maxPopulation and cycleNumber<=maxCycles) and (theGarden.numbPlants+theGarden.numbSeeds)>0:
             ###################################################################################
-            ####Experimental scripting event stuff                                   
+            ####Experimental scripting event stuff
+            ####Consider moving all of this to it's own file                                   
             if cycleNumber in eventTimes:                                                     
                 for aItem in eventData[cycleNumber]:                                          
                     for aKey in aItem.keys():                                                 
@@ -860,7 +867,21 @@ def main():
                     theDXFData=vdxfGraphics.makeDXF(theGarden, dxfObject)
                     theFileName= simulationName+str(cycleNumber)
                     vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["3d"], theFileName, theDXFData)
-
+                    ###If the browser view is on, output the desired 3d file each cycle
+                    if viewInBrowser==True and convert3d!=None:
+                        theFileType=convert3d[0]
+                        #print("\nProducing %s file..." %theFileType)
+                        # print(outputGraphicsDirectory)
+                        # print(graphicalView)
+                        # print(outputGraphicsDirectoryDict)
+                        #print(theFileName)
+                        theFileToConvert=[outputGraphicsDirectoryDict[aView]+theFileName+".dxf"]
+                        #print(theFileToConvert)
+                        #outputGraphics.output3d(outputGraphicsDirectoryDict[aView], outputGraphicsDirectoryDict[aView], theFileType)
+                        outputGraphics.output3d(theFileToConvert, outputGraphicsDirectoryDict[aView], theFileType, viewInBrowser)
+                        ###tell safari to open the page
+                        theArg="open 'http://localhost:8000/tools/Browser_display/index.html' -a Safari"
+                        os.system(theArg)
                 ##############################################################
                 if len(theView)!=0:
                     for aView in theView:
@@ -1004,12 +1025,10 @@ def main():
                     if deleteCfdgFiles==True:
                         print("Deleting .cfdg files...")
                         outputGraphics.deleteCFDGFiles(outputGraphicsDirectoryDict[aView])
-                if aView=="3d":
+
+                if aView=="3d" and convert3d!=None and viewInBrowser==False:
                     theFileType=convert3d[0]
                     print("\nProducing %s file..." %theFileType)
-                    # print(outputGraphicsDirectory)
-                    # print(graphicalView)
-                    # print(outputGraphicsDirectoryDict)
                     outputGraphics.output3d(outputGraphicsDirectoryDict[aView], outputGraphicsDirectoryDict[aView], theFileType)
 
         ###only try and make a video if it is wanted and if pngs were made
@@ -1170,8 +1189,20 @@ if __name__ == '__main__':
     
     theDefaults=None#just clear it to free up memory
 
-    print(viewInBrowser)
-    sys.exit()
+    ######################
+    ###Do checks to see whether browser viewing makes sense in relation to the graphical output
+    if viewInBrowser==True:
+        if produceGraphics==False:
+            print("ALERT: Graphical output is needed to view in browser.")
+            viewInBrowser=False
+        if "3d" not in graphicalView:
+            print("ALERT: Graphical output of '3d' is needed to view in browser.")
+            viewInBrowser=False
+        if convert3d==None:
+            print("ALERT: A file type must be chosen with 'convert3d' to view in browser.")
+        if viewInBrowser==False:
+            print("    Browser viewing set to FALSE")
+    ######################
 
     main()
 else:
