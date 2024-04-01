@@ -16,6 +16,7 @@ import os
 import os.path
 import glob
 import sys
+import asyncio #for websocket extension STH 2024-0325
 import argparse
 if (sys.version_info.major)==2:
     import ConfigParser
@@ -35,6 +36,7 @@ import vgraphics as outputGraphics
 import list_utils as list_utils
 import geometry_utils as geometry_utils
 import vterrainImport as vterrainImport
+import vwebsockets
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
@@ -394,9 +396,18 @@ def main():
     #####################################
 
     if terrainFile!=None:
+        ###get the ctime for the file's modification
+        ###this is needed for use with the sandbox to
+        ###see whether there is a new image in place
+        ###STH 2024-0327
+        terrainFileModTime = os.path.getmtime(terrainFile)
+
         ###code moved to vterrainImport
         ###STH 2024-0124
         theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
+
+
+
 
 
 
@@ -496,6 +507,10 @@ def main():
                 print("       Graphical output will be a combination bottom-up, top-down and side view.")
         if produceVideo==True:
             print("       Graphical output will include a %s frame/second video." % (framesPerSecond))
+        if convert3d!=None:
+            print("       DXF files will be converted to %s" % convert3d[0])
+
+
     ###I think this is where to start the times to repeat bit
     for x in range(timesToRepeat):
         ###make necessary directories
@@ -564,10 +579,30 @@ def main():
 
         cycleNumber=0
         print("\n***Running simulation.***")
-        if not showProgressBar:
-            theProgressBar= progressBarClass.progressbarClass(maxCycles,"*")
+        ###Don't show the progress bar if the user will be viewing immediate results in a browser
+        if viewInBrowser==False:
+            if (not showProgressBar):
+                theProgressBar= progressBarClass.progressbarClass(maxCycles,"*")
 
         while (theGarden.numbPlants<=maxPopulation and cycleNumber<=maxCycles) and (theGarden.numbPlants+theGarden.numbSeeds)>0:
+            ###################################################################################
+            ####Sandbox import of terrain
+            ####STH 2024-0327
+            ####If the terrain file in place has a different modified
+            ####ctime, it's probably a new file and should be loaded
+            if (terrainFileModTime != os.path.getmtime(terrainFile)):
+                terrainFileModTime = os.path.getmtime(terrainFile)
+                print("Terrain file has changed. Loading...")
+                theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
+                if theGarden.terrainImage != []:
+                    print("here!")
+                    DXFBlockDefs = vdxfGraphics.makeTerrainMesh(DXFBlockDefs, theGarden.theWorldSize, theGarden.terrainImage, theGarden.maxElevation)
+                    ###NEXT NEED TO ADD IN CHECK TO SEE IF TREES ARE BURRIED OR HOVERING
+                    theGarden.removeTerrainChangeMortality()
+
+
+
+            ###################################################################################
             ###################################################################################
             ####Experimental scripting event stuff
             ####Consider moving all of this to it's own file                                   
@@ -826,28 +861,10 @@ def main():
 
             ###################################################################################
             theGarden.cycleNumber=cycleNumber
-
-            if not showProgressBar:
-                    theProgressBar.update(cycleNumber)
-
-            ###START OF SEEING CHANGES TO SPECIES FOLDER
-            #########Check for multiple species. If none, use default
-            fileList=os.listdir("Species")
-            #print fileList
-            #ymlList=[]
-            #print "***Checking for species...***"
-            #for file in fileList:
-            #    theExtension=os.path.splitext(file)[1]
-            #    if theExtension==".yml":
-            #        #add this file to the list of yaml files
-            #        ymlList.append(file)
-            #        useDefaultYml=False
-            #fileList=[]
-            ##########
-
-
-
-
+            ###Don't show the progress bar if the user will be viewing immediate results in a browser
+            if viewInBrowser==False:
+                if (not showProgressBar):
+                        theProgressBar.update(cycleNumber)
 
             if debug==1: print("number of plants: "+str(theGarden.numbPlants))
             if debug==1: print("number of seeds: "+str(theGarden.numbSeeds))
@@ -868,20 +885,22 @@ def main():
                     theFileName= simulationName+str(cycleNumber)
                     vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["3d"], theFileName, theDXFData)
                     ###If the browser view is on, output the desired 3d file each cycle
-                    if viewInBrowser==True and convert3d!=None:
+                    #
+                    if convert3d!=None and viewInBrowser==True:
                         theFileType=convert3d[0]
-                        #print("\nProducing %s file..." %theFileType)
-                        # print(outputGraphicsDirectory)
-                        # print(graphicalView)
-                        # print(outputGraphicsDirectoryDict)
-                        #print(theFileName)
                         theFileToConvert=[outputGraphicsDirectoryDict[aView]+theFileName+".dxf"]
-                        #print(theFileToConvert)
-                        #outputGraphics.output3d(outputGraphicsDirectoryDict[aView], outputGraphicsDirectoryDict[aView], theFileType)
-                        outputGraphics.output3d(theFileToConvert, outputGraphicsDirectoryDict[aView], theFileType, viewInBrowser)
-                        ###tell safari to open the page
-                        theArg="open 'http://localhost:8000/tools/Browser_display/index.html' -a Safari"
-                        os.system(theArg)
+                        #outputGraphics.output3d(theFileToConvert, outputGraphicsDirectoryDict[aView], theFileType, viewInBrowser)
+                        the3dFilePath = outputGraphics.output3d(theFileToConvert, outputGraphicsDirectoryDict[aView], theFileType)
+                        the3dFilePath = "../../"+the3dFilePath
+                        ###Try to send the file path to the websocket server
+                        ###This assumes the server is already running
+                        ###STH 2024-0325
+                        uri = "ws://localhost:5678/" #this can be put into a config file or something
+                        asyncio.run(vwebsockets.send3dFileName(uri, the3dFilePath))
+
+
+
+
                 ##############################################################
                 if len(theView)!=0:
                     for aView in theView:
@@ -992,8 +1011,8 @@ def main():
                 fileName=simulationName+'-'+str(cycleNumber)+'.csv'
                 saveDataPoint(dataDirectory, fileName, theGarden)
                 
-                            
-#if produceStats:
+                           
+        #if produceStats:
         if saveData=="a":
             ###the real solution is to refactor vextract so it can be
             ###command line OR imported

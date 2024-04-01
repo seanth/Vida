@@ -494,30 +494,37 @@ def outputPNGs(inputDirectory, outputDirectory):
             theArg=theArg % (fileItem, outputDirectory + pngFileName)
         os.system(theArg)
 
-def output3d(inputDirectory, outputDirectory, theFileType, viewInBrowser=False):
-    #can supply a directory or list of files
-    #theInput should either be a list of files or a directory
-    if type(inputDirectory)==list:
-        allTargetFiles=inputDirectory
-    else:
-        allTargetFiles=sorted(glob.glob(inputDirectory +"*.dxf"))
-    inputDirectory=os.path.dirname(allTargetFiles[0])+"/"
-    for fileItem in allTargetFiles:
-        if viewInBrowser==False:
+#def output3d(inputDirectory, outputDirectory, theFileType, viewInBrowser=False):
+def output3d(inputDirectory, outputDirectory, theFileType):
+    if theFileType in ['stl', 'glb', 'obj']:
+        #can supply a directory or list of files
+        #theInput should either be a list of files or a directory
+        if type(inputDirectory)==list:
+            allTargetFiles=inputDirectory
+        else:
+            allTargetFiles=sorted(glob.glob(inputDirectory +"*.dxf"))
+        inputDirectory=os.path.dirname(allTargetFiles[0])+"/"
+        for fileItem in allTargetFiles:
+            # if viewInBrowser==False:
+            #     outFileName =fileItem.replace(outputDirectory, "")
+            #     outFileName = outFileName.replace(".dxf", "."+theFileType)
+            # else:
+            #     outFileName = "forBrowser."+theFileType
             outFileName =fileItem.replace(outputDirectory, "")
             outFileName = outFileName.replace(".dxf", "."+theFileType)
-        else:
-            outFileName = "forBrowser."+theFileType
-        if sys.platform=="win32":
-            print("!!!This feature is currently untested on Windows!!!")
-            break
-        else:
-            theArg="assimp export %s %s > nul"
-            #theArg="cfdg -c -b 0 -s 500 %s %s"
-            #outFileName="test.glb"
-            theArg=theArg % (fileItem, outputDirectory+outFileName)
-            #print("     Produced: %s" % outFileName)
-        os.system(theArg)
+            if sys.platform=="win32":
+                print("!!!This feature is currently untested on Windows!!!")
+                break
+            else:
+                theArg="assimp export %s %s > nul"
+                #theArg="cfdg -c -b 0 -s 500 %s %s"
+                #outFileName="test.glb"
+                theArg=theArg % (fileItem, outputDirectory+outFileName)
+                #print("     Produced: %s" % outFileName)
+                os.system(theArg)
+                return outputDirectory+outFileName
+    else:
+        print("Unsupported conversion. Won't convert dxf to %s" % theFileType)
 
 
 #def convertDXF(inputDirectory, outputDirectory):
