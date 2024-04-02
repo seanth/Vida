@@ -6,3 +6,5 @@ PyYAML
 xlrd
 openpyxl
 rioxarray
+playsound
+websockets
