@@ -610,12 +610,12 @@ class genericPlant(object):
                 #Eventually the file can be chosen by tree characteristics, but
                 #for now choose one randomly
                 #STH 2024-0401
-                if theGarden.matureAudioList!=[]:
-                    theAudioFile = random.choice(theGarden.matureAudioList)
-                    theAudioFile = "Vida_Data/audio/StarBox-9/"+theAudioFile
-                    print("mature: %s" % theAudioFile)
-                    if os.path.isfile(theAudioFile):
-                        playsound(theAudioFile, False)
+                # if theGarden.matureAudioList!=[]:
+                #     theAudioFile = random.choice(theGarden.matureAudioList)
+                #     theAudioFile = "Vida_Data/audio/StarBox-9/"+theAudioFile
+                #     print("mature: %s" % theAudioFile)
+                #     if os.path.isfile(theAudioFile):
+                #         playsound(theAudioFile, False)
 
             else:  
                 Hs = Hsyoung

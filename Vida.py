@@ -915,13 +915,21 @@ def main():
                         theFileType=convert3d[0]
                         theFileToConvert=[outputGraphicsDirectoryDict[aView]+theFileName+".dxf"]
                         #outputGraphics.output3d(theFileToConvert, outputGraphicsDirectoryDict[aView], theFileType, viewInBrowser)
+                        ##remove the files, you might run out of space
+                        ##this is a crappy way to do this, but time is short
+                        allTargetFiles=glob.glob(outputGraphicsDirectoryDict[aView]+"*."+theFileType)
+                        for fileItem in allTargetFiles:
+                            os.remove(fileItem)
                         the3dFilePath = outputGraphics.output3d(theFileToConvert, outputGraphicsDirectoryDict[aView], theFileType)
                         the3dFilePath = "../../"+the3dFilePath
                         ###Try to send the file path to the websocket server
                         ###This assumes the server is already running
                         ###STH 2024-0325
                         uri = "ws://localhost:5678/" #this can be put into a config file or something
-                        asyncio.run(vwebsockets.send3dFileName(uri, the3dFilePath))
+                        try:
+                            asyncio.run(vwebsockets.send3dFileName(uri, the3dFilePath))
+                        except:
+                            print("   Websocket server unreachable")
 
 
 
