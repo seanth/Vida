@@ -379,6 +379,9 @@ def main():
     theGarden.platonicSeeds={}
     theGarden.theRegions=[]
     theGarden.theWorldSize = theWorldSize
+
+    theGarden.deathAudio = []
+    theGarden.matureAudioList = []
     
     ####################################
     ###experiments in importing events
@@ -406,8 +409,25 @@ def main():
         ###STH 2024-0124
         theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
 
+    #load in the audio files
+    #right now only accepts mp3s
+    #STH 2024-0401
+    if playAudio==True:
+        ####get the death audio
+        deathAudioList = []
+        for aFile in os.listdir("Vida_Data/audio/StarBox-6"):
+            if aFile.endswith(".mp3"):
+                deathAudioList.append(aFile)
+        theGarden.deathAudio = deathAudioList
+        #print(theGarden.deathAudio)
 
-
+        ####get the mature audio
+        matureAudioList = []
+        for aFile in os.listdir("Vida_Data/audio/StarBox-9"):
+            if aFile.endswith(".mp3"):
+                matureAudioList.append(aFile)
+        theGarden.matureAudioList = matureAudioList
+        #print(theGarden.matureAudioList)
 
 
 
@@ -509,6 +529,10 @@ def main():
             print("       Graphical output will include a %s frame/second video." % (framesPerSecond))
         if convert3d!=None:
             print("       DXF files will be converted to %s" % convert3d[0])
+    ######################
+    if playAudio==True:
+        print("          Audio tones will be played for maturity and death events")
+    ######################
 
 
     ###I think this is where to start the times to repeat bit
@@ -590,15 +614,16 @@ def main():
             ####STH 2024-0327
             ####If the terrain file in place has a different modified
             ####ctime, it's probably a new file and should be loaded
-            if (terrainFileModTime != os.path.getmtime(terrainFile)):
-                terrainFileModTime = os.path.getmtime(terrainFile)
-                print("Terrain file has changed. Loading...")
-                theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
-                if theGarden.terrainImage != []:
-                    print("here!")
-                    DXFBlockDefs = vdxfGraphics.makeTerrainMesh(DXFBlockDefs, theGarden.theWorldSize, theGarden.terrainImage, theGarden.maxElevation)
-                    ###NEXT NEED TO ADD IN CHECK TO SEE IF TREES ARE BURRIED OR HOVERING
-                    theGarden.removeTerrainChangeMortality()
+            if (terrainFile!=None):
+                if (terrainFileModTime != os.path.getmtime(terrainFile)):
+                    terrainFileModTime = os.path.getmtime(terrainFile)
+                    print("Terrain file has changed. Loading...")
+                    theGarden=vterrainImport.importTerrainFromFile(terrainFile, absMax, absMin, terrainScale, theGarden)
+                    if theGarden.terrainImage != []:
+                        print("here!")
+                        DXFBlockDefs = vdxfGraphics.makeTerrainMesh(DXFBlockDefs, theGarden.theWorldSize, theGarden.terrainImage, theGarden.maxElevation)
+                        ###NEXT NEED TO ADD IN CHECK TO SEE IF TREES ARE BURRIED OR HOVERING
+                        theGarden.removeTerrainChangeMortality()
 
 
 
@@ -1093,7 +1118,7 @@ if __name__ == '__main__':
     parser.add_argument('-e', type=open, metavar='file', dest='eventFile', required=False, help='Load an event file')
 
     parser.add_argument('-browser', dest='viewInBrowser', action='store_true', required=False, help='Display outputs of -convert3d to in browser window.')
-
+    parser.add_argument('-audio', dest='playAudio', action='store_true', required=False, help='Play audio for tree life events.')
 
     parser.add_argument('-i', type=pathlib.Path, metavar='file', dest='terrainFile', required=False, help='Load an image as a terrain file')    
     #default max and min elevation for a grayscale image given no elevation data)

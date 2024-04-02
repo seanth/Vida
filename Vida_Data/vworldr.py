@@ -8,6 +8,7 @@
 """
 
 import sys
+import os
 import math
 import random
 import time
@@ -24,6 +25,9 @@ import progressBarClass
 ###STH & EKT 05 Feb 2020
 import vterrainImport as terrain_utils
 
+###audio playing
+###STH 2024-0401
+from playsound import playsound
 
 debug1=0
 debug2=0
@@ -308,6 +312,25 @@ class garden(object):
                 self.numbPlants=self.numbPlants-1
             self.deathNote.append(theObject)
             self.soil.remove(theObject)
+            ######
+            #if audio playing is on and if there are audio files, play one
+            #for the maturity event.
+            #Eventually the file can be chosen by tree characteristics, but
+            #for now choose one randomly
+            #STH 2024-0401
+            #this code is duplicated in vplant.py
+            #might be worth while making this a unique function
+            if theGarden.deathAudio!=[]:
+                theAudioFile = random.choice(theGarden.deathAudio)
+                #should have the file path be defineable in a config file
+                theAudioFile = "Vida_Data/audio/StarBox-6/"+theAudioFile
+                #print("death: %s" % theAudioFile)
+                if os.path.isfile(theAudioFile):
+                    ###The mortality is a cacophony
+                    ###Make so only above a certain age 
+                    if (theObject.isMature==True):
+                        #print(theObject.age)
+                        playsound(theAudioFile, False)
     
     def calcEulerGreenhill(self, plant):
         theGarden=self

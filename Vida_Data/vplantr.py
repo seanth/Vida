@@ -8,6 +8,7 @@
 """
 
 import sys
+import os
 import math
 import time
 import copy
@@ -22,6 +23,10 @@ import yaml
 ###STH & EKT 05 Feb 2020
 import vterrainImport as terrain_utils
 import vworldr as worldBasics
+
+###audio playing
+###STH 2024-0401
+from playsound import playsound
 
 debug=0
 
@@ -599,6 +604,19 @@ class genericPlant(object):
             if Hs>=Hsyoung:
                 self.isMature=True
                 self.matureAge=self.age
+                ######
+                #if audio playing is on and if there are audio files, play one
+                #for the maturity event.
+                #Eventually the file can be chosen by tree characteristics, but
+                #for now choose one randomly
+                #STH 2024-0401
+                if theGarden.matureAudioList!=[]:
+                    theAudioFile = random.choice(theGarden.matureAudioList)
+                    theAudioFile = "Vida_Data/audio/StarBox-9/"+theAudioFile
+                    print("mature: %s" % theAudioFile)
+                    if os.path.isfile(theAudioFile):
+                        playsound(theAudioFile, False)
+
             else:  
                 Hs = Hsyoung
 
