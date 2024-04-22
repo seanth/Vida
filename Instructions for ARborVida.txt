@@ -1,0 +1,23 @@
+Example instructions for ARborVida
+
+ARborVida in its current incarnation requires three(3) terminal windows and the MagicSand app running
+
+Assuming you have all the software installed:
+
+Terminal window 1:
+	1.) cd to the Vida build
+	2.) python2 -m http.sever
+
+Terminal window 2:
+	1.) cd Vida folder/tools/Browser_display
+	2.) python3 show_model2.py
+
+Terminal window 3:
+	1.) cd to the Vida folder
+	2.) python3 vida.py -w 100 -s 250 -t 3000 -g 3d - m 100000 -convert3d glb -browser -audio -iwater 5.9 -i Terrain_files/sandBox_files/sandboxDEM.tiff
+
+
+
+Browser:
+	localhost:9000/tools/Browser_display/index.html
+
