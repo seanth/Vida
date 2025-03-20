@@ -1253,7 +1253,7 @@ if __name__ == '__main__':
         resumeSim=True
     ###parse seed placement options a bit more
     #index 0 is the file path, if a placement file is used
-    if os.path.isfile(startPopulationSize[0]) == True:
+    if type(startPopulationSize)==list and os.path.isfile(startPopulationSize[0]) == True:
         theExtension=os.path.splitext(startPopulationSize[0])[1]
         if theExtension==".csv":
             theFile = open(startPopulationSize[0])
