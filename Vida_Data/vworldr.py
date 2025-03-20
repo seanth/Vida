@@ -644,8 +644,8 @@ class garden(object):
                 countToGerm=sList[i][3]
             #radius of canopy would be sList[i][4]. Unused, but in place to be built on        
             elif seedPlacement=="random":
-                x=random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
-                y=random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
+                x=random.randrange(-int(theGarden.theWorldSize/2),int(theGarden.theWorldSize/2))+random.random()
+                y=random.randrange(-int(theGarden.theWorldSize/2),int(theGarden.theWorldSize/2))+random.random()
             elif seedPlacement=="square" or seedPlacement=="hex":
                 x=prevX+seedDistance
                 y=prevY-seedDistance
