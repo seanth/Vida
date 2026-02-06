@@ -19,6 +19,5 @@ width, height = im.size
 for x in xrange(width):
 	for y in xrange(height):
 		if im.getpixel((x,y))<=50:
-			#print >> out, "%s, %s, %s" % (x-(width/2.0),y-(height/2.0),im.getpixel((x,y)))
 			print >> out, "random, %f, %f, 0" % (x-(width/2.0),y-(height/2.0))
 out.close()

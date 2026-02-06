@@ -68,7 +68,6 @@ class genericPlant(object):
         self.countToGerm=0.0
         ###experimental. allows a plant to change how it does photosythesis based on how shaded it is
         self.photoConstantShade=self.photoConstant#
-        ############################
         
         self.prevHeightGrowthRate=0.0
         self.heightGrowthRate=[]
@@ -101,8 +100,6 @@ class genericPlant(object):
         self.age=0.0
         self.overlapList=[]
         self.colourLeaf[2]=1.0
-    #fileLoc="Vida_Data/Default_species.yml"
-    #self.importPrefs(fileLoc)
     
     def importPrefs(self, fileLoc):
         theFile=open(fileLoc)
@@ -117,7 +114,6 @@ class genericPlant(object):
             for theSeed in thePlant.seedList:
                 ###The plant has seeds. Drop them prior to killing plant###
                 ###just drop the seed straight down###
-                #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
                 theSeed.countToGerm=self.delayInGermination
                 theGarden.plantSeed(theSeed)
                 thePlant.seedList.remove(theSeed)
@@ -161,7 +157,6 @@ class genericPlant(object):
                         self.massSeedsTotal=self.massSeedsTotal+attachedSeed.massSeed
             
             ##if you lack seeds, make them
-            #if (self.heightStem>=self.startMakingSeedsHeight) or (self.age>=self.startMakingSeedsAge) or self.isMature:
             if self.isMature==True:
                 self.makeSomeSeeds(theGarden.maxSeedsPerPlant, theGarden)
         
@@ -179,10 +174,7 @@ class genericPlant(object):
         ###convert mass to get radius of leaf
         self.calcRadiusLeafFromMassLeaf()
         
-        #self.z=self.z+self.heightStem+self.heightLeafMax
-        #self.z=self.elevation+self.heightStem+self.heightLeafMax
         self.z=self.heightStem+self.heightLeafMax
-        #print "plant z: %f  plant elevation: %f" % (self.z, self.elevation)
 
         if self.radiusLeaf>=self.radiusStem:
             self.r=self.radiusLeaf
@@ -203,10 +195,6 @@ class genericPlant(object):
         theSeed=copy.deepcopy(self)
         theSeed.zeroSeedValues()
         theNameList= theSeed.name.split()
-        #if len(theNameList)<2:
-        #    idNumb=str(random.random())
-        #else:
-        #    idNumb=theNameList[1]
         theMax=self.locSeedFormation[0]
         theMin=self.locSeedFormation[1]
         ###Check these values and fix them if they have weird values
@@ -214,7 +202,7 @@ class genericPlant(object):
         if theMax<0.0: self.locSeedFormation[0]=0.0
         if theMin>1.0: self.locSeedFormation[1]=1.0
         if theMin<0.0: self.locSeedFormation[1]=0.0
-        ###
+
         theRadius=self.radiusLeaf
         r=theRadius*theMax
         delta=theRadius*theMin
@@ -232,13 +220,12 @@ class genericPlant(object):
             elif dist==0.0:
                 deltaY=0.0
             else:
-                #deltaY=self.radiusLeaf-math.sqrt(abs((self.radiusLeaf*self.radiusLeaf)-(dist*dist)))
+
                 deltaY=self.radiusLeaf-((abs((self.radiusLeaf*self.radiusLeaf)-(dist*dist)))**0.5)
             seedZ=self.heightStem+(self.heightLeafMax/2.0)-deltaY
         else:
             seedZ=self.heightStem+(self.heightLeafMax/2.0)
         
-        #theSeed.name="growingSeed %s" % (idNumb)
         theSeed.name=str(uuid.uuid4())
         theSeed.timeCreation=time.time()
         theSeed.motherPlant=self
@@ -252,8 +239,6 @@ class genericPlant(object):
             #the seed elevation isn't the elevation if terrain at XY
             #it's the elevation of the terrain at the mother tree
             theSeed.z= seedZ+theSeed.motherPlant.elevation
-            #print(theSeed.motherPlant.elevation)
-
         ###########################################################
         theSeed.r= theSeed.radiusSeed
         self.seedList.append(theSeed)
@@ -269,12 +254,8 @@ class genericPlant(object):
         #use that value to calculate the radius of the seed
         #convert mass to volume and the get the radius
         i= self.massSeed/self.densitySeed #this is volume in m^3
-        #i=i/(4.0/3.0)
         i=i/1.3333
-        #i=i/(math.pi)
         i=i/3.14
-        #i=math.pow(i, 1.0/3.0)
-        #i=math.pow(i, 0.3333)
         i=i**0.3333
         self.radiusSeed=i
         
@@ -311,7 +292,6 @@ class genericPlant(object):
             r=theRadius*theMax
             delta=theRadius*theMin
             r=(random.random()*(r-delta))+ delta
-            #twoPi=math.pi*2
             twoPi=3.14*2
             theAngle=(random.random()*(twoPi-0)+0)
             newX =r*math.cos(theAngle)
@@ -330,7 +310,6 @@ class genericPlant(object):
             theRise=theSeed.y-motherPlant.y
             theRun=theSeed.x-motherPlant.x
             theAngle=math.asin(theRise/theHypot)
-            #theAngle=math.degrees(theAngle)
             newX=math.cos(theAngle)*theDistance
             if theRun<0.0:
                 newX=0.0-newX
@@ -362,7 +341,6 @@ class genericPlant(object):
             
             tempVar1= (v*math.cos(angle))/g
             tempVar2= (v*math.sin(angle))
-            #tempVar3= math.sqrt((tempVar2*tempVar2)+(2*g*h))
             tempVar3= ((tempVar2*tempVar2)+(2*g*h))**0.5
             tempVar3= tempVar2+tempVar3
             theDistance=tempVar1*tempVar3
@@ -389,7 +367,6 @@ class genericPlant(object):
         #STH EKT 2020-0212
         if theGarden.terrainImage!=[]:
             coordAdjust = theGarden.theWorldSize/2.0
-            #thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
             thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
             theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
         else:
@@ -399,8 +376,6 @@ class genericPlant(object):
         theMax = theDistance
         while newZ>theSeed.z + motherPlant.elevation:
             theTestDist = (theMin+theMax)/2.0
-            #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
-            #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
             newX = (math.cos(theAngle)*theTestDist)
             if theRun<0.0: newX=(0.0-newX)
             newY = (math.sin(theAngle)*theTestDist)
@@ -414,7 +389,6 @@ class genericPlant(object):
             theMax = theTestDist
             if round(theMax,3) == round(theMin,3): break
 
-        #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
         ###Place the seed in xyz space correctly
         ###STH 2020-0226
         theSeed.elevation = theElevation
@@ -445,11 +419,6 @@ class genericPlant(object):
                     self.age=1
                     self.timeGermination=time.time()
                     theNameList=self.name.split()
-                        #if len(theNameList)<2:
-                    #idNumb=str(random.random())
-                        #else:
-                    #idNumb=theNameList[1]
-                    #self.name="Plant %s" % (idNumb)
                     ###update the garden
                     theGarden.numbSeeds= theGarden.numbSeeds-1
                     theGarden.numbPlants= theGarden.numbPlants+1
@@ -471,8 +440,6 @@ class genericPlant(object):
                     ###will be in world_basics
                     
                     ###rename the seed so you know it's a plant
-                    #self.z=self.z+self.heightStem+self.heightLeafMax
-                    #self.z=self.elevation+self.heightStem+self.heightLeafMax
                     self.z=self.heightStem+self.heightLeafMax
                     
                     ###why am I doing this, again?
@@ -484,10 +451,7 @@ class genericPlant(object):
             self.countToGerm=self.countToGerm-1
     
     def calcNewMassFromLeaf(self, theGarden):
-        #print "mass stem: %s" % (self.massStem)
-        #print "mass leaf: %s" % (self.massLeaf)
         areaAvailable=self.areaPhotosynthesis-self.areaCovered
-        #print "Ap: %s" % (areaAvailable)
         if self.areaPhotosynthesis>0.0:
             fractionAvailable=areaAvailable/self.areaPhotosynthesis
         else:
@@ -495,46 +459,19 @@ class genericPlant(object):
 
 
         if fractionAvailable>self.fractionMinimumSurvival:
-            #lightConversion=self.photoConstant*(self.massLeaf**self.photoExponent)#in units of kgGrowth/area leaf for photosynthesis
-            #newMass= (areaAvailable*lightConversion)
             var1=(self.massLeaf**self.photoExponent)#in units of kgGrowth/area leaf
             var1=areaAvailable*var1#in units of kgGrowth/area leaf
-            #var2=(self.photoConstant*fractionAvailable*self.waterGrowthFraction)+(self.photoConstantShade*(1-fractionAvailable))
             var2=(self.photoConstant*fractionAvailable*self.waterGrowthFraction*self.droughtGrowthFraction)+(self.photoConstantShade*(1-fractionAvailable))
-            #var2=(self.photoConstant*fractionAvailable+(self.photoConstantShade*(1-fractionAvailable)))
-            #print "%s: %s" % (self, var2)
             newMass=var2*var1
-            #print("*****")
-            #print(newMass)
             #New property related to water tolerance
             #0329-2021 STH
-            #if theGarden.terrainImage!=[] and theGarden.waterLevel>0.0:
-            #    newMass=newMass*self.waterGrowthFraction
-                #print(newMass)
-            #print("*****")
-
             ###decide whether canopy transmission impacts conversion
-            # alterMassWitTransmission=0
-            # if theGarden.canopyTransmittanceImpactsConversion==1:
-            #     alterMassWitTransmission=1
-            # elif theGarden.canopyTransmittanceImpactsConversion==0:
-            #     alterMassWitTransmission=0
-            # else:
-            #     if self.canopyTransmittanceImpactsConversion:
-            #         alterMassWitTransmission=1
-            #     else: 
-            #         alterMassWitTransmission=0
-            
-            # if alterMassWitTransmission==1:
-            #     newMass=newMass*(1-self.canopyTransmittance)
-            # #print "mass new: %s" % (newMass)
             return newMass
         else:
             return -1.0
     
     def calcMassStemFromMassNew(self):
         massNew=self.massFixed
-        #GMs=self.speciesConstant1*math.pow(massNew, self.speciesExponent1)
         GMs=self.speciesConstant1*(massNew**self.speciesExponent1)
         massStem=self.massStem+GMs
         self.GMs=GMs
@@ -546,17 +483,10 @@ class genericPlant(object):
         massStem=self.massStem
         massTotal=self.massTotal+massNew
         if (self.age>=self.startMakingSeedsAge) or self.isMature==True:
-            #massLeaf=self.speciesConstant3*(math.pow(massStem, self.speciesExponent3))
             massLeaf=self.speciesConstant3*(massStem**self.speciesExponent3)
-        #print "mature at: %i" % (self.age)
         else:
-            #massLeaf=self.speciesConstant2*(math.pow(massStem, self.speciesExponent2))
             massLeaf=self.speciesConstant2*(massStem**self.speciesExponent2)
-        #print "young"
-        #if not massStem+massLeaf==massTotal:
         ###something went wonky with calcs.
-        #print "Age: %i  a bit off: %f" % (self.age, massTotal-massStem-massLeaf)
-        #massLeaf=massTotal-massStem
         self.GMl=massLeaf-self.massLeaf
         self.massLeaf=massLeaf
     
@@ -573,13 +503,11 @@ class genericPlant(object):
     
     def calcRadiusStemFromMassStem(self):
         Ms=self.massStem
-        #Ds=self.speciesConstant20*math.pow(Ms,self.speciesExponent20)
         Ds=self.speciesConstant20*(Ms**self.speciesExponent20)
         Rs=Ds/2.0
         self.GRs=Rs-self.radiusStem
         self.radiusStem=Rs
         if debug==1:print("          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem))
-    #print "          calcRadiusStemFromMassStem: Radius of stem is %f" % (self.radiusStem)
 
     def calcHeightStemFromRadiusStem(self, theGarden):
         Ds=self.radiusStem*2
@@ -625,7 +553,6 @@ class genericPlant(object):
             avgMassFixed=theNum/theDenom
         ###see code from 2008.10.05 for attempts at having seed mass change as plant size increases.
         maxKgSeeds=self.reproductionConstant*(self.massFixed**self.reproductionExponent)
-        #maxKgSeeds=self.reproductionConstant*(self.massFixed**self.reproductionExponent)
         adjMaxKgSeeds=maxKgSeeds*self.fractionCarbonToSeeds
         #the adjMaxKgSeeds makes use of how selfish a plant is (fractionCarbonToSeeds) to either
         ###use all of the possible seed carbon for seeds, or some fraction there of.
@@ -633,7 +560,6 @@ class genericPlant(object):
             ###if the plant is suddenly stressed, adjust how it is making seeds
             theFractDifference=self.massFixed/avgMassFixed
             if theFractDifference<self.fractionSelfishness and self.fractionCarbonToSeeds<1.0:
-                #adjMaxKgSeeds=maxKgSeeds*1.0
                 adjMaxKgSeeds=float(maxKgSeeds)#just make sure it's a float
         numbSeedsOnPlant=len(self.seedList)
         makeThisManySeeds=int(adjMaxKgSeeds/self.massSeedMax)-numbSeedsOnPlant

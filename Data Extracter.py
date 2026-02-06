@@ -26,9 +26,9 @@ class HelloWorld(object):
 
 	@cherrypy.expose
 	def listdir(self, directory='.'):
-		print "**********" 
-		print directory
-		print "**********"
+		print ("**********" )
+		print (directory)
+		print ("**********")
 		###check and see if what is returned is a file of a directory
 		if not os.path.isdir(directory):
 			selectedExtension=os.path.splitext(directory)[1]
@@ -72,9 +72,9 @@ class HelloWorld(object):
 				theArgument=theArgument+" -fs "
 			else:			
 				theArgument=theArgument+" -fsa "
-		print ""
+		print ("")
 		theArgument=theArgument % (n)
-		print "from Extract: %s" % (theArgument)
+		print ("from Extract: %s") % (theArgument)
 		os.system("python Vida_Data/vextract.py %s" % (theArgument))
 
 
