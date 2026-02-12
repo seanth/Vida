@@ -120,7 +120,7 @@ def saveSimulationPoint(theDirectory, theFileName, theGarden):
 def saveDataPoint (theDirectory, theFileName, theGarden):
     #Added "Area Canopy" at end of list
     #Added basal area to the outputs--STH 2019-0404
-    basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, elevation above water,\
+    theHeader="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, elevation above water,\
     absHeightStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, \
     # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, \
     Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), \
@@ -134,14 +134,11 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
 
     allometryHeaders="B1 in Ms=B1*(Mt^a1), a1 in Ms=B1*(Mt^a1), B2 in Mlyoung=B2*(Ms^a2), a2 in Mlyoung=B2*(Ms^a2), B3 in Mlmature=B3*(Ms^a3), a3 in Mlmature=B3*(Ms^a3), B4 in Ds=B4*(Ms^a4), a4 in Ds=B4*(Ms^a4), B5 in Hs=[B5*(Ds^a5)]-B6, a5 in [B5*(Ds^a5)]-B6, B6 in Hs=[B5*(Ds^a5)]-B6, B7 in Mg=[B7*(Ml^a7)]/ area canopy 100% uncovered,  a7 in Mg=[B7*(Ml^a7)]/ area canopy 100% uncovered, B8 in Mpt=B8*(Al^a8), a8 in Mpt=B8*(Al^a8)"
 
-    theHeader= basicHeaders
     thePlantList, theSeedList, theCorpseList = ([] for i in range(3))
-    #thePlantList=[]
-    #theSeedList=[]
-    #theCorpseList=[]
-    thePlantList.append(theHeader)
-    theSeedList.append(theHeader)
-    theCorpseList.append(theHeader)
+    masterList = [thePlantList, theSeedList, theCorpseList] #container so i can operate on all three lists at once
+    for i in masterList:
+        i.append(theHeader)
+    masterList=[] #if we let masterlist hold data during the printing, we double memory usage
     for plant in theGarden.soil:
         if plant.age>0:
             theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
@@ -195,11 +192,8 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
         saveDataFile =open(theDirectory+"Corpses/"+ theFileName, 'w')
         saveDataFile.writelines(theCorpseList)
         saveDataFile.close()
-    thePlantList, theSeedList, theCorpseList = ([] for i in range(3))
-    #thePlantList=[]
-    #theSeedList=[]
-    #theCorpseList=[]
-
+    thePlantList, theSeedList, theCorpseList = ([] for i in range(3)) #reinitialize to save memory
+    
     
 
 def makeDirectory(theDirectory):
