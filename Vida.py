@@ -139,47 +139,41 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
     for i in masterList:
         i.append(theHeader)
     masterList=[] #if we let masterlist hold data during the printing, we double memory usage
-    for plant in theGarden.soil:
-        if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
-                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
-                "na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
-        else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
-                "na",0,0)            
-        if plant.isSeed:
-            theSeedList.append(theData)
-        else:
-            thePlantList.append(theData)            
-    for plant in theGarden.deathNote:
-        if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
-                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
-                plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
-        else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
-                plant.causeOfDeath,0,0)
-        theCorpseList.append(theData)
+    for plant in theGarden:        
+        for plant in theGarden.soil:
+            theData = [theGarden.cycleNumber, plant.name, plant.nameSpecies, plant.motherPlantName, plant.x, plant.y, plant.z, plant.elevation, 
+            (plant.elevation-theGarden.waterLevel), plant.absHeightStem, plant.isSeed, plant.isMature, plant.matureAge, plant.countToGerm, plant.age, plant.massStem, 
+            plant.massLeaf, len(plant.seedList), plant.massSeedsTotal, plant.massStem+plant.massLeaf, plant.massTotal, plant.radiusStem*2, plant.radiusLeaf, plant.areaCovered, 
+            plant.heightStem, plant.heightLeafMax, plant.z, plant.GMs, plant.GMl, plant.GMs+plant.GMl, 2.0*plant.GRs,plant.GHs]
+
+            if plant.age>0:
+                #vida divide by zero if the below variables+operations are called before the above statement sorts out zeroes
+                theData.extend((plant.massStem/plant.age, plant.massLeaf/plant.age, (plant.massStem+plant.massLeaf)/plant.age, (plant.radiusStem*2)/plant.age, 
+                plant.heightStem/plant.age, "na", 3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2))
+                resultString = f"{theData}\n"
+            else:
+                theData.extend((0, 0, 0, 0, 0, "na", 0, 0))
+                resultString = f"{theData}\n"
+            if plant.isSeed:
+                theSeedList.append(resultString)
+            else:
+                thePlantList.append(resultString)
+
+        for plant in theGarden.deathNote:
+            theData = [theGarden.cycleNumber, plant.name, plant.nameSpecies, plant.motherPlantName, plant.x, plant.y, plant.z, plant.elevation, 
+            (plant.elevation-theGarden.waterLevel), plant.absHeightStem, plant.isSeed, plant.isMature, plant.matureAge, plant.countToGerm, plant.age, plant.massStem, 
+            plant.massLeaf, len(plant.seedList), plant.massSeedsTotal, plant.massStem+plant.massLeaf, plant.massTotal, plant.radiusStem*2, plant.radiusLeaf, plant.areaCovered, 
+            plant.heightStem, plant.heightLeafMax, plant.z, plant.GMs, plant.GMl, plant.GMs+plant.GMl, 2.0*plant.GRs,plant.GHs]
+
+            if plant.age>0:
+                #vida divide by zero if the below variables+operations are called before the above statement sorts out zeroes
+                theData.extend((plant.massStem/plant.age, plant.massLeaf/plant.age, (plant.massStem+plant.massLeaf)/plant.age, (plant.radiusStem*2)/plant.age, 
+                plant.heightStem/plant.age, plant.causeOfDeath, 3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2))
+                resultString = f"{theData}\n"
+            else:
+                theData.extend((0, 0, 0, 0, 0, plant.causeOfDeath, 0, 0))
+                resultString = f"{theData}\n"
+            theCorpseList.append(resultString)        
     if len(thePlantList)>1:
         saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'w')
         saveDataFile.writelines(thePlantList)
