@@ -1,6 +1,6 @@
-======================================================================
-            VIDA - Tree and Forest Growth Simulation Software
-======================================================================
+
+VIDA - Tree and Forest Growth Simulation Software
+----------
 
 VIDA is a software suite that attempts to model the growth of individual trees using empiriclly derived--or randomly chosen--values for use with allometric relationships. By modeling the behavior of an individual tree, it is possible to model population dynamics in a spatially explicit simulationspace. 
 
