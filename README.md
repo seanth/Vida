@@ -24,7 +24,9 @@ DEPENDENCIES/REQUIREMENTS
 HOW TO USE
 ----------
 After installing all the dependencies necessary, simply cd to the VIDA folder and, in the simplest form, type:
+
 	>python VIDA.py
+	
 For more information, including command line options and ways to make species, event files and define planting locations, please see VIDA HOWTO.txt
 
 EXAMPLES
