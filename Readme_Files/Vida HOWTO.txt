@@ -55,11 +55,11 @@ OPTIONS SUMMARY
 	-v [<integer>]		produce a Quicktime video, with an optional frames/second 
 					value(Macintosh only)
 	-r <string>		reload a previously saved simulation
-	-rl <string>	reload a previously saved simulation & reload the Vida World Preferences file
+	-rl <string>		reload a previously saved simulation & reload the Vida World Preferences file
 	-e <string>		load an event file named <string>
 	-a <characters>		save a simulation state
 	-f <characters>		save statistical data
-	-x <integer>		number of times to rereun the simulation
+	-x <integer>		number of times to rerun the simulation
 
 Seeding options:
 	Vida accepts a number of ways of placing seeds in a simulation
@@ -143,9 +143,9 @@ BASIC USAGE
 
 	is identical to example 2 with the exception that files containing information on each object in the simulation will be saved to a folder named "Simulation_data" within the "Output-4example" folder. Since each file can be very large, objects are divided into seeds, plants and corpses, and are saved to appropriate subfolders. When one uses the -f a command, Vida takes the additional step to generate statistical summary files from the individual data files.
 	
-	Vida saves the data for the final iteration a simulation by default. This is the equivilant to using the command -fe. If one didn't want to save any data files, one would use the -f n command.
+	Vida saves the data for the final iteration a simulation by default. This is the equivalent to using the command -f e. If one didn't want to save any data files, one would use the -f n command.
 
-	In addition to saving graphical files, data files, and statistical files, Vida can save the state of iterations so that one could resume a simulation from a known point. The default setting for Vida is to save the final iteration of a simulation. This is the equivilant to saying:
+	In addition to saving graphical files, data files, and statistical files, Vida can save the state of iterations so that one could resume a simulation from a known point. The default setting for Vida is to save the final iteration of a simulation. This is the equivalent to saying:
 
 		python Vida.py -n 5example -w 100 -s 10 -t 200 -m 550 -g bs -v 10 -a e
 

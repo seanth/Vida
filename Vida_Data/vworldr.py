@@ -23,6 +23,7 @@ import progressBarClass
 ###experimental terrain import
 ###STH & EKT 05 Feb 2020
 import vterrainImport as terrain_utils
+import vextract as vex
 
 
 debug1=0
@@ -32,7 +33,6 @@ debug2=0
 def determineWaterlogging(theGarden):
     if theGarden.useWaterTol:
         i = 0
-        #print("distance,fractWater,fractTol,growthFract")
         for obj in theGarden.soil:
             if not obj.isSeed:
                 #distance of 0 is 100% water
@@ -41,8 +41,6 @@ def determineWaterlogging(theGarden):
                 maxValue = 10
                 distFromWater = obj.elevation-theGarden.waterLevel
                 fractionWater = 1.0-(distFromWater/maxValue)
-                #obj.fractionWater = fractionWater #just for debugging
-                #fractionWater = (distFromWater/maxValue) #this is how you would define a species that is sensitive to drought
                 if fractionWater<0.0: fractionWater = 0.0
                 #water tolerance scale is 0 to 5.
                 #can convert to a water tolerance fraction
@@ -52,22 +50,18 @@ def determineWaterlogging(theGarden):
                 else:
                     twoPi=2.0*3.14
                     stddev=abs(fractionTolerance)
-                    #theExponent=-(((fractionWater-fractionTolerance)**2.0)/((2.0*stddev)**2.0))
                     theExponent=-((((distFromWater-maxValue)*0.05)**2.0)/((2.0*stddev)**2.0))
                     growthFraction=((1.0/(stddev*(twoPi**0.5)))*2.71)**theExponent
 
-                #print("%s,%s,%s,%s" % (distFromWater, fractionWater, fractionTolerance, growthFraction))
                 obj.waterGrowthFraction = growthFraction
                 if round(growthFraction,5) == 0.0:
                     obj.causeOfDeath="waterlogged growth"
-                    #print("here")
                     theGarden.kill(obj)
 
 
 def determineDroughtTol(theGarden):
     if theGarden.useDroughtTol:
         i = 0
-        #print("distance,fractWater,fractTol,growthFract")
         for obj in theGarden.soil:
             if not obj.isSeed:
                 #distance of 0 is 100% water
@@ -81,7 +75,6 @@ def determineDroughtTol(theGarden):
                 #drought tolerance scale is 0 to 5.
                 #can convert to a drought tolerance fraction
                 fractionTolerance = obj.droughtTolerance/5.0
-                #print("drought %s %s" % (fractionWater,fractionTolerance))
                 if fractionWater>fractionTolerance:
                     growthFraction = 1.0
                 else:
@@ -90,11 +83,9 @@ def determineDroughtTol(theGarden):
                     theExponent=-((((distFromWater-maxValue)*0.05)**2.0)/((2.0*stddev)**2.0))
                     growthFraction=((1.0/(stddev*(twoPi**0.5)))*2.71)**theExponent
 
-                #print("%s,%s,%s,%s" % (distFromWater, fractionWater, fractionTolerance, growthFraction))
                 obj.droughtGrowthFraction = growthFraction
                 if round(growthFraction,5) == 0.0:
                     obj.causeOfDeath="drought"
-                    #print("here")
                     theGarden.kill(obj)
 
 def determineShade(theGarden):
@@ -125,10 +116,6 @@ def determineShade(theGarden):
                     if not plantTwo in plantOne.overlapList:
                         if not plantTwo==plantOne:
                             plantOne.overlapList.append(plantTwo)
-            ###sort the overlap list by height of the plants. Ordered shortest to tallest
-            #plantOne.overlapList = list_utils.sort_by_attr(plantOne.overlapList, "heightStem")
-            ###use absHeightStem, which is stem heigh + elevetion
-            ###STH 2021.0305
             plantOne.overlapList = list_utils.sort_by_attr(plantOne.overlapList, "absHeightStem")
             ###flip the list so it's ordered tallest to shortest
             plantOne.overlapList.reverse()
@@ -158,9 +145,8 @@ def determineShade(theGarden):
                     areaCovered=geometry_utils.areaOverlappingCircles(plant.x, plant.y, plant.r, overPlant.x, overPlant.y, overPlant.r)
                     areaCovered=areaCovered-(areaCovered*plantTwo.canopyTransmittance)
                     thePlantAreaExposed=thePlantAreaTotal-areaCovered
-                    #plant.areaCovered=areaCovered
                     fractionExposed= thePlantAreaExposed/thePlantAreaTotal
-                    #fractionExposed=fractionExposed*theGarden.lightIntensity #try and take into account overall world light intensity
+                    #try and take into account overall world light intensity
                     fractionExposed=fractionExposed*theRegion.lightIntensity #try and take into account overall world light intensity
                     thePlantAreaExposed= thePlantAreaTotal*fractionExposed
                     plant.areaCovered=thePlantAreaTotal-thePlantAreaExposed
@@ -178,11 +164,10 @@ def determineShade(theGarden):
                         randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
                         twoPi=math.pi*2
                         randAngle=random.random()*twoPi
-                        #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
                         randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
                         photonX = (randr*math.cos(randAngle))+plant.x
                         photonY = (randr*math.sin(randAngle))+plant.y
-                        ######
+
                         for overPlant in plant.overlapList:
                             if not photonX=="gone":
                                 if geometry_utils.pointInsideCircle(overPlant.x, overPlant.y, overPlant.r, photonX, photonY):
@@ -197,14 +182,12 @@ def determineShade(theGarden):
                         fractionExposed=0.0
                     else:
                         fractionExposed=float(hitCount)/float(numbPhotons)
-                    #fractionExposed=fractionExposed*theGarden.lightIntensity #try and take into account overall world light intensity
                     fractionExposed=fractionExposed*theRegion.lightIntensity #try and take into account overall world light intensity
                     thePlantAreaExposed= thePlantAreaTotal*fractionExposed
                     plant.areaCovered=thePlantAreaTotal-thePlantAreaExposed
             else: #if you are not covered at all
                 thePlantAreaTotal=geometry_utils.areaCircle(plant.r)
                 fractionExposed=1.0
-                #fractionExposed=fractionExposed*theGarden.lightIntensity #try and take into account overall world light intensity
                 fractionExposed=fractionExposed*theRegion.lightIntensity #try and take into account overall world light intensity
                 thePlantAreaExposed= thePlantAreaTotal*fractionExposed
                 plant.areaCovered=thePlantAreaTotal-thePlantAreaExposed
@@ -251,7 +234,6 @@ class garden(object):
             theSeed=Species1()
             fileLoc= "Species/"+ymlList[i]
             theSeed.importPrefs(fileLoc)
-            #theSeed.name="Platonic %s" % (ymlList[i])
             theGarden.platonicSeeds[ymlList[i]]=theSeed
             i=i+1
     
@@ -260,12 +242,7 @@ class garden(object):
         #self=garden, obj=seed
         theGarden=self
         theNameList= theSeed.name.split()
-        #if len(theNameList)<2:
-        #    idNumb=str(random.random())
-        #else:
-        #    idNumb=theNameList[1]
         theSeed.timePlanted=time.time()
-        #theSeed.name="plantedSeed %s" % (idNumb)
         theSeed.name=str(uuid.uuid4())
         if theSeed.motherPlant==0:
             theSeed.motherPlant=theSeed
@@ -273,12 +250,8 @@ class garden(object):
         theGarden.soil.append(theSeed)
         theGarden.numbSeeds=self.numbSeeds+1
         #####If there are subregions defined, see what subregion does it belong in this seed belongs
-        #print "the Garden: %s" % (theGarden)
-        #print "the region: %s" % (theGarden.theRegions)
         if len(theGarden.theRegions)>0:
-            for aRegion in theGarden.theRegions:
-                #print aRegion.name
-                #print theSeed.name
+            for aRegion in theGarden.theRegions:              
                 if aRegion.shape=='square':
                     inSubregion=geometry_utils.pointInsideSquare(aRegion.x, aRegion.y, aRegion.size, theSeed.x, theSeed.y)
                 elif aRegion.shape=='circle':
@@ -321,32 +294,13 @@ class garden(object):
             g=plant.subregion[-1].gravity
         else:
             g=theGarden.gravity
-        #r=plant.radiusStem
-        #z=plant.z
-        #Pacr=(math.pow(math.pi, 3)/16.0)*(math.pow(r, 4)/math.pow(z, 2))*E
         heightCritical= 0.79*((E/(g*ps))**0.3333)*(Ds**0.6667)
-        #massCritical=0.785*ps*heightCritical*Ds*Ds
-        #forceCritical=0.483736625*E*(Ds*Ds*Ds*Ds)
-        #denom=(2.0*heightCritical)*(2.0*heightCritical)
-        #forceCritical=forceCritical/denom
         return heightCritical
     
     def checkEulerGreenhillViolation(self, plant):
         theGarden=self
         if plant.isSeed==1: return 0 #don't check it if it's a seed.
-        #theGravity=theGarden.gravity
-        #if len(plant.subregion)>0:
-        #    theGravity=plant.subregion[-1].gravity
-        #determine if a plant violates the Euler-Greenhill rule
-        #ps=plant.densityStem
-        #Ds=plant.radiusStem*2.0
         heightCritical=self.calcEulerGreenhill(plant)
-        ###
-        #massCritical=0.785*ps*heightCritical*Ds*Ds
-        #forceCritical=massCritical*theGravity
-        #massTotal=plant.massTotal+plant.massSeedsTotal
-        #theForce=massTotal*theGravity
-        #if plant.heightStem>=heightCritical or massTotal>=massCritical or theForce>= forceCritical:
         if plant.heightStem>=heightCritical:
             #omg! violates euler-greenhill!
             return 1
@@ -489,7 +443,6 @@ class garden(object):
                             #world maxSubmerged value. Maybe this should be a species specific value
                             #but for now it is a global
                             #STH 2023-0524
-                            #print("plant partly submerged. die!")
                             obj.causeOfDeath="submerged in water"
                             theGarden.kill(obj)                        
 
@@ -574,7 +527,6 @@ class garden(object):
                 print("***Checking for mortality due to proximity to mother...***")
                 theProgressBar= progressBarClass.progressbarClass(len(theGarden.soil),"*")
                 i=0
-            #print "Name : Distance : Chance"
             for obj in theGarden.soil[:]:
                 if not obj.isSeed:
                     twoPi=2.0*3.14
@@ -584,7 +536,6 @@ class garden(object):
                     if theDistance>0.0:
                         theExponent=-(((theDistance-theAvg)**2.0)/((2.0*stddev)**2.0))
                         theDeathChance=((1/(stddev*(twoPi**0.5)))*2.71)**theExponent
-                        #print "%s : %s :%s" % (obj.name, theDistance, theDeathChance)
                         tooBad=random.random()
                         if tooBad<theDeathChance:
                             obj.causeOfDeath="Janzen mortality"
@@ -598,7 +549,6 @@ class garden(object):
     
     def placeSeed(self, seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList):
         theGarden=self
-        #print sList
         #This block of code came from the main Vida.py. Moved and working on 2008.11.06 to allow for calling during simulation runs at
         #not just at the start.
         #NOTE: this is called at the start of the simulation or via event files, not when trees disperse propagules
@@ -618,7 +568,6 @@ class garden(object):
         
         if seedPlacement=="defined" or len(sList)>0:
             theIndex=0
-        #print sList
         for i in range(startPopulationSize):
             countToGerm=0
             theSpeciesFile=""
@@ -660,14 +609,12 @@ class garden(object):
                     prevY= prevY-seedDistance
                 else:
                     prevX=x
-            
-            #print theSpeciesFile
+
             if useDefaultYml==False or theSpeciesFile=="":
                 if theSpeciesFile=="" or theSpeciesFile=="_random_":
                     whichSpecies=random.randint(0,len(ymlList)-1)##pick from the species randomly
                     fileLoc= "Species/"+ymlList[whichSpecies]
                     theSpeciesFile=ymlList[whichSpecies]
-                #print theSpeciesFile
                 if (sys.version_info.major)==2:
                     if theGarden.platonicSeeds.has_key(theSpeciesFile):
                         platonicSeed=theGarden.platonicSeeds[theSpeciesFile]
@@ -676,14 +623,10 @@ class garden(object):
                     if theSpeciesFile in theGarden.platonicSeeds:
                         platonicSeed=theGarden.platonicSeeds[theSpeciesFile]
                         theSeed=copy.deepcopy(platonicSeed)
-                
-            #else:
-            #print "something is very wrong"
             else:
                 #if there are no species listed, use the default species.
-                theSeed=Species1()                
-            theSeed=theGarden.plantSeed(theSeed)
-            #print theSeed.subregion                
+                theSeed=vex.Species1()                
+            theSeed=theGarden.plantSeed(theSeed)                
             #now set some attributes
             theSeed.timeCreation=time.time()
             theSeed.countToGerm=countToGerm
@@ -700,8 +643,6 @@ class garden(object):
             #print terrainFile
             theSeed.radiusSeed=j
             theSeed.z= theSeed.radiusSeed
-            #theSeed.z = theSeed.z + random.randrange(1,50)
-
             #look up the pixel grey-scale value at the target x,y
             #and then use that value to map to an elevation
             #STH EKT 0212-2020
@@ -711,17 +652,12 @@ class garden(object):
                 theAdjY = theSeed.y + coordAdjust
                 thePixelValue = terrain_utils.getPixelValue(theAdjX,theAdjY,theGarden.terrainImage)
                 theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
-                #print("%s seedX: %s seedY: %s coordAdjust: %s xpixel: %s thePixelValue: %s theElevation: %s" % (theGarden.terrainImage[1], theSeed.x, theSeed.y, coordAdjust, (theSeed.x-coordAdjust), thePixelValue, theElevation))
             else:
                 theElevation = 0.0
 
             theSeed.elevation = theElevation
             theSeed.z = theSeed.z + theSeed.elevation
             theSeed.r= theSeed.radiusSeed            
-            #theSeed.growSeedOnPlant(theSeed.massSeedMax)
-            #print "#######"
-            #print theSeed.__class__().name
-            #print "#######"
             #update the progress meter
             if theGarden.showProgressBar or theGarden.cycleNumber<1:
                 theProgressBar.update(i)

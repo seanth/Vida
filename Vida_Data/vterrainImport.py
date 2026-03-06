@@ -16,8 +16,6 @@ def getPixelValue(x,y,theImage):
     ###This needs to be expanded more to adjust for different world sizes and 
     ###different image sizes
     ###STH & EKT 05 Feb 2020
-    #theX = x+50.0
-    #theY = y+50.0
     theX = x
     theY = y
 
@@ -50,7 +48,6 @@ def elevationFromPixel(thePixelValue, theElevDelta=-1):
     #use 255 here because we want to link the max greyscale value (255) to the maxValue (meters)
     theSlope = maxValue/255.0
     if type(thePixelValue) == tuple:
-        #(14,14,14)
         thePixelValue = thePixelValue[0]
 
     theElevation = theSlope*thePixelValue
