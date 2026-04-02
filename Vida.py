@@ -17,11 +17,8 @@ import os.path
 import glob
 import sys
 import argparse
-if (sys.version_info.major)==2:
-    import ConfigParser
-else:
-    import configparser as ConfigParser
-    import pathlib
+import configparser
+import pathlib
 
 
 import copy
@@ -29,53 +26,41 @@ import time
 import pickle
 ###append the path to basic data files
 sys.path.append("Vida_Data")
-import vworldr as worldBasics
-import vplantr as defaultSpecies
-import vgraphics as outputGraphics
-import list_utils as list_utils
-import geometry_utils as geometry_utils
+from Vida_Data import vworldr as worldBasics
+from Vida_Data import vplantr as defaultSpecies
+from Vida_Data import vgraphics as outputGraphics
+from Vida_Data import list_utils
+from Vida_Data import geometry_utils
+from Vida_Data import vextract as vex
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 
-import progressBarClass
+from Vida_Data import progressBarClass
 ###append the path to where species are
 sys.path.append("Species")
 
 sList=[]
 theCLArgs=""
 
-##########################################
-#Import the options#
-try:
-    theConfig=ConfigParser.RawConfigParser()
-    theConfig.optionxform = str 
-    theConfig.read('Vida.ini')
-    theConfigSection='Vida Options'
-except ConfigParser.MissingSectionHeaderError:
-    print("Warning: Invalid config file, no [%s] section.") % (theConfigSection)
-    raise
-
 theDefaults={}
-for i in theConfig.items(theConfigSection):
+for i in vex.theConfig.items(vex.theConfigSection):
     theItem=i[0]
     try:
-        theValue=theConfig.getint(theConfigSection, theItem)
+        theValue=vex.theConfig.getint(vex.theConfigSection, theItem)
     except:
         try:
-            theValue=theConfig.getboolean(theConfigSection, theItem)
+            theValue=vex.theConfig.getboolean(vex.theConfigSection, theItem)
         except:
             try:
-                theValue=theConfig.getfloat(theConfigSection, theItem)
+                theValue=vex.theConfig.getfloat(vex.theConfigSection, theItem)
             except:
                 try:
-                    theValue=theConfig.get(theConfigSection, theItem)
+                    theValue=vex.theConfig.get(vex.theConfigSection, theItem)
                     if theValue=="None": theValue=None
                 except:
                     print("what the...?")
     theDefaults[theItem]=theValue
-#print theDefaults
-#print "#################"
 
 class parseAction(argparse.Action):
     def __call__(self,parser,args,theValues,option_string=None):
@@ -124,7 +109,6 @@ class parseAction(argparse.Action):
 class Species1(defaultSpecies.genericPlant):
     ###The routine in defaultSpecies.genericPlant reads in default values from .yml file
     def __init__(self):
-        ##super(type, obj) -> bound super object; requires isinstance(obj, type)
         super(Species1, self).__init__()
 
 
@@ -132,12 +116,11 @@ def saveSimulationPoint(theDirectory, theFileName, theGarden):
     simulationStateFile =open(theDirectory + theFileName, 'wb')
     pickle.dump(theGarden, simulationStateFile)
     simulationStateFile.close()
-    #print "simulation state saved to file"
 
 def saveDataPoint (theDirectory, theFileName, theGarden):
     #Added "Area Canopy" at end of list
     #Added basal area to the outputs--STH 2019-0404
-    basicHeaders="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, elevation above water,\
+    theHeader="Cycle #, Plant Name, Species, Mother Plant Name, X Location, Y Location, Z Location, elevation, elevation above water,\
     absHeightStem, is a seed, is mature, Age at Maturity, cycles until germination, Age, Mass of Stem, Mass of Canopy, \
     # of Seeds, Mass of all Seeds, Mass Stem+Mass Canopy, Mass Total, Diameter Stem, Radius Canopy, Area covered, \
     Height Stem, Maximum Thickness of a Leaf, Height of Plant, Yearly Growth Stem (kg), Yearly Growth Canopy (kg), \
@@ -151,56 +134,45 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
 
     allometryHeaders="B1 in Ms=B1*(Mt^a1), a1 in Ms=B1*(Mt^a1), B2 in Mlyoung=B2*(Ms^a2), a2 in Mlyoung=B2*(Ms^a2), B3 in Mlmature=B3*(Ms^a3), a3 in Mlmature=B3*(Ms^a3), B4 in Ds=B4*(Ms^a4), a4 in Ds=B4*(Ms^a4), B5 in Hs=[B5*(Ds^a5)]-B6, a5 in [B5*(Ds^a5)]-B6, B6 in Hs=[B5*(Ds^a5)]-B6, B7 in Mg=[B7*(Ml^a7)]/ area canopy 100% uncovered,  a7 in Mg=[B7*(Ml^a7)]/ area canopy 100% uncovered, B8 in Mpt=B8*(Al^a8), a8 in Mpt=B8*(Al^a8)"
 
-
-    #theHeader="Plant Name, Mother Plant, Species, X Location, Y Location, Mass Stem, Mass Leaf, # Seeds, Mass all Seeds, Radius Stem, Radius Leaf, Height Plant, Cause of Death \n"
-    theHeader= basicHeaders
-    thePlantList=[]
-    theSeedList=[]
-    theCorpseList=[]
-    thePlantList.append(theHeader)
-    theSeedList.append(theHeader)
-    theCorpseList.append(theHeader)
+    thePlantList, theSeedList, theCorpseList = ([] for i in range(3))
+    masterList = [thePlantList, theSeedList, theCorpseList] #container so i can operate on all three lists at once
+    for i in masterList:
+        i.append(theHeader)
+    masterList=[] #if we let masterlist hold data during the printing, we double memory usage   
     for plant in theGarden.soil:
+        theData = [theGarden.cycleNumber, plant.name, plant.nameSpecies, plant.motherPlantName, plant.x, plant.y, plant.z, plant.elevation, 
+        (plant.elevation-theGarden.waterLevel), plant.absHeightStem, plant.isSeed, plant.isMature, plant.matureAge, plant.countToGerm, plant.age, plant.massStem, 
+        plant.massLeaf, len(plant.seedList), plant.massSeedsTotal, plant.massStem+plant.massLeaf, plant.massTotal, plant.radiusStem*2, plant.radiusLeaf, plant.areaCovered, 
+        plant.heightStem, plant.heightLeafMax, plant.z, plant.GMs, plant.GMl, plant.GMs+plant.GMl, 2.0*plant.GRs,plant.GHs]
+
         if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
-                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
-                "na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+            #vida divide by zero if the below variables+operations are called before the above statement sorts out zeroes
+            theData.extend((plant.massStem/plant.age, plant.massLeaf/plant.age, (plant.massStem+plant.massLeaf)/plant.age, (plant.radiusStem*2)/plant.age, 
+            plant.heightStem/plant.age, "na", 3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2))
+            resultString = f"{theData}\n"
         else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
-                "na",0,0)            
+            theData.extend((0, 0, 0, 0, 0, "na", 0, 0))
+            resultString = f"{theData}\n"
         if plant.isSeed:
-            theSeedList.append(theData)
+            theSeedList.append(resultString)
         else:
-            thePlantList.append(theData)            
+            thePlantList.append(resultString)
+
     for plant in theGarden.deathNote:
+        theData = [theGarden.cycleNumber, plant.name, plant.nameSpecies, plant.motherPlantName, plant.x, plant.y, plant.z, plant.elevation, 
+        (plant.elevation-theGarden.waterLevel), plant.absHeightStem, plant.isSeed, plant.isMature, plant.matureAge, plant.countToGerm, plant.age, plant.massStem, 
+        plant.massLeaf, len(plant.seedList), plant.massSeedsTotal, plant.massStem+plant.massLeaf, plant.massTotal, plant.radiusStem*2, plant.radiusLeaf, plant.areaCovered, 
+        plant.heightStem, plant.heightLeafMax, plant.z, plant.GMs, plant.GMl, plant.GMs+plant.GMl, 2.0*plant.GRs,plant.GHs]
+
         if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
-                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
-                plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+            #vida divide by zero if the below variables+operations are called before the above statement sorts out zeroes
+            theData.extend((plant.massStem/plant.age, plant.massLeaf/plant.age, (plant.massStem+plant.massLeaf)/plant.age, (plant.radiusStem*2)/plant.age, 
+            plant.heightStem/plant.age, plant.causeOfDeath, 3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2))
+            resultString = f"{theData}\n"
         else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
-                plant.causeOfDeath,0,0)
-        theCorpseList.append(theData)
+            theData.extend((0, 0, 0, 0, 0, plant.causeOfDeath, 0, 0))
+            resultString = f"{theData}\n"
+        theCorpseList.append(resultString)        
     if len(thePlantList)>1:
         saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'w')
         saveDataFile.writelines(thePlantList)
@@ -213,11 +185,8 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
         saveDataFile =open(theDirectory+"Corpses/"+ theFileName, 'w')
         saveDataFile.writelines(theCorpseList)
         saveDataFile.close()
-    thePlantList=[]
-    theSeedList=[]
-    theCorpseList=[]
-    #print "simulation data saved to file
-
+    thePlantList, theSeedList, theCorpseList = ([] for i in range(3)) #reinitialize to save memory
+    
     
 
 def makeDirectory(theDirectory):
@@ -243,10 +212,6 @@ def makeDirectory(theDirectory):
             theDirectory=basicPath+"/"
         os.mkdir(theDirectory)
     return theDirectory
-
-# def dirPath(thePath):
-#     return thePath
-
         
 def correctType(theItem):
     returnValue="na"
@@ -263,7 +228,6 @@ def correctType(theItem):
     return returnValue
     
 def checkSeedPlacementList(seedPlacementList):
-    ###################
     ######STH 2022-1105
     ###remove trailing "\n"
     seedPlacementList = [aLine.rstrip() for aLine in seedPlacementList]
@@ -356,7 +320,14 @@ def main():
     CFDGtext=""
     CFDGtextDict={}
 
-    if debug==1: print("***debug is on***")
+    if defaultSpecies.debug==1: 
+        print("***debug is on***")
+    elif defaultSpecies.debug==0:
+        print("***debug is off***")
+    else:
+        print("***you have somehow bugged debug, yippee :DDD***")
+
+
 
     theGarden= worldBasics.garden()
     #####
@@ -378,21 +349,13 @@ def main():
     
     ####################################
     ###experiments in importing events
-    #if eventFile!=None and os.path.exists(eventFile):
     if eventFile!=None:
-        #if type(eventFile)==file:
         print("***Loading event file: %s***" % (eventFile.name))
-        #theFile=open(eventFile)
-        #eventData=yaml.load(theFile)
         eventData=yaml.load(eventFile, Loader=yaml.FullLoader)
-        #theFile.close
         eventTimes=eventData.keys()
     else:
         eventTimes=[]
-    #####################################
 
-
-    ####################################
     ###experiments in importing a terrain file
     if terrainFile!=None:
         print("***Checking for tif terrain image...***")
@@ -406,7 +369,6 @@ def main():
             print("***Checking directory for tif terrain image...***")
             tmpPath = os.path.join(terrainFile,'*.tif') #assumes file suffix is 'tif'
             matchFiles = glob.glob(tmpPath)
-            #print matchFiles
             if not matchFiles:
                 #no matching files found
                 tiffFound = False
@@ -423,11 +385,8 @@ def main():
            tiffFound = False 
 
         if tiffFound == True:
-            #########################################################################
             from PIL import Image, ImageOps
-            #if type(eventFile)==file:
             print("***Loading terrain file:\n     %s***" % (theTerrainFile))
-            #theImage = Image.open(terrainFile)
             tmp=Image.open(theTerrainFile)
             tmp=ImageOps.flip(tmp)
 
@@ -534,8 +493,6 @@ def main():
         print("      absMin: %s" % absMin)
         print("      terrainScale: %s" % terrainScale)
         print("      therefore max: %s" % (theMaxElevation))
-        
-    ####################################
 
     #########Check for multiple species. If none, use default
     fileList=os.listdir("Species")
@@ -555,13 +512,10 @@ def main():
             #this isn't implemented
             pythonList.append(file)
     fileList=[]
-    ##########
 
     if (resumeSim==True or resumeSimReload==True) and not simulationFile=="":
         print("***Loading simulation: %s...***" % (simulationFile.name))
-        #simulationFile=open(simulationFile, 'r')
         theGarden=pickle.load(simulationFile)
-        #simulationFile.close()
         theWorldSize=theGarden.theWorldSize
         print("***Resuming Simulation: %s as %s***" % (theGarden.name, simulationName))
         theGarden.name=simulationName
@@ -573,12 +527,6 @@ def main():
             theGarden.importPrefs(fileLoc)
         ##this should reload species data.
         ###Important if you want to compare runs
-        # if reloadSpeciesData==True:
-        #     # print "***Reloading species data...***"
-        #     # ###fileLoc will be different for each species eventually
-        #     # fileLoc="Vida_Data/Default_species.yml"
-        #     # for item in theGarden.soil:
-        #     #     item.importPrefs(fileLoc)
     else:
         theGarden.makePlatonicSeedDict(ymlList, Species1)
         print("***Species loaded.***")
@@ -597,10 +545,6 @@ def main():
     print("     Running simulation for %i cycles" % (maxCycles))
     print("              (whichever comes first)")
     print("     Starting population size: %i" % (startPopulationSize))
-    # if theGarden.carbonAllocationMethod==0:
-    #     print("     Plants will allocate carbon to stem and leaf using methods defined by the species.")
-    # else:
-    #     print("     All plants will allocate carbon to stem and leaf using method %i" % (theGarden.carbonAllocationMethod))
 
     print("")
     if produceGraphics==True: 
@@ -636,7 +580,6 @@ def main():
         theCLIfile=open(outputDirectory+"CLI_arguments.txt", 'w')
         theCLIfile.writelines(theCLArgs)
         theCLIfile.close()
-        #if produceGraphics==1 or produceDXFGraphics==1:
         if produceGraphics==True:
             baseGraphicsDirectory = outputDirectory +"Graphics/"
             makeDirectory(baseGraphicsDirectory)
@@ -675,13 +618,11 @@ def main():
         if resumeSim==None and resumeSimReload==None:
             #2008.11.06 Moved a huge block of code related to placing seeds to vworldr.py
             theGarden.placeSeed(seedPlacement, sList, startPopulationSize, useDefaultYml, ymlList)
-            ################
             #if there is a terrain file and water level then the initial placement of seeds 
             #should be checked to see if any of them are below water
             #STH 0328-2021
             if(theGarden.terrainImage != []):
                 theGarden.checkSubmergedMortality()
-            ################
         if produceGraphics==True and CFDGtextDict=={}:
             for aView in graphicalView:
                 if aView!="3d":
@@ -690,7 +631,6 @@ def main():
                 else:
                     #Only call this once to save time in making 3d graphics
                     DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden)
-        #######
 
         cycleNumber=0
         print("\n***Running simulation.***")
@@ -704,7 +644,7 @@ def main():
                 for aItem in eventData[cycleNumber]:                                          #
                     for aKey in aItem.keys():                                                 #
                         if aKey=="Garden":                                                    #
-                            if debug==1: print("debug: A garden related event has been triggered.")   #
+                            if defaultSpecies.debug==1: print("debug: A garden related event has been triggered.")   #
                             theDict=aItem[aKey][0]                                            #
                             gardenAttrs=theDict.keys()                                        #
                             for theGardenAttr in gardenAttrs:                                 #
@@ -712,7 +652,7 @@ def main():
                             gardenAttrs=""    
 
                         elif aKey=="Killzone" or aKey=="Safezone":
-                            if debug==1: print("debug: generation of a zone event has been triggered.")
+                            if defaultSpecies.debug==1: print("debug: generation of a zone event has been triggered.")
                             theDict=aItem[aKey][0]                                           #
                             zoneAttrs=theDict.keys()
                             zoneX=float(theDict['x'])
@@ -743,7 +683,6 @@ def main():
                                         r=theObject.radiusStem
                                     theResult=geometry_utils.checkOverlap(theObject.x, theObject.y, r, zoneX, zoneY, zoneSize)
                                     if theResult>0 and aKey=='Killzone':
-                                        #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
                                         #student requested addition to accept list of species. 0323-2023   
                                         if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                    
                                             if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
@@ -761,7 +700,6 @@ def main():
                                     objectY=theObject.y
                                     theResult=geometry_utils.pointInsideSquare(zoneX, zoneY, zoneSize, objectX, objectY)
                                     if theResult>0 and aKey=='Killzone':
-                                        #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
                                         #student requested addition to accept list of species. 0323-2023
                                         if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                       
                                             if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
@@ -778,7 +716,7 @@ def main():
                                 theGarden.kill(theObject)
 
                         elif aKey=="Seed":
-                            if debug==1: print("debug: A seeding related event has been triggered.")   #
+                            if defaultSpecies.debug==1: print("debug: A seeding related event has been triggered.")   #
                             theDict=aItem[aKey][0]                                            #
                             seedingInfo=theDict.keys()                                        #
                             for infoItem in seedingInfo:
@@ -789,7 +727,7 @@ def main():
                                 if infoItem=="placement": seedPlacement=theDict[infoItem]
                                 if seedPlacement=="hexagon": seedPlacement="hex" #just make sure it is consistant
                                 if os.path.isfile(seedPlacement):
-                                    if debug == 1: print("debug: Confirming placement file exists....")
+                                    if defaultSpecies.debug == 1: print("debug: Confirming placement file exists....")
                                     theFile=open(seedPlacement)
                                     try:
                                         sList=theFile.readlines()
@@ -798,7 +736,7 @@ def main():
                                     sList=checkSeedPlacementList(sList)
                                     addPopulationSize=len(sList)
                                     seedPlacement="fromFile"
-                                    if debug ==1: print("debug: Will place seeds from a file")
+                                    if defaultSpecies.debug ==1: print("debug: Will place seeds from a file")
                                     ###if a simulation is being reloaded from a pickle, that sim might not have saved
                                     ###data on a new species being introduced. Load the new species and add it to the platonic list
                                     ###so it can be added to theGarden
@@ -811,8 +749,8 @@ def main():
                                             if not jj in theGarden.platonicSeeds:
                                                 speciesIsMissing==True
                                         if speciesIsMissing==True:
-                                            if debug == 1: print("debug: Desired species missing from loaded simulation")
-                                            if debug == 1: print("debug: Adding species %s" % (jj))
+                                            if defaultSpecies.debug == 1: print("debug: Desired species missing from loaded simulation")
+                                            if defaultSpecies.debug == 1: print("debug: Adding species %s" % (jj))
                                             theSeed=Species1()
                                             fileLoc= "Species/"+jj
                                             theSeed.importPrefs(fileLoc)
@@ -848,11 +786,11 @@ def main():
                             sList= [] #reset the sList to what it was when we started
 
                         elif aKey=="Region":
-                            if debug: print("debug: Region event detected...")
+                            if defaultSpecies.debug: print("debug: Region event detected...")
                             theDict=aItem[aKey][0] 
                             regionAttrs=theDict.keys()
                             theRegionName=str(theDict['name'])
-                            if debug: print("debug: Region %s event detected." % (theRegionName))
+                            if defaultSpecies.debug: print("debug: Region %s event detected." % (theRegionName))
                             regionNames=[]
                             for i in theGarden.theRegions:
                                 regionNames.append(i.name)
@@ -863,18 +801,15 @@ def main():
                                         break
                                 for aAttr in regionAttrs:
                                     if not getattr(theRegion,aAttr,"does not exist")==theDict[aAttr]:
-                                        if debug: print("debug: Region %s has had a change in one or more attributes." % (theRegionName))
+                                        if defaultSpecies.debug: print("debug: Region %s has had a change in one or more attributes." % (theRegionName))
                                         updatePlants=True
                                         break
-                                #if (not theRegion.size==theDict["size"]) or (not theRegion.x==theDict["x"]) or (not theRegion.y==theDict["y"]) or (not theRegion.shape==theDict["shape"]):
-                                #    if debug:print "debug: a region has changed shape, size or location"
-                                #    updatePlants=True
                                 ##now just read in the values#
-                                if debug: print("debug: Updating attributes for region %s." % (theRegionName))
+                                if defaultSpecies.debug: print("debug: Updating attributes for region %s." % (theRegionName))
                                 for theRegionAttr in regionAttrs:                                 #
                                     setattr(theRegion, theRegionAttr, theDict[theRegionAttr])     #
                                 if updatePlants:
-                                    if debug:print("debug: updating plants with changed region info")
+                                    if defaultSpecies.debug:print("debug: updating plants with changed region info")
                                     for aPlant in theGarden.soil:
                                         plantX=aPlant.x
                                         plantY=aPlant.y
@@ -886,9 +821,7 @@ def main():
                                         if inSubregion:
                                             if not theRegion in aPlant.subregion:
                                                 aPlant.subregion.append(theRegion)
-                                                #print "\nX: %f  Y: %f  In region: %s" % (plantX, plantY, newRegion)
 
-                                #print theRegion.size
                             else:
                                 newRegion=worldBasics.garden()
                                 newRegion.name=theRegionName
@@ -899,7 +832,7 @@ def main():
                                 newRegion.shape='square'     #
                                 ##############################
                                 ##now just read in the values#
-                                if debug: print("debug: Making attributes for region")
+                                if defaultSpecies.debug: print("debug: Making attributes for region")
                                 for theRegionAttr in regionAttrs:                                 #
                                     setattr(newRegion, theRegionAttr, theDict[theRegionAttr])     #
                                 theGarden.theRegions.append(newRegion)
@@ -914,12 +847,11 @@ def main():
                                     if inSubregion:
                                         if not newRegion in aPlant.subregion:
                                             aPlant.subregion.append(newRegion)
-                                            #print "\nX: %f  Y: %f  In region: %s" % (plantX, plantY, newRegion)
                                         
                                 newRegion=""
                             
                         elif aKey=="Species":
-                            if debug: print("debug: Species event detected...")
+                            if defaultSpecies.debug: print("debug: Species event detected...")
                             theDict = aItem[aKey][0]
                             theSpeciesName = theDict['name']
                             speciesAttrs = theDict.keys()
@@ -935,39 +867,23 @@ def main():
                             for theObject in theGarden.soil:
                                 if theObject.nameSpecies == theSpeciesName:
                                     for theSpeciesAttr in speciesAttrs:
-                                        if debug: print("       Attempting to set species '%s' property '%s' to %s" % (theObject.nameSpecies, theSpeciesAttr, theDict[theSpeciesAttr]))
+                                        if defaultSpecies.debug: print("       Attempting to set species '%s' property '%s' to %s" % (theObject.nameSpecies, theSpeciesAttr, theDict[theSpeciesAttr]))
                                         setattr(theObject, theSpeciesAttr, theDict[theSpeciesAttr])
 
                             speciesAttrs = ""
                                     
                         theDict=[]#just clear this to free up the memory
-            ###################################################################################
             theGarden.cycleNumber=cycleNumber
 
             if not showProgressBar:
                     theProgressBar.update(cycleNumber)
 
-            ###START OF SEEING CHANGES TO SPECIES FOLDER
-            #########Check for multiple species. If none, use default
+            #START OF SEEING CHANGES TO SPECIES FOLDER
+            #Check for multiple species. If none, use default
             fileList=os.listdir("Species")
-            #print fileList
-            #ymlList=[]
-            #print "***Checking for species...***"
-            #for file in fileList:
-            #    theExtension=os.path.splitext(file)[1]
-            #    if theExtension==".yml":
-            #        #add this file to the list of yaml files
-            #        ymlList.append(file)
-            #        useDefaultYml=False
-            #fileList=[]
-            ##########
 
-
-
-
-
-            if debug==1: print("number of plants: "+str(theGarden.numbPlants))
-            if debug==1: print("number of seeds: "+str(theGarden.numbSeeds))
+            if defaultSpecies.debug==1: print("number of plants: "+str(theGarden.numbPlants))
+            if defaultSpecies.debug==1: print("number of seeds: "+str(theGarden.numbSeeds))
 
             #generate graphics if requested
             if produceGraphics==True:
@@ -1022,23 +938,17 @@ def main():
                     theBar=theBar+1
                     theProgressBar.update(theBar)
 
-            #######################################
             ###deal with violaters of basic physics
             theGarden.removeOffWorldViolaters()
             ##experimental water mortality##
             if(theGarden.terrainImage != []):
                 theGarden.checkSubmergedMortality()
-            ##########################
             theGarden.causeRandomDeath()
             theGarden.checkSenescence()
             ##experimental mortality##
             theGarden.checkDistanceMortality()
-            ##########################
             theGarden.removeEulerGreenhillViolaters()
             theGarden.removeOverlaps()
-            #######################################
-            
-            #######################################
             ###working on waterlogging
             #2021-0328
             if(theGarden.terrainImage != [] and theGarden.waterLevel>0.0):
@@ -1046,13 +956,6 @@ def main():
                 #if the water level doesn't change, this only need to be calculated once
                 worldBasics.determineWaterlogging(theGarden)
                 worldBasics.determineDroughtTol(theGarden)
-
-
-            ########This routine is done in worldBasics.determineShade
-            # ###sort the garden.soil by height of the plants.Ordered shortest to tallest
-            # theGarden.soil= list_utils.sort_by_attr(theGarden.soil, "heightStem")
-            # ###flip the list so it's ordered tallest to shortest
-            # theGarden.soil.reverse()
 
             ###work out shading
             worldBasics.determineShade(theGarden)
@@ -1083,7 +986,6 @@ def main():
                 fileName=simulationName+'-'+str(cycleNumber)+'.csv'
                 saveDataPoint(dataDirectory, fileName, theGarden)
 
-            #print theGarden.deathNote
             theGarden.deathNote=[]        
             
             cycleNumber= cycleNumber+1
@@ -1095,8 +997,6 @@ def main():
                 fileName=simulationName+'-'+str(cycleNumber)+'.csv'
                 saveDataPoint(dataDirectory, fileName, theGarden)
                 
-                            
-#if produceStats:
         if saveData=="a":
             ###the real solution is to refactor vextract so it can be
             ###command line OR imported
@@ -1123,7 +1023,6 @@ def main():
              for aView in graphicalView:
                 if aView!="3d":
                     print("\nProducing PNG files...")
-                    #print outputGraphicsDirectoryDict[aView]
                     outputGraphics.outputPNGs(outputGraphicsDirectoryDict[aView], outputGraphicsDirectoryDict[aView])
                     if deleteCfdgFiles==True:
                         print("Deleting .cfdg files...")
@@ -1143,7 +1042,6 @@ def main():
         theGarden.cycleNumber=0
         for aRegion in theGarden.theRegions:
             aRegion.size=0.0
-        #print theGarden.theRegions[0].size
     ###And this would be the end of the loop bit
 
         
@@ -1163,9 +1061,6 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
-    # parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
-    # parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
-    # parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
     parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
     parser.add_argument('-rl', type=open, metavar='file', dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
     parser.add_argument('-e', type=open, metavar='file', dest='eventFile', required=False, help='Load an event file')
@@ -1181,11 +1076,9 @@ if __name__ == '__main__':
     ###options that use a code action
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
     parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','3d' ], help='Graphical view desired')    
-    # parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with')
     parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted randomly')
     parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted in a square')
     parser.add_argument('-sh', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted in a hex')
-    # parser.add_argument('-sf', type=open, metavar='file', dest='startPopulationSize', action=parseAction)
     parser.add_argument('-sf', type=pathlib.Path, metavar='file', dest='startPopulationSize', action=parseAction, required=False, help='Path to placement csv file')
 
     ###slighly overloaded options
@@ -1193,8 +1086,6 @@ if __name__ == '__main__':
     parser.add_argument('-ai', type=str, dest='archive', action=parseAction, nargs=1 )
     parser.add_argument('-f', type=str, dest='saveData', action=parseAction, nargs=1, choices=['a', 'e','n','s'])
     parser.add_argument('-fi', type=str, dest='saveData', action=parseAction, nargs=1 )
-    
-    ##########
     
     parser.set_defaults(**theDefaults)
     
@@ -1210,7 +1101,7 @@ if __name__ == '__main__':
     if type(produceGraphics)==list:
         graphicalView=produceGraphics[1]
         if "3d" in graphicalView:
-            import vdxfGraphics
+            from Vida_Data import vdxfGraphics
         produceGraphics=produceGraphics[0]    
     if type(graphicalView)!=list:
         graphicalView=[graphicalView]#make sure the graphicalView is a list
@@ -1258,29 +1149,17 @@ if __name__ == '__main__':
         if theExtension==".csv":
             theFile = open(startPopulationSize[0])
             sList=theFile.readlines()
-            #print(sList)
-            #print(type(sList))
             sList=checkSeedPlacementList(sList)
             startPopulationSize=len(sList)
             seedPlacement="fromFile"
-    #print(startPopulationSize)
 
 
     if type(startPopulationSize)==list:
         seedPlacement=startPopulationSize[1]
         startPopulationSize=startPopulationSize[0]
-    # if type(startPopulationSize)=='_io.TextIOWrapper':
-    #     sList=startPopulationSize.readlines()
-    #     ##send the file off to make sure it's in the correct format
-    #     sList=checkSeedPlacementList(sList)
-    #     startPopulationSize=len(sList)
 
     theMaxElevation = absMax-absMin
     theMaxElevation = theMaxElevation*terrainScale
-
-    
-        #for x in theOpts:
-#print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
     
     theDefaults=None#just clear it to free up memory
 
@@ -1288,10 +1167,3 @@ if __name__ == '__main__':
     main()
 else:
     main()
-
-    
-    
-
-
-        
-

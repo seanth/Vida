@@ -8,19 +8,12 @@
 """
 
 import math
-
-#Import Psyco if possible
-try:
-	import psyco
-	psyco.log()
-	psyco.full()
-except ImportError:
-	pass
+#psyco was here
 
 def checkOverlap(x, y, r, xx, yy, rr):
 	return circleOverlap(x,y,r,xx,yy,rr)
-	
-def python_circle_circle_overlap(x,y,r,xx,yy,rr):
+
+def circleOverlap(x,y,r,xx,yy,rr): #no more python_circle_circle_overlap IJC 01/20/26
 	theDistance =distBetweenPoints(x, y, xx, yy)
 	###now look at the distance in relation to the radii
 	if theDistance>(r+rr):
@@ -31,17 +24,7 @@ def python_circle_circle_overlap(x,y,r,xx,yy,rr):
 		return 1
 	else:
 		###partial overlap
-		return 2
-		
-#####look and see if there is a special C version
-try:
-	import circtest
-	circleOverlap = circtest.circle_circle_overlap
-	print("*********Will use gib's code**************")
-except ImportError:
-	circleOverlap = python_circle_circle_overlap
-	print("*********Will use straight python*********")
-	pass
+		return 2		
 
 def placePointsInGrid(numbPoints, lengthSquareSide):
 	###assumes the area is a square
@@ -55,7 +38,6 @@ def distBetweenPoints(x0, y0, x1, y1):
 	return theDistance
 
 def areaCircle(radius):
-	#area=math.pi*math.pow(radius, 2)
 	area=3.14*radius*radius
 	return area
 
@@ -86,23 +68,6 @@ def boundCircle(x, y, r):
 	yMax=y+r
 	return [xMin, xMax, yMin, yMax]
 
-#def checkOverlap(x, y, r, xx, yy, rr): 
-#	if useCforCheckingOverlap==False:
-#		theDistance =distBetweenPoints(x, y, xx, yy)
-#		###now look at the distance in relation to the radii
-#		if theDistance>(r+rr):
-#			###no overlap
-#			return 0
-#		elif theDistance<(math.fabs(r-rr)):
-#			###complete overlap
-#			return 1
-#		else:
-#			###partial overlap
-#			return 2
-#	else:
-#		theReturn=circtest.circle_circle_overlap(x,y,r,xx,yy,rr)
-#		return theReturn
-
 def checkOverlapSquare(x, y, r, xx, yy, size):
 	#x,y,r are the plant
 	#xx, yy, size are the square
@@ -130,8 +95,6 @@ def pointInsideSquare(squareX, squareY, squareSize,pointX, pointY):
 			return 1
 		else:
 			return 0
-
-		
 
 def distToRadical(r0, r1, distance):
 	###Send it radius of circle 1, radius circle 2, distance between the two circles

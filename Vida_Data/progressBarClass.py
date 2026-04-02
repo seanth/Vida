@@ -30,8 +30,6 @@ class progressbarClass:
             return
         self.f.write('[----------------- % Progress ---------------------]\n')
         self.f.write('[')
-        #self.f.write('    10   20   30   40   50   60   70   80   90   100\n')
-        #self.f.write('----|----|----|----|----|----|----|----|----|----|\n')
         return
 
     def update(self, count):

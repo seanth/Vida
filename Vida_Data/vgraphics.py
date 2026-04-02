@@ -206,9 +206,7 @@ def initCFDGText(theGarden, displayType, percentTimeStamp, maxHeightPlant):
 	if sys.platform=="win32":
 		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
 	else:
-		#retCFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg", "theWorldType": worldTypeCode, "thePopulationData":"%(thePopulationData)s", "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule, "theCycleNumber":"%(theCycleNumber)s"}
 		retCFDGtext=CFDGtext % {"thePathToiPix": "\"../../../Vida_Data/i_pix.cfdg\"", "theWorldType": worldTypeCode, "theTimeStamp": timeStampCode, "theWorldTypeRule": worldTypeRule, "theTimeStampRule": CFDGTimeStampRule}
-#CFDGtext=CFDGtext % {"thePathToiPix": "../../../Vida_Data/i_pix.cfdg"}
 #	print CFDGtext
 	return retCFDGtext
 
@@ -407,43 +405,35 @@ def makeCFDG(theView, CFDGtext, theGarden, cycleNumber):
 				color5= attachedSeed.colourSeedAttached[1]
 				color6= attachedSeed.colourSeedAttached[2]
 				if theView==1:
-					#z1=10000.0
 					z1=obj.heightStem+obj.heightLeafMax
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, -z1, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, -z1, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
 				elif theView==2:
-					#z2=10000.0
 					z2=obj.heightStem+obj.heightLeafMax
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, z2, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, z2, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
 				elif theView==3:
 					y3=attachedSeed.z
-					#y3=obj.heightStem+(obj.heightLeafMax/2.0)
 					z3=-y
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y3, z3, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y3, z3, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
 				elif theView==12:
-					#z1=10000.0
 					z1=obj.heightStem+obj.heightLeafMax
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, -z1, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, -z1, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
-					#z2=10000.0
 					z2=obj.heightStem+obj.heightLeafMax
 					thePlantData=thePlantData+ attachedSeedCode %  ((theWorldSize)+(theWorldSize*0.3)-x, y, z2, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  ((theWorldSize)+(theWorldSize*0.3)-x, y, z2, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
 				elif theView==21:
-					#z2=10000.0
 					z2=obj.heightStem+obj.heightLeafMax
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, z2, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, z2, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
-					#z1=10000.0
 					z1=obj.heightStem+obj.heightLeafMax
 					thePlantData=thePlantData+ attachedSeedCode %  ((theWorldSize)+(theWorldSize*0.3)-x, y, -z1, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
 					thePlantData=thePlantData+ attachedSeedCode %  ((theWorldSize)+(theWorldSize*0.3)-x, y, -z1, color4, color5, color6, 0.0, theSeedBorder, theSeedBorder)
 				elif theView==13 or theView==23:
 					z1=obj.heightStem+obj.heightLeafMax
 					if theView==13: z1=0-z1
-					#y3=(theGarden.theWorldSize/-2)-50.0+obj.heightStem+(obj.heightLeafMax/2.0)
 					y3=(theGarden.theWorldSize/-2)-50.0+attachedSeed.z-(theWorldSize* fractWorldBetweenTBGraphicsSpacer/2)
 					z3=-y
 					thePlantData=thePlantData+ attachedSeedCode %  (x, y, z1, color1, color2, color3, 0.0, theSeedDiameter, theSeedDiameter)
@@ -486,7 +476,7 @@ def outputPNGs(inputDirectory, outputDirectory):
 		###this should get the cfdg app to do its thing
 		###windows and linux seem to handle path names differently
 		if sys.platform=="win32":
-			theArg="ContextFreeCLI.exe /c /b 0 /s 500 %s %s"
+			theArg="ContextFree\ContextFreeCLI.exe /c /b 0 /s 500 %s %s"
 			theArg=theArg % (fileItem, pngFileName)
 		else:
 			theArg="cfdg -q -c -b 0 -s 500 %s %s"
@@ -501,36 +491,6 @@ def deleteCFDGFiles(outputDirectory):
 		os.remove(fileItem)
 
 def outputMOV(outputDirectory, simulationName, framesPerSec):
-	# if sys.platform=="darwin":
-	# 	###Absolute path to output png files necessary
-	# 	###for the embedded applescript to work correctly
-	# 	absolutePath=os.path.abspath(outputDirectory)
-	# 	#print "#################"
-	# 	#print simulationName
-	# 	firstFile=glob.glob(outputDirectory+"*.png")[0]
-	# 	firstFile=firstFile.replace(outputDirectory,"")
-	# 	###turn "/" into ":" so applescript understand the path
-	# 	absolutePath= absolutePath.replace("/", ":")
-	# 	if not absolutePath.endswith(":"):
-	# 		absolutePath=absolutePath+":"
-	# 	###get quicktime to make the video###
-	# 	appleScriptCmd="""osascript<<END
-	# 	set folderPath to path to me as string
-	# 	set the clipboard to folderPath as text
-	# 	tell application "QuickTime Player 7"
-	# 	activate
-	# 	--need absolute path of file here--
-	# 	open image sequence "%s%s" frames per second %i
-	# 	tell movie 1
-	# 		save self contained in "%s%s.mov"
-	# 		--optional close?
-	# 		--close
-	# 	end tell
-	# 	end tell
-	# 	"""
-	# 	appleScriptCmd=appleScriptCmd % (absolutePath, firstFile, framesPerSec, absolutePath, simulationName)
-	# 	os.system(appleScriptCmd)
-	# 	print "     Quicktime video made"
 	#uses ffmpeg to make videos
 	###Absolute path to output png files necessary
 	absolutePath=os.path.abspath(outputDirectory)
@@ -544,17 +504,11 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 	firstFile= firstFile.rstrip("-")
 
 	theArg = "ffmpeg -hide_banner -loglevel panic -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
-	#theArg = "ffmpeg -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
 	theArg=theArg % (framesPerSec, absolutePath, firstFile, absolutePath, firstFile)
 	#print(theArg)
 	os.system(theArg)
 	print("     mp4 video made")
 	###Delete png files if requested
-	#if deletePngFiles:
-	#	allTargetFiles =glob.glob(outputDirectory+"*.png")
-	#	for fileItem in allTargetFiles:
-	#		print "Deleting .png file %s." % (fileItem)
-	#		os.remove(fileItem)
 
 
 

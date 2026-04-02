@@ -15,28 +15,25 @@ import glob
 import linecache
 import pickle
 import argparse
-if (sys.version_info.major)==2:
-    import ConfigParser
-else:
-    import configparser as ConfigParser
-    import pathlib
+import configparser
 ###append the path to basic data files
 sys.path.append("Vida_Data")
 import vgraphics as outputGraphics
 import vplantr as defaultSpecies
 import list_utils
+from tools import pixelCount as pCount
 
 
 theCLArgs=""
 
 ##########################################
 #Import the options#
+theConfigSection='Vida Options'
 try:
-    theConfig=ConfigParser.RawConfigParser()
+    theConfig=configparser.RawConfigParser()
     theConfig.optionxform = str 
     theConfig.read('Vida.ini')
-    theConfigSection='Vida Options'
-except ConfigParser.MissingSectionHeaderError:
+except configparser.MissingSectionHeaderError:
     print("Warning: Invalid config file, no [%s] section.") % (theConfigSection)
     raise
 
@@ -64,14 +61,6 @@ for i in theConfig.items(theConfigSection):
     theDefaults['allFiles']=False
     theDefaults['fileOrFolder']=None
 
-#print (theDefaults)
-#print ("#################")
-#import vdefaults as thePrefs
-#produceGraphics=thePrefs.produceGraphics
-#produceVideo=thePrefs.produceVideo
-#percentTimeStamp=thePrefs.percentTimeStamp
-#framesPerSecond=thePrefs.framesPerSecond
-
 class parseAction(argparse.Action):
     def __call__(self,parser,args,theValues,option_string=None):
         ###video option
@@ -94,13 +83,9 @@ class parseAction(argparse.Action):
                 theValues=[True, theValues]
         setattr(args, self.dest, theValues)
 
-
-##############################################
-
 class Species1(defaultSpecies.genericPlant):
     ###The routine in defaultSpecies.genericPlant reads in default values from .yml file
     def __init__(self):
-        ##super(type, obj) -> bound super object; requires isinstance(obj, type)
         super(Species1, self).__init__()
 
 def makeDirectory(theDirectory):
@@ -111,7 +96,6 @@ def saveDataToCSVFile (theDirectory, theFileName, theData):
     makeDirectory(theDirectory)
     if not theFileName.endswith(".csv"):
         theFileName=theFileName+".csv"
-    #saveDataFile =csv.writer(file(theDirectory + theFileName, 'w'),delimiter=',',lineterminator='\n')
     saveDataFile =csv.writer(open(theDirectory + theFileName, 'w'),delimiter=',',lineterminator='\n')
     for l in theData:
         saveDataFile.writerow(l)
@@ -143,7 +127,7 @@ if __name__ == '__main__':
     
     ###Parse the name a bit more
     #-n is required, so it better be there
-    #fileOrFolder=theArguments[loc+1]
+    fileOrFolder=pCount.theArguments[pCount.loc+1]
     fileOrFolder=fileOrFolder.split(",")
     
     ###parse the graphic options a bit more
@@ -180,8 +164,6 @@ if __name__ == '__main__':
             produceVideo=False
 
 #for x in theOpts:
-#        print "%s: \t%s   %s" % (x, theDefaults[x], globalVarsVals[x])
-
     theDefaults=None#just clear it to free up memory
     #remove the ' from start and back for essp501L
     if fileOrFolder[0][0]=="'": fileOrFolder[0]=fileOrFolder[0][1:]
@@ -336,15 +318,7 @@ if __name__ == '__main__':
                     ignoreTheseColumns=["Cycle #", " X Location", " Y Location", " Age at Maturity"]
                     totalCommunitySums=["Mass of Stem", "Mass of Canopy", "Mass Stem+Mass Canopy", "Mass of all Seeds", "Mass Total", "Growth Stem (kg)", "Growth Canopy (kg)", "Growth Stem+Canopy (kg)", "Functional Area"]
                     ###Get a list of unique species names
-                    #theIndex="na"
-                    #theIndex=allText[0].index(" Species")
-                    #if not theIndex=="na":
-                    #    # create array of all individuals of all species species 
-                    #    theSpeciesNameColumn=[row[theIndex] for row in allText]
-                    #    theSpeciesNameColumn.pop(0) #get rid of the column heading
-                    #    theSpeciesNames=list_utils.remove_duplicates(theColumn)
-                    #    theSpeciesNames.sort()
-                    #print theSpeciesNames
+                    #create array of all individuals of all species species
                     if not theColumn[0] in ignoreTheseColumns:
                         try:
                             if theColumn[0]=="X Location":
@@ -439,7 +413,6 @@ if __name__ == '__main__':
                     theData=[row[theDataIndex] for row in allText]
                     theData.pop(0)
                     theSpeciesDict=dict.fromkeys(theSpeciesNames,[])
-                    #for aSpeciesName in theSpeciesNames:
                     SpeciesData = []
                     for anElement in theColumn:
                         theListTemp=[]
@@ -450,36 +423,9 @@ if __name__ == '__main__':
                         theListTemp.append(datum)
 
                         theSpeciesDict[anElement]=theListTemp
-                        #theSpeciesDict.setdefault(anElement, SpeciesData).append(datum)
-
                     for theName in theSpeciesNames:
                         theOutput[0].append(("Total Functional Area of %s") % theName)
                         theOutput[1].append(sum(theSpeciesDict[theName]))
-
-
-                    #allSpeciesFunctionalArea = dict(zip(theColumn,theData))
-                    #print allSpeciesFunctionalArea
-
-                    # # theSpeciesData = [] used to be here but I think it serves us better in the for loop so it can be repopulated
-                    # for name in theSpeciesNames:
-                    #     # "species" should = "name"  
-                    #     theSpeciesData = []
-                    #     otherSpecies = theSpeciesNames.remove(name)
-                    #     AlltheSpeciesData = dict(zip(theColumn, theData))
-                    #     for i in range(len(theColumn)):
-                    #         theName=theColumn[i]
-                    #         if not theName in otherSpecies:
-                    #             theSpeciesData.append(AlltheSpeciesData[theName])
-
-                    #     #for others in otherSpecies:
-                    #     # del AlltheSpeciesData[otherSpecies]
-                    #     theSpeciesData = AlltheSpeciesData
-                    #     theOutput[0].append("Total Functional Area of %s \n") % theSpeciesNames(name)
-                    #     theOutput[1].append(sum(theSpeciesData))
-                    # #theSpeciesCount.append(theColumn.count(theColumn[i]))
-
-                
-
                 ###make sure the header for the summary file is the one having the most data
                 if len(theSummaryOutputHeader)<len(theOutput[0]):
                     theSummaryOutputHeader=theOutput[0]
