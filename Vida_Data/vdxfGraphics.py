@@ -1,6 +1,6 @@
 """This file is part of Vida.
     --------------------------
-    Copyright 2023, Sean T. Hammond
+    Copyright 2026, Sean T. Hammond
     
     Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
     
@@ -14,6 +14,9 @@ import copy
 import colour_utils
 import vterrainImport as terrain_utils
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
+
+# import sys
+# import numpy as np
 
 ###########
 #new method
@@ -30,8 +33,6 @@ def initDXFBlocks(theGarden):
     ############################
     #Blocks
     b = dxf.block(name='THEGARDEN')
-    # b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)]))
-    # theData.blocks.add(b)
     #Keep having problems with tools that convert DXF to STL not identifying
     #SOLID, so made it a 3dface
     #sth 2024.01.15
@@ -39,7 +40,7 @@ def initDXFBlocks(theGarden):
     for x in theFaceList:
         the3dFace = dxf.face3d(x , flags=0)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
     
@@ -47,131 +48,132 @@ def initDXFBlocks(theGarden):
     #SOLID, so made it a 3dface
     #sth 2024.01.15
     b = dxf.block(name='WATER')
-    # b.add(dxf.solid([(0,0,0),(1,0,0),(1,1,0),(0,1,0)], thickness=1.0, color=5))
-    # theData.blocks.add(b)
     theFaceList = Cube()
     for x in theFaceList:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=5)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
     b = dxf.block(name='STEM')
-    # b.add(dxf.circle(center=(0.0,0.0,0.0),radius=1.0,thickness=1.0))
-    # theData.blocks.add(b)
     theFaceList = Sphere()
     for x in theFaceList[0:480]:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=44)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
     b = dxf.block(name='SEED')
     theFaceList = Sphere()
     for x in theFaceList:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=6)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
     b = dxf.block(name='CANOPY')
     theFaceList = Sphere()
     for x in theFaceList[0:480]:
-        the3dFace = dxf.face3d(x , flags=0)
+        the3dFace = dxf.face3d(x , flags=0, color=3)
         b.add(the3dFace)
-    theFaceList=""
+    theFaceList=None
     theData.blocks.add(b)
 
 
     #only do this if there is a terrain image to use
     if(terrainImage!=[]):
-        print("***Generating terrain mesh...***")
-        b = dxf.block(name='MESHTERRAIN')
-        #xSize,ySize = (terrainImage[1][0],terrainImage[1][1])
-        xSize,ySize = (theWorldSize+1,theWorldSize+1)
-        mesh = dxf.polymesh(xSize, ySize)
-        for x in range(xSize):
-            for y in range(ySize):
-                #thePixelValue = terrain_utils.getPixelValue(x-50,y-50,terrainImage)
-                thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
-                z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
-                #z = terrain_utils.elevationFromPixel(thePixelValue)
-                mesh.set_vertex(x, y, (x, y, z))
-        b.add(mesh)
-        theData.blocks.add(b)
+        theData = makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta)
 
-    # ############################
-    # #New method
-    # doc = ezdxf.new('R2010')
-    # # Set meter as document/modelspace units
-    # doc.units = units.M
-    # # which is a shortcut (including validation) for
-    # #doc.header['$INSUNITS'] = units.M
-    # doc.header['$MEASUREMENT'] = 1 #0==Imperial, 1==Metric
+    return theData
 
-    # #make the modelspace (msp)
-    # msp = doc.modelspace()
-    # msp.units = doc.units
-    # #
-    # #Blocks
-    # #Keep having problems with tools that convert DXF to STL not identifying
-    # #SOLID, so made it a 3dface
-    # #sth 2024.01.15
-    # aBlock = doc.blocks.new(name='THEGARDEN')
-    # theFaceList = Cube()
-    # for x in theFaceList:
-    #     aBlock.add_3dface(x)
-    # theFaceList=""
+    
+def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
+    ##using assimp to make other 3d file types and
+    ##assimp doesn't render mesh correctly
+    ##Keep in case assimp changes and it can read meshes correctly
+    ##STH 2024-0131
+    # print("***Generating terrain mesh...***")
+    # b = dxf.block(name='MESHTERRAIN')
+    # xSize,ySize = (theWorldSize+1,theWorldSize+1)
+    # mesh = dxf.polymesh(xSize, ySize)
+    # for x in range(xSize):
+    #     for y in range(ySize):
+    #         thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
+    #         z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+    #         mesh.set_vertex(x, y, (x, y, z))
+    # b.add(mesh)
+    # theData.blocks.add(b)
+    # return theData
+    ##Generate a 3dface instead of a mesh so assimp can do it correctly
+    print("***Generating terrain 3dface...***")
+    b = dxf.block(name='MESHTERRAIN')
+    xSize,ySize = (theWorldSize,theWorldSize)
+    theMesh=[]
+    for x in range(xSize):
+        aRow=[]
+        for y in range(ySize):
+            thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
+            z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+            aRow.append((x,y,z))
+        theMesh.append(aRow)
+    aRow = None
 
-    # aBlock = doc.blocks.new(name='WATER')
-    # theFaceList = Cube()
-    # for x in theFaceList:
-    #     aBlock.add_3dface(x)
-    # theFaceList=""
-
-    # aBlock = doc.blocks.new(name='STEM')
-    # theFaceList = Cube()
-    # for x in theFaceList:
-    #     aBlock.add_3dface(x)
-    # theFaceList=""
-
-    # aBlock = doc.blocks.new(name='SEED')
-    # theFaceList = Sphere()
-    # for x in theFaceList:
-    #     aBlock.add_3dface(x)
-    # theFaceList=""
-
-    # aBlock = doc.blocks.new(name='CANOPY')
-    # theFaceList = Sphere()
-    # for x in theFaceList[0:480]:
-    #     aBlock.add_3dface(x)
-    # theFaceList=""
-    ############################
-
+    theFaceList=[]
+    for theRowNumb in range(ySize-1):
+        i=0
+        j=2
+        for theColNumb in range(xSize-2):
+            #Starting with the mesh, which is a series of coordinates for each point
+            #we need to convert that into grouping of 4 coordinates defining a box
+            #for the 3dface. The creation needs to be done widdershins, starting in
+            #the lower left for the normal face to not be transparent.
+            #https://ezdxf.readthedocs.io/en/stable/dxfentities/3dface.html for example
+            #If the coordinates are:
+            #a b c d
+            #e f g h
+            #then the first box is: e,f,b,a.
+            #row 2, take the first two values, row 1, take the same index values, but reverse them
+            #then advance the column by 1 so the next box is: f,g,c,b
+            #STH 2024-0131
+            theFaceBox=[]
+            #theFaceBox=theFaceBox+theMesh[theRowNumb][i:j]
+            #theFaceBox=theFaceBox+list(reversed(theMesh[theRowNumb+1][i:j]))
+            theFaceBox=theFaceBox+theMesh[theRowNumb+1][i:j]
+            theFaceBox=theFaceBox+list(reversed(theMesh[theRowNumb][i:j]))
+            i=j-1 
+            j=i+2
+            theFaceList.append(theFaceBox)
+    theFaceBox = None
+    for x in theFaceList:
+        the3dFace = dxf.face3d(x , flags=0, color=27)
+        b.add(the3dFace)
+    theFaceList = None
+    theData.blocks.add(b)
     return theData
 
     
 
 
-    
-
 
 
 
 def makeDXF(theGarden, theBlockData):
-    theWorldSize=theGarden.theWorldSize
-    # theData.append(sdxf.Insert('world',point=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0),xscale=theWorldSize,yscale=theWorldSize,zscale=0,color=0,rotation=0))
-    #print(0-(theWorldSize/2.0))
+    ###Important note about colour
+    #as of 2026.0716 assimp is not correctly seeing that individual block data can have its own color. The inserted
+    #dxf objects keep the colour that the original 3dface has defined
+    #STH 2026-0716
 
-    theBlockData.add(dxf.insert(blockname='THEGARDEN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=5))
+    theWorldSize=theGarden.theWorldSize
+
+    theBlockData.add(dxf.insert(blockname='THEGARDEN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=0.001, rotation=0, color=41))
 
     if len(theGarden.terrainImage)==3:
-        theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=0))
+        theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=27))
         if(theGarden.waterLevel>0.0):
-            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0, color=5))
+            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0, color=90))
 
     #dictColoursUsed={}
     for obj in theGarden.soil:
@@ -180,9 +182,13 @@ def makeDXF(theGarden, theBlockData):
         z=obj.z
         theElevation=obj.elevation
         aicLeaf=colour_utils.HSV_to_ACI(obj.colourLeaf)
+        #print(aicLeaf)
         aicStem=colour_utils.HSV_to_ACI(obj.colourStem)
+        #print(aicStem)
         aicSeedDispersed=colour_utils.HSV_to_ACI(obj.colourSeedDispersed)
+        #print(aicSeedDispersed)
         aicSeedAttached=colour_utils.HSV_to_ACI(obj.colourSeedAttached)
+        #print(aicSeedAttached)
         if obj.isSeed:
             theSeedRadius=obj.radiusSeed*obj.radiusSeedMultiplier
             #This should offset the seeds to match the image elevation
@@ -194,20 +200,16 @@ def makeDXF(theGarden, theBlockData):
             theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
             if (obj.crownShape == "PARA"):
                 #bole height is not calculated. It's defined in the species file
-                # theData.append(sdxf.Insert('canopy',point=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0),color=aicLeaf,rotation=0))
                 theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0), rotation=0, color=aicLeaf))
             else:
                 #default shape is a perfect hemisphere
-                # theData.append(sdxf.Insert('canopy',point=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius,color=aicLeaf,rotation=0))
                 theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius, rotation=0, color=aicLeaf))
-            # theData.append(sdxf.Insert('stem',point=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem,color=aicStem,rotation=0))
             theBlockData.add(dxf.insert(blockname='STEM', insert=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem, rotation=0, color=aicStem))
             for attachedSeed in obj.seedList:
                 x= attachedSeed.x
                 y= attachedSeed.y
                 z= attachedSeed.z
                 theSeedRadius= attachedSeed.radiusSeed* attachedSeed.radiusSeedMultiplier
-                # theData.append(sdxf.Insert('seed',point=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius,color=aicSeedAttached,rotation=0))
                 theBlockData.add(dxf.insert(blockname='SEED', insert=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedAttached))
     return theBlockData
 
