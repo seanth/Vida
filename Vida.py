@@ -1100,13 +1100,14 @@ def main():
         if saveData=="a":
             ###the real solution is to refactor vextract so it can be
             ###command line OR imported
-            if (sys.version_info.major)==2:
-                theRunEnv="python"
-            else:
-                if sys.platform=="win32":
-                    theRunEnv="py -3"
-                else:
-                    theRunEnv="python3"
+            # if (sys.version_info.major)==2:
+            #     theRunEnv="python"
+            # else:
+            #     if sys.platform=="win32":
+            #         theRunEnv="py -3"
+            #     else:
+            #         theRunEnv="python3"
+            theRunEnv = sys.executable  # resolves to whatever is actually running this script
             theArgument="-n '%s' -fs" % (dataDirectory+"Seeds/")
             print("\n***sending to Extract: %s" % (theArgument))
             os.system("%s Vida_Data/vextract.py %s" % (theRunEnv, theArgument))
