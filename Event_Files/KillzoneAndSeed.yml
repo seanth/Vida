@@ -1,0 +1,42 @@
+2:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 50
+       target: plants
+       species_name: Liquidambar_styraciflua       
+4:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 50
+       target: plants
+       species_name: Acer_rubrum
+6:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 50
+       target: plants
+       species_name: Pinus_taeda
+8:  
+   - Seed:
+     - species_file: Pinus_palustris.yml
+       placement: hex
+       number: 1000
+10:
+  - Killzone:
+    - x: 0.0
+      y: 0.0
+      shape: square
+      size: 500
+      target: plants
+      species_name: Pinus_taeda
+12:
+  - Seed:
+    - species_file: Pinus_palustris.yml
+      placement: hex
+      number: 250         
