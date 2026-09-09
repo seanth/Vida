@@ -15,7 +15,7 @@ randomDeathSeed: 0.0075
 allowSlowGrowthDeath: TRUE
 randomSlowGrowth: 0.05
 ##experimental mortality##
-allowDistanceFromMother: TRUE
+allowDistanceFromMother: FALSE
 janzenConnell: 0.5
 ##########################
 allowEulerGreenhillViolations: FALSE
