@@ -376,9 +376,50 @@ The default is 0.3.
 				       target: seeds
 				       species_name: 'Abies alba'
 
-		Note that, unlike the "Seed" event, targeting a given species in a killzone references the name of the species and defined withing the species file yml ("speciesName"). This is because if the species are in the simulation already and can be killed, that means they have been loaded into memory and there is not need to reference their file.
-
 		In the above example, only the seeds of the species 'Abies alba' will have its seeds killed in the defined killzone. the targeted species will default to all species if no parameter is supplied.
+
+		If one wanted a stochastic aspect to the fraction that is targeted, one can include the 'percent' element:
+				87:
+				   - Killzone:
+				     - x: 0.0
+				       y: 0.0
+				       shape: circle
+				       size: 10
+				       target: seeds
+				       percent: 0.5
+				       species_name: 'Abies alba'
+
+		In the above example, the seeds of the targeted species (Abies alba) that is within the circular zone will have a 50% chance of being killed.
+
+		Going further, one can even target specific attributes on the plant/seed. For example:
+				87:
+				   - Killzone:
+				     - x: 0.0
+				       y: 0.0
+				       shape: circle
+				       size: 10
+				       target: plants
+				       percent: 1.0
+				       species_name: 'Abies alba'
+				       selection:
+				       	- attribute: massStem
+				       	  logic: '='
+				       	  value: 0.3
+
+		In that example, 100% of the Abies alba species in the circular zone will be checked to see whether their total woody mass (massStem) is equal to 0.3kg. When true, that specifc plant will be killed. There is no list of attributes that seeds and plants have in this document, but the user can look at attributes found in zeroSeedValues() in the vplant.py file.
+
+		The logic element can be '<', '=', '==', or '>'. The code tries to do some checks on logic when loading in selection elements. For example, if the 'value' element is a string, the 'logic' element can't be '<' or '>'. The code will also be able to determine whether the targeted seed/plant/species has the attribute listed.
+
+		The way to set up the logic in the Selection part can be thought of as following this pseudo-code:
+
+			if 'attribute' 'logic' 'value', then the plant will be killed
+
+		Using the above example from cycle 87, the pseudo-code would be:
+
+			if massStem = 0.3, then the plant will be killed.
+
+
+		Note that, unlike the "Seed" event, targeting a given species in a killzone references the name of the species and defined withing the species file yml ("speciesName"). This is because if the species are in the simulation already and can be killed, that means they have been loaded into memory and there is not need to reference their file.
 
 		Each of these aspects of event files can be combined into a single file such as:
 				0:

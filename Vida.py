@@ -662,6 +662,7 @@ def main():
                     outputGraphicsDirectory = baseGraphicsDirectory +"combined-bottom-top-side/"
                 outputGraphicsDirectoryDict[aView]=outputGraphicsDirectory
                 makeDirectory(outputGraphicsDirectory)
+
         if not archive=="n":
             saveDirectory = outputDirectory+"Save_points/"
             makeDirectory(saveDirectory)
@@ -682,6 +683,8 @@ def main():
             if(theGarden.terrainImage != []):
                 theGarden.checkSubmergedMortality()
             ################
+
+
         if produceGraphics==True and CFDGtextDict=={}:
             for aView in graphicalView:
                 if aView!="3d":
@@ -702,7 +705,7 @@ def main():
             ####Experimental scripting event stuff                                            #
             if cycleNumber in eventTimes:                                                     # 
                 for aItem in eventData[cycleNumber]:                                          #
-                    for aKey in aItem.keys():                                                 #
+                    for aKey in aItem.keys():                                                #
                         if aKey=="Garden":                                                    #
                             if debug==1: print("debug: A garden related event has been triggered.")   #
                             theDict=aItem[aKey][0]                                            #
@@ -713,7 +716,9 @@ def main():
 
                         elif aKey=="Killzone" or aKey=="Safezone":
                             if debug==1: print("debug: generation of a zone event has been triggered.")
-                            theDict=aItem[aKey][0]                                           #
+                            theDict=aItem[aKey][0]
+                            #the atrributes in a killzone are: X & Ythe SHAPE(circle or square) is centered on, the SIZE of the shape, and what is the TARGET
+                            #(plants or seeds). You can also define a SPECIES_NAME to target                                          
                             zoneAttrs=theDict.keys()
                             zoneX=float(theDict['x'])
                             zoneY=float(theDict['y'])
@@ -724,15 +729,56 @@ def main():
                                 zoneSpecies=theDict['species_name']
                                 #student requested addition to accept list of species. 2023-0323
                                 zoneSpecies=zoneSpecies.split(",")
-                                print(zoneSpecies)
+                                #print(zoneSpecies)
                             else:
                                 zoneSpecies = 'all'
+                            ###############
+                            #Adding in ability to have chance of what happens in a zone
+                            #STH 2026-0908
+                            #Percent is a percent chance the event will happen to the targeted thing
+                            if 'percent' in theDict:
+                                zonePercent=theDict['percent']
+                                if zonePercent>1.0:
+                                    zonePercent=1.0
+                            else:
+                                zonePercent=1.0
+                            ###########
+                            #Adding in ability to be able to target plants based on an attribute the plant has
+                            #STH 2026-0909 
+                            if "selection" in theDict:
+                                theSelectionDict=theDict['selection'][0]
+                                #make sure the selection array has all three needed elements
+                                if not ("attribute" and "logic" and "value") in theSelectionDict:
+                                    print("\n***WARNING: Selection array needs exactly three elements: attribute, logic, and value")
+                                    print("\n***Ignoring selection criteria")
+                                    zoneSelAttribute = "none"
+                                else:
+                                    zoneSelAttribute = theSelectionDict['attribute']
+                                    zoneSelLogic = theSelectionDict['logic']
+                                    zoneSelValue = theSelectionDict['value']
+                                    #some checks on data type
+                                    # if not isinstance(zoneSelValue, (int, float)):
+                                    #     print("***WARNING: value element must be a number")
+                                    #     print("***Ignoring selection criteria")
+                                    #     zoneSelAttribute = "none"
+                                    if zoneSelLogic not in ['<', '=', '==', '>']:
+                                        print("\n***WARNING: logic element must be <, =, ==, or >")
+                                        print("***Ignoring selection criteria")
+                                        zoneSelAttribute = "none"
+                                    if (zoneSelLogic in ['<', '>']) and (isinstance(zoneSelValue, (str))):
+                                        print("\n***WARNING: can't use '<' or '>' on a value element that is a string")
+                                        print("***Ignoring selection criteria")
+                                        zoneSelAttribute = "none"  
+                            else:
+                                zoneSelAttribute = "none"                              
+
+
                             if zoneShape not in ['circle','square']:
-                                print("***WARNING: improper zone shape defined. Defaulting to square.***")
+                                print("\n***WARNING: improper zone shape defined. Defaulting to square.***")
                                 zoneShape='square'
                             zoneTarget=theDict['target']
                             if zoneTarget not in ['all','plants','seeds']:
-                                print("***WARNING: improper zone target defined. Defaulting to all.***")
+                                print("\n***WARNING: improper zone target defined. Defaulting to all.***")
                                 zoneTarget='all'
 
                             killThese=[]
@@ -745,10 +791,38 @@ def main():
                                     theResult=geometry_utils.checkOverlap(theObject.x, theObject.y, r, zoneX, zoneY, zoneSize)
                                     if theResult>0 and aKey=='Killzone':
                                         #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
-                                        #student requested addition to accept list of species. 0323-2023   
-                                        if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                    
+                                        #student requested addition to accept list of species. 0323-2023
+                                        #NOTE: this section is exact code in non-circle. Can be abstracted out into its own routine probably   
+                                        if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                       
                                             if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
-                                                killThese.append(theObject)   
+                                                #Adding in ability to have chance of what happens in a zone
+                                                #STH 2026-0908
+                                                theChance=random.random()
+                                                if theChance<=zonePercent:
+                                                    #this means the object is a target
+                                                    if zoneSelAttribute != "none":
+                                                        #check whether the provided attribute is present on the object(plant/seed)
+                                                        if not hasattr(theObject, zoneSelAttribute):
+                                                            print("***WARNING: attribute does not exist on targeted species")
+                                                            print("***Ignoring selection criteria")
+                                                            zoneSelAttribute = "none"
+                                                        else:
+                                                            #print(getattr(theObject, zoneSelAttribute))
+                                                            if zoneSelLogic in ['=', '==']:
+                                                                if getattr(theObject, zoneSelAttribute) == zoneSelValue:
+                                                                    #print("equal to")
+                                                                    killThese.append(theObject) 
+                                                            if zoneSelLogic == '<':
+                                                                if getattr(theObject, zoneSelAttribute) < zoneSelValue:
+                                                                    #print("less than")
+                                                                    killThese.append(theObject) 
+                                                            if zoneSelLogic in '>':
+                                                                if getattr(theObject, zoneSelAttribute) > zoneSelValue:
+                                                                    #print("greater than")
+                                                                    killThese.append(theObject) 
+                                                    else:
+                                                        #print("it will die")
+                                                        killThese.append(theObject) 
                                     elif aKey=='Safezone':
                                         if theResult==0:
                                             killThese.append(theObject)
@@ -764,9 +838,37 @@ def main():
                                     if theResult>0 and aKey=='Killzone':
                                         #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
                                         #student requested addition to accept list of species. 0323-2023
+                                        #NOTE: this section is exact code in circle. Can be abstracted out into its own routine probably 
                                         if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                       
                                             if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
-                                                killThese.append(theObject) 
+                                                #Adding in ability to have chance of what happens in a zone
+                                                #STH 2026-0908
+                                                theChance=random.random()
+                                                if theChance<=zonePercent:
+                                                    #this means the object is a target
+                                                    if zoneSelAttribute != "none":
+                                                        #check whether the provided attribute is present on the object(plant/seed)
+                                                        if not hasattr(theObject, zoneSelAttribute):
+                                                            print("***WARNING: attribute does not exist on targeted species")
+                                                            print("***Ignoring selection criteria")
+                                                            zoneSelAttribute = "none"
+                                                        else:
+                                                            #print(getattr(theObject, zoneSelAttribute))
+                                                            if zoneSelLogic in ['=', '==']:
+                                                                if getattr(theObject, zoneSelAttribute) == zoneSelValue:
+                                                                    #print("equal to")
+                                                                    killThese.append(theObject) 
+                                                            if zoneSelLogic == '<':
+                                                                if getattr(theObject, zoneSelAttribute) < zoneSelValue:
+                                                                    #print("less than")
+                                                                    killThese.append(theObject) 
+                                                            if zoneSelLogic in '>':
+                                                                if getattr(theObject, zoneSelAttribute) > zoneSelValue:
+                                                                    #print("greater than")
+                                                                    killThese.append(theObject) 
+                                                    else:
+                                                        #print("it will die")
+                                                        killThese.append(theObject) 
                                     elif aKey=='Safezone':
                                         if theResult==0:
                                             killThese.append(theObject)

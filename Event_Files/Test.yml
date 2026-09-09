@@ -1,0 +1,14 @@
+15:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 25
+       target: plants
+       percent: 1.0
+       species_name: SimpleExample
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.02
+   
