@@ -313,10 +313,12 @@ The default is 0.3.
 		If one wishes to introduce seeds using an event file, one uses the format:
 				Iteration#:
 				   - Seed:
-				     - species: <name or 'random'>
+				     - species_file: <name of file or 'random'>
 				       placement: <placement file, 'square', 'hex' or 'random'>
 				       number: <number of seeds>
-		For example, if one wished to place seeds using a placement file at iteration 21, one would say:
+		It is important to note that one must reference the species file name, including the yml extension. This is because one could load a save simulation state and want to include a new species that was not present in the original run. The simulation has not loaded that file, so it's easier to just make sure every seeding event references the file name.
+
+		Example 2: if one wished to place seeds using a placement file at iteration 21, one would say:
 				21:
 				   - Seed:
 				     - placement: 'Placement Files/Metroid.csv'
@@ -324,14 +326,14 @@ The default is 0.3.
 		If one wanted to place 27 Abies alba seeds in a square pattern on iteration 100, one would say:
 				100:
 				   - Seed:
-				     - species: 'Abies alba.yml'
+				     - species_file: 'Abies alba.yml'
 				       placement: square
 				       number: 27
 		
 		Finally, if one wanted to place 45 random species randomly in the world on iteration 51, one would say:
 				51:
 				   - Seed:
-				     - species: random
+				     - species_file: random
 				       placement: random
 				       number: 45
 
@@ -372,9 +374,11 @@ The default is 0.3.
 				       shape: circle
 				       size: 10
 				       target: seeds
-				       species: Abies alba
+				       species_name: 'Abies alba'
 
-		In the above example, only the seeds of the species 'Abies alba' will have its seeds killed in the defined killzone. The species name corresponds to the parameter 'speciesName' in the species file. the targeted species will default to all species if no parameter is supplied.
+		Note that, unlike the "Seed" event, targeting a given species in a killzone references the name of the species and defined withing the species file yml ("speciesName"). This is because if the species are in the simulation already and can be killed, that means they have been loaded into memory and there is not need to reference their file.
+
+		In the above example, only the seeds of the species 'Abies alba' will have its seeds killed in the defined killzone. the targeted species will default to all species if no parameter is supplied.
 
 		Each of these aspects of event files can be combined into a single file such as:
 				0:
@@ -403,7 +407,7 @@ The default is 0.3.
 				       target: all
 				100:
 				   - Seed:
-				     - species: 'Abies alba.yml'
+				     - species_file: 'Abies alba.yml'
 				       placement: square
 				       number: 27
 
