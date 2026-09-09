@@ -17,11 +17,11 @@ import os.path
 import glob
 import sys
 import argparse
-if (sys.version_info.major)==2:
-    import ConfigParser
-else:
-    import configparser as ConfigParser
-    import pathlib
+# if (sys.version_info.major)==2:
+#     import ConfigParser
+# else:
+import configparser as ConfigParser
+import pathlib
 
 
 import copy
@@ -720,10 +720,11 @@ def main():
                             zoneSize=float(theDict['size'])
                             zoneShape=theDict['shape']
                             zoneTarget=theDict['target']
-                            if 'species' in theDict:
-                                zoneSpecies=theDict['species']
-                                #student requested addition to accept list of species. 0323-2023
+                            if 'species_name' in theDict:
+                                zoneSpecies=theDict['species_name']
+                                #student requested addition to accept list of species. 2023-0323
                                 zoneSpecies=zoneSpecies.split(",")
+                                print(zoneSpecies)
                             else:
                                 zoneSpecies = 'all'
                             if zoneShape not in ['circle','square']:
@@ -774,7 +775,7 @@ def main():
                                                 killThese.append(theObject)  
 
                             for theObject in killThese:
-                                theObject.causeOfDeath="zone"
+                                theObject.causeOfDeath="killzone"
                                 theGarden.kill(theObject)
 
                         elif aKey=="Seed":
@@ -783,7 +784,7 @@ def main():
                             seedingInfo=theDict.keys()                                        #
                             for infoItem in seedingInfo:
                                 if infoItem=="number" and not seedPlacement=="fromFile": addPopulationSize=theDict[infoItem]
-                                if infoItem=="species": 
+                                if infoItem=="species_file": 
                                     sList=theDict[infoItem]
                                     if sList=="random": sList=[]
                                 if infoItem=="placement": seedPlacement=theDict[infoItem]
@@ -804,12 +805,16 @@ def main():
                                     ###so it can be added to theGarden
                                     for j in sList:
                                         jj=j[0]
-                                        if (sys.version_info.major)==2:
-                                            if not theGarden.platonicSeeds.has_key(jj):
-                                                speciesIsMissing==True
-                                        else:
-                                            if not jj in theGarden.platonicSeeds:
-                                                speciesIsMissing==True
+                                        #has_key was depreciated and removed from python 3
+                                        #STH 2026-0908
+                                        # if (sys.version_info.major)==2:
+                                        #     if not theGarden.platonicSeeds.has_key(jj):
+                                        #         speciesIsMissing==True
+                                        # else:
+                                        #     if not jj in theGarden.platonicSeeds:
+                                        #         speciesIsMissing==True
+                                        if not jj in theGarden.platonicSeeds:
+                                            speciesIsMissing==True
                                         if speciesIsMissing==True:
                                             if debug == 1: print("debug: Desired species missing from loaded simulation")
                                             if debug == 1: print("debug: Adding species %s" % (jj))
@@ -829,8 +834,11 @@ def main():
                                 sList=newList
                                 newList=list(set(sList))
                                 for j in newList:
-                                    if not theGarden.platonicSeeds.has_key(j):
-                                        #print "adding %s" % (j)
+                                    # if not theGarden.platonicSeeds.has_key(j):
+                                    #has_key was depreciated and removed from python 3
+                                    #STH 2026-0908
+                                    if not j in theGarden.platonicSeeds:
+                                        #print ("adding %s" % (j))
                                         theSeed=Species1()
                                         fileLoc= "Species/"+j
                                         theSeed.importPrefs(fileLoc)
