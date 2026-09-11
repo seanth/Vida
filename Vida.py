@@ -17,6 +17,7 @@ import os.path
 import glob
 import sys
 import argparse
+import io
 # if (sys.version_info.major)==2:
 #     import ConfigParser
 # else:
@@ -556,7 +557,6 @@ def main():
             pythonList.append(file)
     fileList=[]
     ##########
-
     if (resumeSim==True or resumeSimReload==True) and not simulationFile=="":
         print("***Loading simulation: %s...***" % (simulationFile.name))
         #simulationFile=open(simulationFile, 'r')
@@ -1295,11 +1295,13 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
-    # parser.add_argument('-r', metavar='file', type=file, dest='resumeSim', required=False, help='Load a saved simulation and continue')
-    # parser.add_argument('-rl', metavar='file', type=file, dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
-    # parser.add_argument('-e', metavar='file', type=file, dest='eventFile', required=False, help='Load an event file')
-    parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
-    parser.add_argument('-rl', type=open, metavar='file', dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
+    #more python2 to python3 fixes
+    #STH 2026-0911
+    # parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
+    # parser.add_argument('-rl', type=open, metavar='file', dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
+    parser.add_argument('-r', type=argparse.FileType('rb'), dest='resumeSim', required=False, help='Load a saved simulation and continue')
+    parser.add_argument('-rl', type=argparse.FileType('rb'), dest='resumeSimReload', required=False, help='Load a saved simulation, reload world prefs, and continue')
+
     parser.add_argument('-e', type=open, metavar='file', dest='eventFile', required=False, help='Load an event file')
     parser.add_argument('-i', type=pathlib.Path, metavar='file', dest='terrainFile', required=False, help='Load an image as a terrain file')    
 
@@ -1370,12 +1372,17 @@ if __name__ == '__main__':
         if graphicalView==['3d']:
             print("***Warning: A video can not be auto generated from the '3d' graphical option\n   Video output turned off")
             produceVideo=False
+
     ##parse resume sim option a bit more
-    if type(resumeSimReload)=='_io.TextIOWrapper':
+    #Updating from python2 to python3 syntax
+    #STH 2026-0911
+    # if type(resumeSimReload)=='_io.TextIOWrapper':
+    if isinstance(resumeSimReload, io.BufferedReader):
         simulationFile=resumeSimReload
         resumeSimReload=True
         reloadSpeciesData=False
-    if type(resumeSim)=='_io.TextIOWrapper':
+    #if type(resumeSim)=="class '_io.TextIOWrapper'":
+    if isinstance(resumeSim, io.BufferedReader):
         simulationFile=resumeSim
         resumeSim=True
         reloadSpeciesData=False
