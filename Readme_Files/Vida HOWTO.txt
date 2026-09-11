@@ -143,9 +143,9 @@ BASIC USAGE
 
 	is identical to example 2 with the exception that files containing information on each object in the simulation will be saved to a folder named "Simulation_data" within the "Output-4example" folder. Since each file can be very large, objects are divided into seeds, plants and corpses, and are saved to appropriate subfolders. When one uses the -f a command, Vida takes the additional step to generate statistical summary files from the individual data files.
 	
-	Vida saves the data for the final iteration a simulation by default. This is the equivilant to using the command -fe. If one didn't want to save any data files, one would use the -f n command.
+	Vida saves the data for the final iteration a simulation by default. This is the equivalent to using the command -fe. If one didn't want to save any data files, one would use the -f n command.
 
-	In addition to saving graphical files, data files, and statistical files, Vida can save the state of iterations so that one could resume a simulation from a known point. The default setting for Vida is to save the final iteration of a simulation. This is the equivilant to saying:
+	In addition to saving graphical files, data files, and statistical files, Vida can save the state of iterations so that one could resume a simulation from a known point. The default setting for Vida is to save the final iteration of a simulation. This is the equivalent to saying:
 
 		python Vida.py -n 5example -w 100 -s 10 -t 200 -m 550 -g bs -v 10 -a e
 
@@ -158,7 +158,7 @@ BASIC USAGE
 		
 		python Vida.py -n 6example -w 100 -ss 10 -t 200 -m 550 -g bs -v 10 -f a -a a
 
-	As in example 3, 10 randomly chosen seeds are placed on a 100x100m world in a grid pattern. The addition of an integer (10) after the -v option results in a video being made with 10 frames/second. For every iteration statistical data is saved for each and every plant and seed in the simulationspace, overall statistics will also be produced, and every cycle of the simulation state is saved .
+	As in example 3, 10 randomly chosen seeds are placed on a 100x100m world in a grid pattern. The addition of an integer (10) after the -v option results in a video being made with 10 frames/second. For every iteration statistical data is saved for each and every plant and seed in the simulation space, overall statistics will also be produced, and every cycle of the simulation state is saved .
 
 	It is possible to reload a saved simulation state and run a simulation from that point.
 
@@ -168,7 +168,7 @@ BASIC USAGE
 
 	At times it might be necessary to repeat a simulation multiple times so as to get meaningful statistics. One can accomplish this using the -x <integer> command:
 
-		python Vida.py -n 8example -w 100 -s 10 -t 200 -m 550 -fa -x 3
+		python Vida.py -n 8example -w 100 -s 10 -t 200 -m 550 -f a -x 3
 
 	As should be obvious, this simulation is essentially the same as example 1 with the exception that data files will be generated for each iteration. In addition to data files, a statistical summary file will be made. This simulation will run a total of 3 times, with the name of the output folder having a numerical suffix appended to it. <have an example screen shot of this>
 	
