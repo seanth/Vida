@@ -8,17 +8,35 @@ You should have received a copy of academic software agreement along with Vida. 
 """
 
 #This file can be used to convert an image into a placement file for use with vida.py
+# from PIL import Image
+
+# input_file = "TreePattern.jpg"
+# output_file = "TreePattern.csv"
+
+# im = Image.open(input_file)
+# out = open(output_file,'w')
+# width, height = im.size
+# for x in xrange(width):
+# 	for y in xrange(height):
+# 		if im.getpixel((x,y))<=50:
+# 			#print >> out, "%s, %s, %s" % (x-(width/2.0),y-(height/2.0),im.getpixel((x,y)))
+# 			print >> out, "random, %f, %f, 0" % (x-(width/2.0),y-(height/2.0))
+# out.close()
+
+# This file can be used to convert an image into a placement file for use with vida.py
 from PIL import Image
 
 input_file = "TreePattern.jpg"
 output_file = "TreePattern.csv"
 
 im = Image.open(input_file)
-out = open(output_file,'w')
 width, height = im.size
-for x in xrange(width):
-	for y in xrange(height):
-		if im.getpixel((x,y))<=50:
-			#print >> out, "%s, %s, %s" % (x-(width/2.0),y-(height/2.0),im.getpixel((x,y)))
-			print >> out, "random, %f, %f, 0" % (x-(width/2.0),y-(height/2.0))
-out.close()
+
+with open(output_file, 'w') as out:
+    for x in range(width):
+        for y in range(height):
+            pixel = im.getpixel((x, y))
+            # if the image isn't grayscale, getpixel returns a tuple (R,G,B[,A])
+            value = pixel[0] if isinstance(pixel, tuple) else pixel
+            if value <= 50:
+                out.write("random, %f, %f, 0\n" % (x - (width / 2.0), y - (height / 2.0)))
