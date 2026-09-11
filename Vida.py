@@ -1283,7 +1283,7 @@ def main():
 if __name__ == '__main__':
     theCLArgs=sys.argv
     ###Argument parsing
-    parser=argparse.ArgumentParser(description='blargity blarg blarg')
+    parser=argparse.ArgumentParser(description='Arguments for Vida')
     parser.add_argument('-n', type=str, metavar='string', dest='simulationName', required=False, help='Name of the simulation')
     parser.add_argument('-w', type=int, metavar='int', dest='theWorldSize', required=False, help='Size of the world')
     parser.add_argument('-x', type=int, metavar='int', dest='timesToRepeat', required=False, help='Times to repeat simulation')
