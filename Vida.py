@@ -597,6 +597,7 @@ def main():
     print("     Running simulation for %i cycles" % (maxCycles))
     print("              (whichever comes first)")
     print("     Starting population size: %i" % (startPopulationSize))
+
     # if theGarden.carbonAllocationMethod==0:
     #     print("     Plants will allocate carbon to stem and leaf using methods defined by the species.")
     # else:
@@ -626,6 +627,26 @@ def main():
                 print("       Graphical output will be a combination bottom-up, top-down and side view.")
         if produceVideo==True:
             print("       Graphical output will include a %s frame/second video." % (framesPerSecond))
+
+    if saveData=="a": 
+        print("\n     All simulation data will be saved")
+    if saveData=="e": 
+        print("\n     End simulation data will be saved")
+    if saveData=="n": 
+        print("\n     No simulation data will be saved")
+    if saveData=="s": 
+        print("\n     Starting simulation data will be saved")
+
+    if archive=="a": 
+        print("     All simulation time points will be saved\n")
+    if archive=="e": 
+        print("     End simulation time point will be saved\n")
+    if archive=="n": 
+        print("     No simulation time point will be saved\n")
+    if archive=="s": 
+        print("     Starting simulation time point will be saved\n")
+
+
     ###I think this is where to start the times to repeat bit
     for x in range(timesToRepeat):
         ###make necessary directories
