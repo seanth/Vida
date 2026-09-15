@@ -10,7 +10,7 @@ canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
 heightStemMax: 31.773900 #[3]
-youngsModulusStem: 12.200000 #[5]
+youngsModulusStem: 12.200000 #[4]
 
 ###Reproduction
 makeSeeds: TRUE
@@ -70,10 +70,10 @@ waterTolerance: 0.000000 #watertol value #[14]
 ###drought tolerance
 droughtTolerance: 0.000000 #droughtTol value #[14]
 
-#[1] 
+#[1] https://www.srs.fs.usda.gov/pubs/rp/rp_so186.pdf
 #[2] set the 50 percent densityStem
 #[3] height
-#[4] 
+#[4] https://bioresources.cnr.ncsu.edu/resources/physical-and-mechanical-properties-of-clear-wood-from-red-oak-and-white-oak/
 #[5] Cannell, 1982
 #[6] Moon sensitivity analysis
 #[7] 

@@ -10,7 +10,7 @@ canopyTransmittance: 0.02
 fractionMinimumSurvival: 0.2
 heightLeafMax: 0.000296
 heightStemMax: 30.748300 #[3]
-youngsModulusStem: 12.090000 #[5]
+youngsModulusStem: 12.090000 #[4]
 
 ###Reproduction
 makeSeeds: TRUE
@@ -70,10 +70,10 @@ waterTolerance: 0.000000 #watertol value #[14]
 ###drought tolerance
 droughtTolerance: 0.000000 #droughtTol value #[14]
 
-#[1] 
+#[1] https://www.wood-database.com/swamp-chestnut-oak/
 #[2] set the 50 percent densityStem
 #[3] height
-#[4] 
+#[4] https://www.wood-database.com/swamp-chestnut-oak/
 #[5] Cannell, 1982
 #[6] Moon sensitivity analysis
 #[7] 
