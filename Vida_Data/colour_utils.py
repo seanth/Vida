@@ -25,7 +25,7 @@ def HSV_to_ACI(theHSV):
     theRGBsum=theRGB[0]+theRGB[1]+theRGB[2]
     theDictKeys=dictRGBtoACI.keys()
     if theRGB in theDictKeys:
-        return dictRGBtoAIC[theRGB]
+        return dictRGBtoACI[theRGB]
     else:
         listACIindexs=[]
         r1=theRGB[0]

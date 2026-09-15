@@ -10,6 +10,7 @@
 import glob
 import os
 import copy
+import random
 #import sdxf_utils as sdxf
 import colour_utils
 import vterrainImport as terrain_utils
@@ -23,6 +24,21 @@ from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/pr
 # import ezdxf #pip install ezdxf #https://pypi.org/project/ezdxf/
 # from ezdxf import units
 ###########
+
+_colouredBlockCache = {}
+
+def getOrMakeSpeckledCanopyBlock(theData, baseName, faceListFactory, leafACI, speciesACI, borderPercent):
+    key = (baseName, leafACI, speciesACI, borderPercent)
+    if key not in _colouredBlockCache:
+        blockName = f"{baseName}_{leafACI}_{speciesACI}_{borderPercent}"
+        rng = random.Random(f"{leafACI}_{speciesACI}_{borderPercent}")
+        b = dxf.block(name=blockName)
+        for x in faceListFactory():
+            faceColor = speciesACI if rng.random() < (borderPercent / 100.0) else leafACI
+            b.add(dxf.face3d(x, flags=0, color=faceColor))
+        theData.blocks.add(b)
+        _colouredBlockCache[key] = blockName
+    return _colouredBlockCache[key]
 
 def initDXFBlocks(theGarden):
     terrainImage=theGarden.terrainImage
@@ -73,14 +89,15 @@ def initDXFBlocks(theGarden):
     theFaceList=None
     theData.blocks.add(b)
 
-
-    b = dxf.block(name='CANOPY')
-    theFaceList = Sphere()
-    for x in theFaceList[0:480]:
-        the3dFace = dxf.face3d(x , flags=0, color=3)
-        b.add(the3dFace)
-    theFaceList=None
-    theData.blocks.add(b)
+    #Canopy definition moved tomakeDXF() to allow for speckled colours for species
+    #STH 2026-0911
+    # b = dxf.block(name='CANOPY')
+    # theFaceList = Sphere()
+    # for x in theFaceList[0:480]:
+    #     the3dFace = dxf.face3d(x , flags=0, color=3)
+    #     b.add(the3dFace)
+    # theFaceList=None
+    # theData.blocks.add(b)
 
 
     #only do this if there is a terrain image to use
@@ -182,13 +199,11 @@ def makeDXF(theGarden, theBlockData):
         z=obj.z
         theElevation=obj.elevation
         aicLeaf=colour_utils.HSV_to_ACI(obj.colourLeaf)
-        #print(aicLeaf)
         aicStem=colour_utils.HSV_to_ACI(obj.colourStem)
-        #print(aicStem)
         aicSeedDispersed=colour_utils.HSV_to_ACI(obj.colourSeedDispersed)
-        #print(aicSeedDispersed)
         aicSeedAttached=colour_utils.HSV_to_ACI(obj.colourSeedAttached)
-        #print(aicSeedAttached)
+        aicSpecies=colour_utils.HSV_to_ACI(obj.colourSpecies)
+
         if obj.isSeed:
             theSeedRadius=obj.radiusSeed*obj.radiusSeedMultiplier
             #This should offset the seeds to match the image elevation
@@ -198,12 +213,23 @@ def makeDXF(theGarden, theBlockData):
         else:
             theStemRadius=obj.radiusStem*obj.radiusStemMultiplier
             theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
+            #adding in speckled species colours to the canopy
+            #STH 2026-0911
+            canopyRotation = random.uniform(0, 360)
+            canopyBlock = getOrMakeSpeckledCanopyBlock(theBlockData, 'CANOPY', getCanopyFaceList, aicLeaf, aicSpecies, obj.borderImagePercent)
+
             if (obj.crownShape == "PARA"):
-                #bole height is not calculated. It's defined in the species file
-                theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0), rotation=0, color=aicLeaf))
+                theBlockData.add(dxf.insert(blockname=canopyBlock, insert=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)), xscale=theLeafRadius, yscale=theLeafRadius, zscale=obj.heightStem*(obj.boleHeight/100.0), rotation=canopyRotation))
             else:
-                #default shape is a perfect hemisphere
-                theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius, rotation=0, color=aicLeaf))
+                theBlockData.add(dxf.insert(blockname=canopyBlock, insert=(x,y,theElevation+obj.heightStem-theLeafRadius), xscale=theLeafRadius, yscale=theLeafRadius, zscale=theLeafRadius, rotation=canopyRotation))
+
+            # if (obj.crownShape == "PARA"):
+            #     #bole height is not calculated. It's defined in the species file
+            #     theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-obj.heightStem*(obj.boleHeight/100.0)),xscale=theLeafRadius,yscale=theLeafRadius,zscale=obj.heightStem*(obj.boleHeight/100.0), rotation=0, color=aicLeaf))
+            # else:
+            #     #default shape is a perfect hemisphere
+            #     theBlockData.add(dxf.insert(blockname='CANOPY', insert=(x,y,theElevation+obj.heightStem-theLeafRadius),xscale=theLeafRadius,yscale=theLeafRadius,zscale=theLeafRadius, rotation=0, color=aicLeaf))
+            
             theBlockData.add(dxf.insert(blockname='STEM', insert=(x,y,theElevation),xscale=theStemRadius,yscale=theStemRadius,zscale=obj.heightStem, rotation=0, color=aicStem))
             for attachedSeed in obj.seedList:
                 x= attachedSeed.x
@@ -216,6 +242,9 @@ def makeDXF(theGarden, theBlockData):
 def writeDXF(outputDirectory, fileName, theData):
     ###writes the files to a destination folder
     theData.saveas(outputDirectory + fileName+".dxf")
+
+def getCanopyFaceList():
+    return Sphere()[0:480]
 
 def Cube():
     return [
