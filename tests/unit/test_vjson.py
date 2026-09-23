@@ -82,3 +82,19 @@ def test_numbers_that_json_cannot_hold_become_null():
     assert vjson.number(float("nan")) is None
     assert vjson.number(float("inf")) is None
     assert vjson.number(1.234567) == 1.2346
+
+
+def test_the_viewer_sample_matches_the_file_format():
+    # viewer/sample is made by vjson; remake it (see viewer/README.md) if this fails
+    import gzip
+    from pathlib import Path
+
+    sample = Path(__file__).resolve().parents[2] / "viewer" / "sample" / "viewer.jsonl.gz"
+    with gzip.open(sample, "rt") as theFile:
+        header = json.loads(theFile.readline())
+        first = json.loads(theFile.readline())
+    assert header["format"] == "vida-viewer"
+    assert header["version"] == vjson.FORMAT_VERSION
+    assert header["plantFields"] == vjson.PLANT_FIELDS
+    assert header["seedFields"] == vjson.SEED_FIELDS
+    assert len(first["plants"][0]) == len(vjson.PLANT_FIELDS)
