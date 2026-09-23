@@ -216,6 +216,19 @@ def determineShade(theGarden):
 
 
 
+def isInsideRegion(theRegion, x, y):
+    ###is the point x,y inside a region? Regions are squares or circles
+    ###centred on theRegion.x, theRegion.y; size is the side of a square or
+    ###the diameter of a circle.
+    if theRegion.shape=='square':
+        return geometry_utils.pointInsideSquare(theRegion.x, theRegion.y, theRegion.size, x, y)
+    elif theRegion.shape=='circle':
+        #size needs to be radius but region defines diameter
+        return geometry_utils.pointInsideCircle(theRegion.x, theRegion.y, theRegion.size/2.0, x, y)
+    else:
+        raise ValueError("Region '%s' has shape '%s'. It must be 'square' or 'circle'." % (theRegion.name, theRegion.shape))
+
+
 class garden(object):
     def __init__(self):
         super(garden, self).__init__()
@@ -233,6 +246,8 @@ class garden(object):
         self.waterLevel = "none"
         self.maxElevation = 0
         ##########################
+        #counts seeds as they are planted. See nextPlantingNumber
+        self.plantingCount = 0
         fileLoc = "Vida World Preferences.yml"
         self.importPrefs(fileLoc)
         if self.lightIntensity>1.0: self.lightIntensity=1.0
@@ -256,6 +271,19 @@ class garden(object):
             i=i+1
     
     
+    def nextPlantingNumber(self):
+        #Each seed gets a number when it is planted, bigger for each seed.
+        #removeOverlaps uses it (as timePlanted) to decide which of two equal
+        #seeds was planted first. It used to be the clock time, time.time(),
+        #but two seeds planted quickly one after the other can get the same
+        #time (especially on Windows), which made runs impossible to repeat.
+        if not hasattr(self, "plantingCount"):
+            #gardens saved by older versions of Vida used the clock time,
+            #so carry on from the current time to keep new seeds after old ones
+            self.plantingCount = time.time()
+        self.plantingCount = self.plantingCount + 1
+        return self.plantingCount
+
     def plantSeed(self, theSeed):
         #self=garden, obj=seed
         theGarden=self
@@ -264,7 +292,7 @@ class garden(object):
         #    idNumb=str(random.random())
         #else:
         #    idNumb=theNameList[1]
-        theSeed.timePlanted=time.time()
+        theSeed.timePlanted=theGarden.nextPlantingNumber()
         #theSeed.name="plantedSeed %s" % (idNumb)
         theSeed.name=str(uuid.uuid4())
         if theSeed.motherPlant==0:
@@ -279,12 +307,7 @@ class garden(object):
             for aRegion in theGarden.theRegions:
                 #print aRegion.name
                 #print theSeed.name
-                if aRegion.shape=='square':
-                    inSubregion=geometry_utils.pointInsideSquare(aRegion.x, aRegion.y, aRegion.size, theSeed.x, theSeed.y)
-                elif aRegion.shape=='circle':
-                    #size needs to be radius but region defines diameter
-                    inSubregion=geometry_utils.pointInsideCircle(aRegion.x, aRegion.y, aRegion.size/2.0, theSeed.x, theSeed.y)
-                if inSubregion:
+                if isInsideRegion(aRegion, theSeed.x, theSeed.y):
                     if not aRegion in theSeed.subregion:
                         theSeed.subregion.append(aRegion)        
         return theSeed
