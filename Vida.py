@@ -123,6 +123,24 @@ class parseAction(argparse.Action):
 
 ##############################################
 
+###The graphical views. On the command line (-g) b is bottom-up, t is top-down
+###and s is side; they are turned into numbers (b=1, t=2, s=3) and combined
+###views join them, e.g. -g bs is view 13. For each view this gives: what it
+###shows, the folder its pictures go in, and the part of each file name that
+###says which view it is.
+graphicalViewNames = {
+    1:   ["a bottom-up view", "bottom-up/", "-bottom-"],
+    2:   ["a top-down view", "top-down/", "-top-"],
+    3:   ["a side-view", "side/", "-side-"],
+    12:  ["a combination bottom-up and top-down view", "combined-bottom-top/", "-bottom-top-"],
+    21:  ["a combination top-down and bottom-up view", "combined-top-bottom/", "-top-bottom-"],
+    13:  ["a combined bottom-up and side view", "combined-bottom-side/", "-bottom-side-"],
+    31:  ["a combined bottom-up and side view", "combined-bottom-side/", "-bottom-side-"],
+    23:  ["a combined top-down and side view", "combined-top-side/", "-top-side-"],
+    32:  ["a combined top-down and side view", "combined-top-side/", "-top-side-"],
+    123: ["a combination bottom-up, top-down and side view", "combined-bottom-top-side/", "-bottom-top-side"],
+}
+
 class Species1(defaultSpecies.genericPlant):
     ###The routine in defaultSpecies.genericPlant reads in default values from .yml file
     def __init__(self):
@@ -135,6 +153,29 @@ def saveSimulationPoint(theDirectory, theFileName, theGarden):
     pickle.dump(theGarden, simulationStateFile)
     simulationStateFile.close()
     #print "simulation state saved to file"
+
+def formatDataRow(theGarden, plant, causeOfDeath):
+    #One line of a data file, for a plant or seed. causeOfDeath is "na" for
+    #plants and seeds that are still alive.
+    if plant.age>0:
+        theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
+        (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
+            plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
+            len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
+            plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
+            plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
+            plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
+            causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
+    else:
+        #seeds have no age, so the averages, functional area and basal area are 0
+        theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
+        (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
+            plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
+            len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
+            plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
+            plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
+            causeOfDeath,0,0)
+    return theData
 
 def saveDataPoint (theDirectory, theFileName, theGarden):
     #Added "Area Canopy" at end of list
@@ -163,46 +204,13 @@ def saveDataPoint (theDirectory, theFileName, theGarden):
     theSeedList.append(theHeader)
     theCorpseList.append(theHeader)
     for plant in theGarden.soil:
-        if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
-                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
-                "na",3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
-        else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
-                "na",0,0)            
+        theData=formatDataRow(theGarden, plant, "na")
         if plant.isSeed:
             theSeedList.append(theData)
         else:
             thePlantList.append(theData)            
     for plant in theGarden.deathNote:
-        if plant.age>0:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%f \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,plant.massStem/plant.age,
-                plant.massLeaf/plant.age,(plant.massStem+plant.massLeaf)/plant.age,(plant.radiusStem*2)/plant.age,plant.heightStem/plant.age,
-                plant.causeOfDeath,3.14159*plant.radiusLeaf**2-plant.areaCovered, 3.14159*plant.radiusStem**2)
-        else:
-            theData="%i,%s,%s,%s,%f,%f,%f,%f,%f,%f,%s,%s,%s,%i,%i,%f,%f,%i,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%s,%f,%s \n" % \
-            (theGarden.cycleNumber,plant.name,plant.nameSpecies,plant.motherPlantName,plant.x,plant.y,plant.z,plant.elevation, (plant.elevation-theGarden.waterLevel),
-                plant.absHeightStem,plant.isSeed,plant.isMature,plant.matureAge,plant.countToGerm,plant.age,plant.massStem,plant.massLeaf,
-                len(plant.seedList),plant.massSeedsTotal,plant.massStem+plant.massLeaf,plant.massTotal,plant.radiusStem*2,plant.radiusLeaf,plant.areaCovered,
-                plant.heightStem,plant.heightLeafMax,plant.z,plant.GMs,plant.GMl,
-                plant.GMs+plant.GMl,2.0*plant.GRs,plant.GHs,0,0,0,0,0,
-                plant.causeOfDeath,0,0)
-        theCorpseList.append(theData)
+        theCorpseList.append(formatDataRow(theGarden, plant, plant.causeOfDeath))
     if len(thePlantList)>1:
         saveDataFile =open(theDirectory+"Plants/"+ theFileName, 'w')
         saveDataFile.writelines(thePlantList)
@@ -530,22 +538,8 @@ def main():
         for aView in graphicalView:
             if aView=="3d":
                 print("       Graphical output will be 3d.")
-            if aView==1:
-                print("       Graphical output will be a bottom-up view.")
-            if aView==2:
-                print("       Graphical output will be a top-down view.")
-            if aView==3:
-                print("       Graphical output will be a side-view.")
-            if aView==12:
-                print("       Graphical output will be a combination bottom-up and top-down view.")
-            if aView==21:
-                print("       Graphical output will be a combination top-down and bottom-up view.")
-            if aView==13 or aView==31:
-                print("       Graphical output will be a combined top-down and side view.")
-            if aView==23:
-                print("       Graphical output will be a combined bottom-up and side view.")
-            if aView==123:
-                print("       Graphical output will be a combination bottom-up, top-down and side view.")
+            else:
+                print("       Graphical output will be %s." % (graphicalViewNames[aView][0]))
         if produceVideo==True:
             print("       Graphical output will include a %s frame/second video." % (framesPerSecond))
 
@@ -591,22 +585,8 @@ def main():
             for aView in graphicalView:
                 if aView=='3d':
                     outputGraphicsDirectory = baseGraphicsDirectory +"DXF/"
-                if aView==1:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"bottom-up/"
-                if aView==2:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"top-down/"
-                if aView==3:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"side/"
-                if aView==12:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"combined-bottom-top/"
-                if aView==21:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"combined-top-bottom/"
-                if aView==13 or aView==31:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"combined-bottom-side/"
-                if aView==23:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"combined-top-side/"
-                if aView==123:
-                    outputGraphicsDirectory = baseGraphicsDirectory +"combined-bottom-top-side/"
+                else:
+                    outputGraphicsDirectory = baseGraphicsDirectory + graphicalViewNames[aView][1]
                 outputGraphicsDirectoryDict[aView]=outputGraphicsDirectory
                 makeDirectory(outputGraphicsDirectory)
 
@@ -713,22 +693,7 @@ def main():
                 if len(theView)!=0:
                     for aView in theView:
                         theData=outputGraphics.makeCFDG(aView, CFDGtextDict[aView], theGarden, cycleNumber)
-                        if aView==1:
-                            cfdgFileName= simulationName +"-bottom-"+str(cycleNumber)
-                        elif aView==2:
-                            cfdgFileName= simulationName +"-top-"+str(cycleNumber)
-                        elif aView==3:
-                            cfdgFileName= simulationName +"-side-"+str(cycleNumber)
-                        elif aView==12:
-                            cfdgFileName= simulationName +"-bottom-top-"+str(cycleNumber)
-                        elif aView==21:
-                            cfdgFileName= simulationName +"-top-bottom-"+str(cycleNumber)
-                        elif aView==13 or aView==31:
-                            cfdgFileName= simulationName +"-bottom-side-"+str(cycleNumber)
-                        elif aView==23 or aView==32:
-                            cfdgFileName= simulationName +"-top-side-"+str(cycleNumber)
-                        elif aView==123:
-                            cfdgFileName= simulationName +"-bottom-top-side"+str(cycleNumber)
+                        cfdgFileName= simulationName + graphicalViewNames[aView][2] + str(cycleNumber)
                         #outputGraphics.writeCFDG(outputGraphicsDirectory, cfdgFileName, theData)
                         outputGraphics.writeCFDG(outputGraphicsDirectoryDict[aView], cfdgFileName, theData)
 
