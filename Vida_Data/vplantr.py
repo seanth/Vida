@@ -16,6 +16,7 @@ import uuid
 ###append the path to basic data files
 sys.path.append("Vida_Data")
 import geometry_utils
+import list_utils
 import yaml
 
 ###experimental terrain import
@@ -193,14 +194,30 @@ class genericPlant(object):
         self.prevHeightGrowthRate=self.heightStem
         while len(self.heightGrowthRate)>self.numYearsGrowthMemory:
             self.heightGrowthRate.pop(0)
-        self.avgHeightGrowthRate=sum(self.heightGrowthRate)/float(len(self.heightGrowthRate))
+        self.avgHeightGrowthRate=list_utils.sum_in_order(self.heightGrowthRate)/float(len(self.heightGrowthRate))
         if self.avgHeightGrowthRate>self.maxAvgHeightGrowthRate:
             self.maxAvgHeightGrowthRate=self.avgHeightGrowthRate
         self.age=self.age+1
     
     
+    def copyForNewSeed(self):
+        ###Copy this plant, to become one of its seeds (zeroSeedValues then
+        ###turns the copy into a seed).
+        ###This used to be copy.deepcopy(self), but that also copied everything
+        ###the plant refers to: its mother (and her mother, and so on), the seeds
+        ###on it and the plants shading it, each with their own families. That
+        ###took about half of Vida's running time, and zeroSeedValues resets all
+        ###of those anyway. So they are left out here, and everything else (the
+        ###species settings, including lists such as the colours) is copied
+        ###just as deepcopy did, so the seed has its own copies.
+        theSeed=copy.copy(self)
+        for key in vars(self):
+            if key not in ["motherPlant", "seedList", "overlapList", "subregion"]:
+                setattr(theSeed, key, copy.deepcopy(getattr(self, key)))
+        return theSeed
+
     def makeSeed(self, theSeed, theGarden):
-        theSeed=copy.deepcopy(self)
+        theSeed=self.copyForNewSeed()
         theSeed.zeroSeedValues()
         theNameList= theSeed.name.split()
         #if len(theNameList)<2:
@@ -297,8 +314,9 @@ class genericPlant(object):
         ###this dispersal method needs to be better
         if motherPlant.seedDispersalMethod[0]==0:
             ###This is just random anywhere in world###
-            newX =random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
-            newY =random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
+            #randrange needs whole numbers (the same as placeSeed in vworldr.py)
+            newX =random.randrange(-int(theGarden.theWorldSize/2),int(theGarden.theWorldSize/2))+random.random()
+            newY =random.randrange(-int(theGarden.theWorldSize/2),int(theGarden.theWorldSize/2))+random.random()
         elif motherPlant.seedDispersalMethod[0]==1:
             ###just drop the seed straight down###
             newX=theSeed.x
@@ -395,24 +413,28 @@ class genericPlant(object):
         else:
             theElevation = 0.0
         newZ = theElevation
-        theMin = 0.0
-        theMax = theDistance
-        while newZ>theSeed.z + motherPlant.elevation:
-            theTestDist = (theMin+theMax)/2.0
-            #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
-            #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
-            newX = (math.cos(theAngle)*theTestDist)
-            if theRun<0.0: newX=(0.0-newX)
-            newY = (math.sin(theAngle)*theTestDist)
-            newX=newX+theSeed.x
-            newY=newY+theSeed.y
-            coordAdjust = theGarden.theWorldSize/2.0
-            ##get elevation from pixel value
-            thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
-            newZ = theElevation
-            theMax = theTestDist
-            if round(theMax,3) == round(theMin,3): break
+        #The search moves the landing point back towards the plant, along the
+        #direction the seed was thrown. Only methods 3 and 4 throw seeds in a
+        #direction (theAngle and theDistance), so it is only done for them.
+        if motherPlant.seedDispersalMethod[0]==3 or motherPlant.seedDispersalMethod[0]==4:
+            theMin = 0.0
+            theMax = theDistance
+            while newZ>theSeed.z + motherPlant.elevation:
+                theTestDist = (theMin+theMax)/2.0
+                #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
+                #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
+                newX = (math.cos(theAngle)*theTestDist)
+                if theRun<0.0: newX=(0.0-newX)
+                newY = (math.sin(theAngle)*theTestDist)
+                newX=newX+theSeed.x
+                newY=newY+theSeed.y
+                coordAdjust = theGarden.theWorldSize/2.0
+                ##get elevation from pixel value
+                thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+                newZ = theElevation
+                theMax = theTestDist
+                if round(theMax,3) == round(theMin,3): break
 
         #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
         ###Place the seed in xyz space correctly
@@ -616,7 +638,7 @@ class genericPlant(object):
  
     def makeSomeSeeds(self, maxSeedsPerPlant, theGarden):
         #make a seed on yourself if you don't have the max number of seeds
-        theNum=float(sum(self.massFixedRecord))
+        theNum=float(list_utils.sum_in_order(self.massFixedRecord))
         theDenom=float(len(self.massFixedRecord))
         ###this addresses a rare bug where theDenom==0.0
         if theDenom<=0:
