@@ -1,0 +1,38 @@
+description: >
+  Variants of Generic Angiosperm that disperse seeds by throwing them outward
+  (method 3) or ballistically (method 4, the default), plus delayed
+  germination, germination failure, a different place on the canopy for
+  seeds to form, and Janzen-Connell distance-from-mother mortality.
+  Germination can fail in the first cycle too. "Floppy" has a stem so weak it
+  buckles (Euler-Greenhill), and "Selfish" gives only half its spare carbon
+  to seeds unless growth drops. "Late germinator" also has a flat (disc)
+  canopy rather than a hemisphere. "Heavy seeds" takes several cycles to fill
+  each seed, and random death is raised, so plants die carrying partly grown
+  seeds, which drop and may be too immature to germinate. (Methods 0-2 currently crash;
+  see known_crashes.yml.)
+species: [species/generic/Generic Gymnosperm.yml]
+species_variants:
+  Disperse3.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse throw, seedDispersalMethod: [3, 8], fractionFailGerminate: 0.3}
+  Floppy.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Floppy, youngsModulusStem: 0.05}
+  Selfish.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Selfish, fractionCarbonToSeeds: 0.5, fractionSelfishness: 0.9}
+  Heavy.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Heavy seeds, massSeedMax: 0.3}
+  Late.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Late germinator, locSeedFormation: [1.0, 0.5], delayInGermination: 2, leafIsHemisphere: false}
+world_preferences:
+  allowDistanceFromMother: true
+  janzenConnell: 0.5
+  ignoreGermDeathAtStart: false
+  maxSeedsPerPlant: 2
+  randomDeathPlant: 0.04
+stages:
+  - seed: 404
+    args: [-n, dispersal, -w, "30", -s, "30", -t, "30", -m, "220", -a, a, -f, a]

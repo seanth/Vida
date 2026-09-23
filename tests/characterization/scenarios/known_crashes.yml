@@ -1,0 +1,40 @@
+description: >
+  Things that currently crash on Python 3. These recordings pin the crash
+  (the error type and message are part of the recording) so that fixing it
+  is a deliberate, visible change to this test.
+  Stage 1: a "Species" event fails because dict.keys() has no remove() in
+  Python 3.
+  Stage 2: a "Seed" event that reads a placement file refers to the undefined
+  name speciesIsMissing.
+  Stages 3-5: seed dispersal methods 0, 1 and 2 fail when the first seed is
+  dispersed, because the terrain code that runs after dispersal reads
+  theDistance, which only methods 3 and 4 set.
+species: [species/generic/Generic Angiosperm.yml]
+species_variants:
+  Disperse0.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse random, seedDispersalMethod: [0]}
+  Disperse1.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse drop, seedDispersalMethod: [1]}
+  Disperse2.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse circle, seedDispersalMethod: [2, 6]}
+files:
+  species_event.yml: events/species_event.yml
+  seed_file_event.yml: events/seed_file_event.yml
+  placement.csv: placement/mixed.csv
+  placement0.csv: placement/disperse0.csv
+  placement1.csv: placement/disperse1.csv
+  placement2.csv: placement/disperse2.csv
+stages:
+  - seed: 1001
+    args: [-n, species_event, -w, "20", -s, "10", -t, "10", -e, species_event.yml, -a, a, -f, n]
+  - seed: 1002
+    args: [-n, seed_file_event, -w, "20", -s, "10", -t, "10", -e, seed_file_event.yml, -a, a, -f, n]
+  - seed: 1003
+    args: [-n, disperse0, -w, "20", -sf, placement0.csv, -t, "20", -a, a, -f, n]
+  - seed: 1004
+    args: [-n, disperse1, -w, "20", -sf, placement1.csv, -t, "20", -a, a, -f, n]
+  - seed: 1005
+    args: [-n, disperse2, -w, "20", -sf, placement2.csv, -t, "20", -a, a, -f, n]
