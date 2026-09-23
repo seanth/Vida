@@ -216,6 +216,19 @@ def determineShade(theGarden):
 
 
 
+def isInsideRegion(theRegion, x, y):
+    ###is the point x,y inside a region? Regions are squares or circles
+    ###centred on theRegion.x, theRegion.y; size is the side of a square or
+    ###the diameter of a circle.
+    if theRegion.shape=='square':
+        return geometry_utils.pointInsideSquare(theRegion.x, theRegion.y, theRegion.size, x, y)
+    elif theRegion.shape=='circle':
+        #size needs to be radius but region defines diameter
+        return geometry_utils.pointInsideCircle(theRegion.x, theRegion.y, theRegion.size/2.0, x, y)
+    else:
+        raise ValueError("Region '%s' has shape '%s'. It must be 'square' or 'circle'." % (theRegion.name, theRegion.shape))
+
+
 class garden(object):
     def __init__(self):
         super(garden, self).__init__()
@@ -294,12 +307,7 @@ class garden(object):
             for aRegion in theGarden.theRegions:
                 #print aRegion.name
                 #print theSeed.name
-                if aRegion.shape=='square':
-                    inSubregion=geometry_utils.pointInsideSquare(aRegion.x, aRegion.y, aRegion.size, theSeed.x, theSeed.y)
-                elif aRegion.shape=='circle':
-                    #size needs to be radius but region defines diameter
-                    inSubregion=geometry_utils.pointInsideCircle(aRegion.x, aRegion.y, aRegion.size/2.0, theSeed.x, theSeed.y)
-                if inSubregion:
+                if isInsideRegion(aRegion, theSeed.x, theSeed.y):
                     if not aRegion in theSeed.subregion:
                         theSeed.subregion.append(aRegion)        
         return theSeed
