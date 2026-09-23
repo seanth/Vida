@@ -1,0 +1,15 @@
+description: >
+  Graphics output: the ContextFree (.cfdg) files and the 3D .dxf files, kept
+  on disk (-c) so their names and contents are pinned. Stage 1 makes the
+  combined bottom-up + side view and 3D; stage 2 makes every other view
+  except bottom + top + side (-g bts), which currently crashes (stage 3):
+  initCFDGText fills the side view template, which needs six numbers, with
+  only four. The external cfdg and ffmpeg programs are not run.
+species: [species/generic]
+stages:
+  - seed: 808
+    args: [-n, graphics, -w, "20", -s, "12", -t, "6", -g, bs, 3d, -c, -a, a, -f, n]
+  - seed: 809
+    args: [-n, views, -w, "20", -s, "12", -t, "3", -g, b, t, s, bt, tb, ts, st, sb, -c, -a, a, -f, n]
+  - seed: 810
+    args: [-n, bts, -w, "20", -s, "12", -t, "3", -g, bts, -c, -a, a, -f, n]
