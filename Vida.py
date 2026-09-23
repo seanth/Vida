@@ -36,6 +36,7 @@ import vplantr as defaultSpecies
 import vgraphics as outputGraphics
 import list_utils as list_utils
 import vevents
+import vjson
 import vplacement
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
@@ -652,6 +653,10 @@ def main():
                     CFDGtextDict[aView]=outputGraphics.initCFDGText(theGarden, aView, percentTimeStamp, 50.0)
         #######
 
+        ###-j: save each cycle for the web viewer (viewer/index.html)
+        if exportJSON==True:
+            viewerFile=vjson.ViewerFile(outputDirectory+"viewer.jsonl", theGarden, vidaVersion)
+
         cycleNumber=0
         print("\n***Running simulation.***")
         if not showProgressBar:
@@ -810,10 +815,15 @@ def main():
                 saveDataPoint(dataDirectory, fileName, theGarden)
 
             #print theGarden.deathNote
+            if exportJSON==True:
+                viewerFile.writeCycle(theGarden)
+
             theGarden.deathNote=[]        
             
             cycleNumber= cycleNumber+1
 
+        if exportJSON==True:
+            viewerFile.close()
         if archive=="e":
             fileName=simulationName+'-'+str(cycleNumber)+'.pickle'
             saveSimulationPoint(saveDirectory, fileName, theGarden)
@@ -890,6 +900,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')
+    parser.add_argument('-j', dest='exportJSON', action='store_true', required=False, help='Save each cycle for the web viewer (viewer/index.html)')
     parser.add_argument('-rngstart', type=int, metavar='int', dest='rngStart', required=False, help='Starting value for the random number generator: two runs with the same value and settings give exactly the same results')    
     #more python2 to python3 fixes
     #STH 2026-0911

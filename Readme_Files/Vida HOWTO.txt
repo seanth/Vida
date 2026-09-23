@@ -144,6 +144,7 @@ OPTION SUMMARY
 		-f <a|s|e|n>		save data files: all cycles, start only, end only, or none
 		-r <file>			resume a saved simulation
 		-rl <file>			resume a saved simulation, but reload "Vida World Preferences.yml" first
+		-j					save every cycle to viewer.jsonl, which can be opened in the web viewer (viewer/index.html)
 
 	Events
 		-e <file>		load an event file that scripts changes during the run
