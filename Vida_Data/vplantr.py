@@ -200,8 +200,24 @@ class genericPlant(object):
         self.age=self.age+1
     
     
+    def copyForNewSeed(self):
+        ###Copy this plant, to become one of its seeds (zeroSeedValues then
+        ###turns the copy into a seed).
+        ###This used to be copy.deepcopy(self), but that also copied everything
+        ###the plant refers to: its mother (and her mother, and so on), the seeds
+        ###on it and the plants shading it, each with their own families. That
+        ###took about half of Vida's running time, and zeroSeedValues resets all
+        ###of those anyway. So they are left out here, and everything else (the
+        ###species settings, including lists such as the colours) is copied
+        ###just as deepcopy did, so the seed has its own copies.
+        theSeed=copy.copy(self)
+        for key in vars(self):
+            if key not in ["motherPlant", "seedList", "overlapList", "subregion"]:
+                setattr(theSeed, key, copy.deepcopy(getattr(self, key)))
+        return theSeed
+
     def makeSeed(self, theSeed, theGarden):
-        theSeed=copy.deepcopy(self)
+        theSeed=self.copyForNewSeed()
         theSeed.zeroSeedValues()
         theNameList= theSeed.name.split()
         #if len(theNameList)<2:
