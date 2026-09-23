@@ -60,8 +60,8 @@ def where_everything_is(snapshot):
     return things
 
 
-def test_rngstart_option_repeats_a_run_exactly():
-    recording = harness.read_recording(harness.golden_path("rngstart_option"))
+def test_seed_option_repeats_a_run_exactly():
+    recording = harness.read_recording(harness.golden_path("seed_option"))
     first_run, second_run = snapshots_for_each_stage(recording)
     assert len(first_run) == len(second_run) > 1
     for first, second in zip(first_run, second_run, strict=True):

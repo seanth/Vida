@@ -34,3 +34,17 @@ def remove_duplicates(theList):
     # return checkedList
     #this should work better STH 2021-0305
     return list(set(theList))
+
+
+def sum_in_order(theList):
+    """Add up the numbers in theList, first to last.
+
+    Python 3.12 changed the built-in sum() to add floating point numbers more
+    accurately, which changes the last digits of some results. Adding them
+    one at a time, in order, gives the same answer on every Python version
+    (the same as sum() did before 3.12), so runs can be compared exactly.
+    """
+    total = 0
+    for value in theList:
+        total = total + value
+    return total
