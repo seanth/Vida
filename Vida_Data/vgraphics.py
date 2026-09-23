@@ -1,10 +1,10 @@
 """This file is part of Vida.
---------------------------
-Copyright 2009, Sean T. Hammond
-
-Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-
-You should have received a copy of academic software agreement along with Vida. If not, see <http://iorek.ice-nine.org/seant/Vida/license.txt>.
+    --------------------------
+    Copyright 2022, Sean T. Hammond
+    
+    Vida is experimental in nature and is made available as a research courtesy "AS IS," but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+    
+    You should have received a copy of academic software agreement along with Vida. If not, see <https://github.com/seanth/Vida/blob/master/LICENSE.txt>.
 """
 
 import glob
@@ -546,8 +546,9 @@ def outputMOV(outputDirectory, simulationName, framesPerSec):
 	theArg = "ffmpeg -hide_banner -loglevel panic -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
 	#theArg = "ffmpeg -framerate %i -i %s%s-%%01d.png -c:v libx264 -pix_fmt yuv420p %s%s.mp4"
 	theArg=theArg % (framesPerSec, absolutePath, firstFile, absolutePath, firstFile)
+	#print(theArg)
 	os.system(theArg)
-	print "     mp4 video made"
+	print("     mp4 video made")
 	###Delete png files if requested
 	#if deletePngFiles:
 	#	allTargetFiles =glob.glob(outputDirectory+"*.png")

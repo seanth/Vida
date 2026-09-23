@@ -1,2 +1,7 @@
+Pillow
+dxfwrite
+numpy
+pandas
 PyYAML
 xlrd
+openpyxl

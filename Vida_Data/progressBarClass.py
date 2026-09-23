@@ -19,17 +19,17 @@ class progressbarClass:
         # bar.
         #
         if not progresschar: 
-		self.block=chr(178)
+            self.block=chr(178)
         else:                
-		self.block=progresschar
+            self.block=progresschar
         # Get pointer to sys.stdout so I can use the write/flush
         # methods to display the progress bar.
         self.f=sys.stdout
         # If the final count is zero, don't start the progress gauge
         if not self.finalcount : 
-		return
+            return
         self.f.write('[----------------- % Progress ---------------------]\n')
-	self.f.write('[')
+        self.f.write('[')
         #self.f.write('    10   20   30   40   50   60   70   80   90   100\n')
         #self.f.write('----|----|----|----|----|----|----|----|----|----|\n')
         return
@@ -41,7 +41,7 @@ class progressbarClass:
         if self.finalcount:
             percentcomplete=int(round(100*count/self.finalcount))
             if percentcomplete < 1:
-		percentcomplete=1 
+                percentcomplete=1 
         else:
             percentcomplete=100
         blockcount=int(percentcomplete/2)
@@ -51,7 +51,7 @@ class progressbarClass:
                 self.f.flush()
                 
         if percentcomplete == 100:
-		self.f.write("]\n\n")
+            self.f.write("]\n\n")
         self.blockcount=blockcount
         return
 

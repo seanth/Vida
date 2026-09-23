@@ -1,0 +1,76 @@
+nameSpecies: Q_rubra
+creator: miniVida2yml.py
+comments: Generated from file q rubra new miniVida with graphs.xls on 2019-0219
+
+###Basic
+densityStem: 700.000000 #[1]
+densityLeaf: 923.430000
+densitySeed: 350.000000 #[2]
+canopyTransmittance: 0.02
+fractionMinimumSurvival: 0.2
+heightLeafMax: 0.000296
+heightStemMax: 30.000000 #[3]
+youngsModulusStem: 12.140000 #[4]
+
+###Reproduction
+makeSeeds: TRUE
+fractionSelfishness: 0.5
+reproductionConstant: 0.09974943 #analysis of [5]
+reproductionExponent: 1.09777536 #analysis of [5]
+numYearsGrowthMemory: 2
+massSeedMax: 0.55 #0.6
+locSeedFormation: [1.0, 0.0]
+seedDispersalMethod: [4, 45, 5]
+delayInGermination: 0
+randomSlowGrowth: 0.0
+minimumLightForGermination: 0.0 #unused
+fractionFailGerminate: 0.08 #0.13 used in chestnut project #[6]
+
+###Graphics
+leafIsHemisphere: TRUE
+radiusStemMultiplier: 1
+radiusLeafMultiplier: 1
+radiusSeedMultiplier: 1
+borderImagePercent: 25
+colourSpecies: [135.8,0.6188,1] #[64.8, 0.18, 0.5] 
+colourLeaf: [135.8,0.6188,1] #[116.6, 1.0, 1.0]
+colourStem: [20.0, 0.9 , 0.5]
+colourSeedDispersed: [240.0, 0.343, 0.5]
+colourSeedAttached: [300.0, 0.9, 0.5]
+###testing different canopy shapes in 3d output
+crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+boleHeight: 80 #used only when the 3dCrownShape is not ELIP. % of total plant heght
+
+###Photosynthesis
+photoConstant: 1.5 #1.300000
+photoExponent: -0.448340
+canopyTransmittanceImpactsConversion: FALSE
+
+###Allometry
+fractionCarbonToSeeds: 1.0
+fractMassSeedMaxToGerm: 0.8
+fractionSeedMassToPlant: 0.000045 #seedling will avg 0.000027kg
+fractionCarbonToStem: 0.990000
+speciesConstant1: 0.818820
+speciesExponent1: 0.988134
+speciesConstant2: 0.100000
+speciesExponent2: 0.881900
+speciesConstant3: 0.150000
+speciesExponent3: 0.771900
+speciesConstant20: 0.024842
+speciesExponent20: 0.415746
+speciesConstant6: 0.000000
+speciesConstant7: 48.725101
+speciesExponent7: 0.667835
+speciesConstant8: 8.500000
+
+###waterlogging
+waterTolerance: 1.12 #[7]
+
+#[1] https://www.wood-database.com/red-oak/
+#[2] set the 50% densityStem
+#[3] height
+#[4] https://www.wood-database.com/red-oak/
+#[5] Cannell, 1982
+#[6] 1992. Population dynamics and growth patterns for a cohort of northern red oak (Quercus rubra) seedlings
+#[7] Ülo Niinemets and Fernando Valladares. 2006. Tolerance to shade, drought, and waterlogging of temperate Northern Hemisphere trees and shrubs. Ecological Monographs 76:521–547
