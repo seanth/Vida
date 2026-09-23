@@ -240,6 +240,10 @@ def main(argv: list[str] | None = None) -> int:
             write_recording(recording, golden_path(name))
             print(f"recorded {name}: {len(recording['cycles'])} snapshots")
             continue
+        if not golden_path(name).exists():
+            failed += 1
+            print(f"FAIL {name}: no recording yet (run: harness record {name})")
+            continue
         diffs = compare(read_recording(golden_path(name)), recording, rtol=args.rtol)
         if diffs:
             failed += 1

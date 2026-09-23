@@ -61,8 +61,10 @@ IGNORED_OBJECT_ATTRS = {"timeCreation", "timeGermination", "timePlanted"}
 ATTACHED_SEED_ATTRS = {"name", "motherPlant", "motherPlantName", "x", "y", "z", "r",
                        "massSeed", "radiusSeed", "elevation"}
 
-# Garden attributes that hold other objects; they are recorded separately.
-GARDEN_CONTAINER_ATTRS = {"soil", "deathNote", "platonicSeeds", "theRegions", "terrainImage"}
+# Garden attributes that hold other objects (recorded separately), and the
+# planting counter, which only numbers seeds in order (like timePlanted).
+GARDEN_CONTAINER_ATTRS = {"soil", "deathNote", "platonicSeeds", "theRegions", "terrainImage",
+                          "plantingCount"}
 
 UUID_RE = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 
@@ -156,6 +158,7 @@ class Recorder:
         self.names: dict[str, str] = {}
         self.cycles: list[dict[str, Any]] = []
         self.platonic: dict[str, dict[str, Any]] = {}
+        self.species_by_name: dict[str, Any] = {}
 
     def name(self, raw: Any) -> Any:
         """Replace generated names with ids in order of first appearance.
@@ -186,6 +189,9 @@ class Recorder:
 
     def obj(self, o: Any, attached: bool = False) -> dict[str, Any]:
         out: dict[str, Any] = {}
+        changes = self.species_changes(o)
+        if changes and not attached:
+            out["speciesChanges"] = changes
         for key, v in sorted(vars(o).items()):
             if key in self.species_keys or key in IGNORED_OBJECT_ATTRS:
                 continue
@@ -205,6 +211,22 @@ class Recorder:
                 out[key] = self.value(v)
         return out
 
+    def species_changes(self, o: Any) -> dict[str, Any]:
+        """Species parameters on this object that differ from its species file.
+
+        These are normally the same for every object of a species, so they
+        are recorded once per species. A "Species" event changes them on the
+        objects already in the world, and this shows those changes.
+        """
+        original = self.species_by_name.get(getattr(o, "nameSpecies", None))
+        changes: dict[str, Any] = {}
+        if original is None:
+            return changes
+        for key in sorted(self.species_keys):
+            if hasattr(o, key) and getattr(o, key) != getattr(original, key, None):
+                changes[key] = self.value(getattr(o, key))
+        return changes
+
     def garden(self, g: Any) -> dict[str, Any]:
         out: dict[str, Any] = {}
         for key, v in sorted(vars(g).items()):
@@ -214,6 +236,8 @@ class Recorder:
         return out
 
     def snapshot(self, g: Any) -> None:
+        for seed in getattr(g, "platonicSeeds", {}).values():
+            self.species_by_name.setdefault(seed.nameSpecies, seed)
         for key, seed in getattr(g, "platonicSeeds", {}).items():
             if key not in self.platonic:
                 self.platonic[key] = {k: self.value(v) for k, v in sorted(vars(seed).items())

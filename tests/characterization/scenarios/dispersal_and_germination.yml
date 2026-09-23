@@ -8,8 +8,8 @@ description: >
   to seeds unless growth drops. "Late germinator" also has a flat (disc)
   canopy rather than a hemisphere. "Heavy seeds" takes several cycles to fill
   each seed, and random death is raised, so plants die carrying partly grown
-  seeds, which drop and may be too immature to germinate. (Methods 0-2 currently crash;
-  see known_crashes.yml.)
+  seeds, which drop and may be too immature to germinate. (Methods 0-2 are in
+  dispersal_methods_0_1_2.yml.)
 species: [species/generic/Generic Gymnosperm.yml]
 species_variants:
   Disperse3.yml:

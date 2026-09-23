@@ -110,7 +110,9 @@ these tests; they only notice changes to the code.
 | `terrain_water` | Terrain from a folder with an `.xlsx` elevation table, rising water, water and drought tolerance, submerged seeds, seed dispersal over terrain; then a non-square RGB image with command-line elevation settings. |
 | `graphics_outputs` | The `.cfdg` (bottom + side view) and 3D `.dxf` files. |
 | `repeat_and_resume` | `-x 2` repeats, resuming with `-r`, and resuming with `-rl` (reloads world preferences). |
-| `known_crashes` | Current crashes, pinned so fixing them is a visible change (see below). |
+| `species_event` | "Species" events that change a species' parameters part way through a run. |
+| `seed_event_from_file` | A "Seed" event that adds seeds from a placement file part way through a run. |
+| `dispersal_methods_0_1_2` | Seed dispersal methods 0, 1 and 2, on flat ground and on terrain. |
 
 The scenarios run about 80-93% of the lines in `vplantr.py`, `vworldr.py` and
 `Vida.py`. The main simulation paths *not* reached are immature seeds failing
@@ -144,32 +146,38 @@ recordings are committed. `-m` (population cap) helps.
 
 ## Platforms and Python versions
 
-The recordings were made on Linux with Python 3.11, the version in
-`environment.yml`, and CI checks them there.
+The recordings were made on Linux, and CI checks them there with Python
+3.11, 3.12 and 3.13, which all give exactly the same results.
 
-* **Python 3.12 and 3.13** produce exactly the same simulation, but the
-  statistics files from `vextract.py` differ in the last digit: Python 3.12
-  changed how `sum()` adds up floats. Dispersal method 0 also fails
-  differently (see below).
-* **macOS and Windows** have their own maths libraries, which can round a few
-  functions differently in the last digit. If exact comparison fails there,
-  `VIDA_CHARACTERIZATION_RTOL=1e-9 pytest` compares floats with a tolerance
-  (though a difference that changes a random draw will still show up).
+(Python 3.12 changed the built-in `sum()` to add floats more accurately,
+which changes the last digit of some totals. Vida adds numbers up with
+`list_utils.sum_in_order()` instead, so results do not depend on the
+Python version.)
+
+**macOS and Windows** have their own maths libraries, which can round a few
+functions differently in the last digit. If exact comparison fails there,
+`VIDA_CHARACTERIZATION_RTOL=1e-9 pytest` compares floats with a tolerance
+(though a difference that changes a random draw will still show up).
 
 ## Bugs found while writing these tests
 
-`known_crashes` pins these; each fix should re-record it.
+When they were found, each crash was pinned in a `known_crashes` scenario,
+so that fixing it was a deliberate change to the recordings. They have all
+been fixed since, and each now has a scenario that uses the feature.
 
-1. A `Species` event crashes: `speciesAttrs.remove('name')` is called on
-   `dict.keys()`, which has no `remove()` in Python 3 (Vida.py, Species event).
-2. A `Seed` event with a placement file crashes: `speciesIsMissing==True` is a
-   comparison, not an assignment, and the name is never defined.
-3. Seed dispersal methods 0, 1 and 2 crash with `UnboundLocalError` when the
-   first seed is dispersed: the terrain code after the dispersal methods reads
-   `theDistance`, which only methods 3 and 4 set (`vplantr.py`,
-   `disperseSeed`). Every species in the repository uses method 4.
-4. Dispersal method 0 passes floats to `random.randrange()`; on Python 3.12+
-   that is a `TypeError` (it fails before reaching bug 3).
+1. Fixed: a `Species` event crashed because `speciesAttrs.remove('name')` was
+   called on `dict.keys()`, which has no `remove()` in Python 3.
+2. Fixed: a `Seed` event with a placement file crashed, because
+   `speciesIsMissing==True` was a comparison, not an assignment, and the
+   name was never defined.
+3. Fixed: seed dispersal methods 0, 1 and 2 crashed with `UnboundLocalError`
+   when the first seed was dispersed, because the terrain search after the
+   dispersal methods read `theDistance`, which only methods 3 and 4 set
+   (`vplantr.py`, `disperseSeed`). Every species in the repository uses
+   method 4.
+4. Fixed: dispersal method 0 passed floats to `random.randrange()`. That is
+   a `TypeError` on Python 3.12+, and on 3.11 it was already a `ValueError`
+   for worlds of odd size.
 
 Also noticed, but not crashes: in `disperseSeed`, the terrain binary search
 calls `elevationFromPixel(thePixelValue)` without `theGarden.maxElevation`,

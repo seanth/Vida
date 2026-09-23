@@ -31,6 +31,14 @@ def test_remove_duplicates_keeps_one_of_each():
     assert sorted(list_utils.remove_duplicates([3, 1, 3, 2, 1])) == [1, 2, 3]
 
 
+def test_sum_in_order_adds_first_to_last():
+    # Adding 0.1 + 0.2 first gives 0.30000000000000004, and adding 0.3 to
+    # that gives 0.6000000000000001. Python 3.12's sum() gives 0.6 instead,
+    # which is why Vida uses sum_in_order: the same answer on every version.
+    assert list_utils.sum_in_order([0.1, 0.2, 0.3]) == 0.6000000000000001
+    assert list_utils.sum_in_order([]) == 0
+
+
 def test_hsv_colours_map_to_autocad_colour_numbers():
     # HSV here is [hue in degrees, saturation 0-1, brightness 0-1].
     assert colour_utils.HSV_to_ACI([0.0, 0.0, 0.0]) == 0  # black

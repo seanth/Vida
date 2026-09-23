@@ -1,4 +1,9 @@
-3:
+8:
    - Species:
      - name: Generic Angiosperm
        makeSeeds: FALSE
+       youngsModulusStem: 2.0
+14:
+   - Species:
+     - name: Generic Gymnosperm
+       fractionFailGerminate: 0.9
