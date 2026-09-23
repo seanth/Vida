@@ -34,7 +34,8 @@ import vworldr as worldBasics
 import vplantr as defaultSpecies
 import vgraphics as outputGraphics
 import list_utils as list_utils
-import geometry_utils as geometry_utils
+import vevents
+import vplacement
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
@@ -249,94 +250,6 @@ def makeDirectory(theDirectory):
 #     return thePath
 
         
-def correctType(theItem):
-    returnValue="na"
-    if theItem.isdigit():
-            returnValue=int(theItem)
-    else:
-        try:
-            returnValue=float(theItem)
-        except ValueError:
-            try:
-                returnValue=str(theItem)
-            except ValueError:    
-                returnValue="na"
-    return returnValue
-    
-def checkSeedPlacementList(seedPlacementList):
-    ###################
-    ######STH 2022-1105
-    ###remove trailing "\n"
-    seedPlacementList = [aLine.rstrip() for aLine in seedPlacementList]
-    ###remove blank lines
-    seedPlacementList = [aLine for aLine in seedPlacementList if aLine!=""]
-    ###break the CSV on each line into a list
-    seedPlacementList = [aLine.split(",") for aLine in seedPlacementList]
-    i=0
-    for aLine in seedPlacementList:
-        aLine = [x.strip() for x in aLine] #remove any leading or trailing white spaces
-        theLength=len(aLine)
-        if theLength>4: del aLine[4:theLength] #if it is too long, just chop it
-        aLine = aLine+["0.0"]*(4-theLength) #if too short, make it longer
-        #check item in the list and convert from string to correct type
-        aLine = [correctType(x) for x in aLine]
-        seedPlacementList[i]=aLine
-        i=i+1
-    i=0
-    printErrorMessage=0
-    for aLine in seedPlacementList:
-        if type(aLine[3])==float:
-            aLine[3]=int(aLine[3])
-        if (type(aLine[0])!=str) or (type(aLine[1])!=float) or (type(aLine[2])!=float) or (type(aLine[3])!=int):
-            printErrorMessage=1
-            del seedPlacementList[i]
-        i=i+1
-    if printErrorMessage:
-        print("***Improper seeding file format...")
-        print("     Questionable lines will be ignored.")
-    return seedPlacementList
-            
-
-def correctSList(sList):
-    startPopulationSize=thePrefs.startPopulationSize
-    ###this is probably a list###
-    sList=sList[1:-1]
-    sList=sList.split(",")
-    sList=map(correctType, sList)
-    i=0
-    showSAlert1=0
-    showSAlert2=0
-    showSAlert3=0
-    for x in sList:
-        if i==0 and type(x)==int:
-            #the first item is a number. This is not correct
-            #insert the default species here
-            showSAlert1=1
-            showSAlert2=1
-            sList.insert(0, "_random_")
-        if i+1==len(sList) and type(sList[i])==str:
-            #the last item in the list is a string
-            #put a int after it
-            showSAlert1=1
-            showSAlert3=1
-            sList.insert(i+1, thePrefs.startPopulationSize)
-        elif type(sList[i])==str and type(sList[i+1])==str:
-            #this is probably a two species names next to one another
-            #insert a int between them
-            showSAlert1=1
-            showSAlert3=1
-            sList.insert(i+1, thePrefs.startPopulationSize)
-        elif type(sList[i])==int and type(sList[i-1])==int:
-            showSAlert1=1
-            showSAlert2=1
-            sList.insert(i, "_random_")
-        i=i+1
-    if showSAlert1: print("***Improper seeding [list] format...")
-    if showSAlert2: print("     Inserting random species...")
-    if showSAlert3: print("     Inserting default starting population size...")
-    if showSAlert1: print("        input set to: %s." % (sList))
-    return sList
-    
 def main():
     #why do only these need to be reminded they are global?
     #YUP. Confirmed that old me was smarter 2 October 2020 STH
@@ -353,6 +266,12 @@ def main():
 
     
     print("*********Vida version: %s *********" % (vidaVersion))
+
+    ###Seeding the random number generator makes a run repeatable:
+    ###the same seed and the same settings give exactly the same results.
+    if randomSeed!=None:
+        random.seed(randomSeed)
+        print("     Random seed: %i" % (randomSeed))
 
     CFDGtext=""
     CFDGtextDict={}
@@ -406,7 +325,7 @@ def main():
         elif os.path.isdir(terrainFile) == True:
             print("***Checking directory for tif terrain image...***")
             tmpPath = os.path.join(terrainFile,'*.tif') #assumes file suffix is 'tif'
-            matchFiles = glob.glob(tmpPath)
+            matchFiles = sorted(glob.glob(tmpPath)) #sorted so the same file is used on every computer
             #print matchFiles
             if not matchFiles:
                 #no matching files found
@@ -476,7 +395,7 @@ def main():
                 #ET addition 9-15-2020
                 print("***Checking directory for xlsx terrain data...***")
                 tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
-                matchFiles = glob.glob(tmpPath)
+                matchFiles = sorted(glob.glob(tmpPath)) #sorted so the same file is used on every computer
                 if matchFiles:
                     #9/28/2020 ET-test of default absMax and absMin values from vida.ini                				
                     theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
@@ -539,7 +458,9 @@ def main():
     ####################################
 
     #########Check for multiple species. If none, use default
-    fileList=os.listdir("Species")
+    #sorted, because the order os.listdir gives depends on the computer, and
+    #random species are picked by their place in this list
+    fileList=sorted(os.listdir("Species"))
     ymlList=[]
     pythonList=[]
     useDefaultYml=True
@@ -647,6 +568,11 @@ def main():
         print("     Starting simulation time point will be saved\n")
 
 
+    ###Seed and Region events remember these from one event to the next.
+    ###See seedEvent and regionEvent in vevents.py
+    addPopulationSize=None
+    updatePlants=False
+
     ###I think this is where to start the times to repeat bit
     for x in range(timesToRepeat):
         ###make necessary directories
@@ -724,354 +650,21 @@ def main():
         while (theGarden.numbPlants<=maxPopulation and cycleNumber<=maxCycles) and (theGarden.numbPlants+theGarden.numbSeeds)>0:
             ###################################################################################
             ####Experimental scripting event stuff                                            #
-            if cycleNumber in eventTimes:                                                     # 
-                for aItem in eventData[cycleNumber]:                                          #
-                    for aKey in aItem.keys():                                                #
-                        if aKey=="Garden":                                                    #
-                            if debug==1: print("debug: A garden related event has been triggered.")   #
-                            theDict=aItem[aKey][0]                                            #
-                            gardenAttrs=theDict.keys()                                        #
-                            for theGardenAttr in gardenAttrs:                                 #
-                                setattr(theGarden, theGardenAttr, theDict[theGardenAttr])     #
-                            gardenAttrs=""    
-
+            if cycleNumber in eventTimes:
+                for aItem in eventData[cycleNumber]:
+                    for aKey in aItem.keys():
+                        #aItem[aKey][0] is the dictionary of settings written under the event
+                        if aKey=="Garden":
+                            vevents.gardenEvent(theGarden, aItem[aKey][0], debug)
                         elif aKey=="Killzone" or aKey=="Safezone":
-                            if debug==1: print("debug: generation of a zone event has been triggered.")
-                            theDict=aItem[aKey][0]
-                            #the atrributes in a killzone are: X & Ythe SHAPE(circle or square) is centered on, the SIZE of the shape, and what is the TARGET
-                            #(plants or seeds). You can also define a SPECIES_NAME to target                                          
-                            zoneAttrs=theDict.keys()
-                            zoneX=float(theDict['x'])
-                            zoneY=float(theDict['y'])
-                            zoneSize=float(theDict['size'])
-                            zoneShape=theDict['shape']
-                            zoneTarget=theDict['target']
-                            if 'species_name' in theDict:
-                                zoneSpecies=theDict['species_name']
-                                #student requested addition to accept list of species. 2023-0323
-                                zoneSpecies=zoneSpecies.split(",")
-                                #print(zoneSpecies)
-                            else:
-                                zoneSpecies = 'all'
-                            ###############
-                            #Adding in ability to have chance of what happens in a zone
-                            #STH 2026-0908
-                            #Percent is a percent chance the event will happen to the targeted thing
-                            if 'percent' in theDict:
-                                zonePercent=theDict['percent']
-                                if zonePercent>1.0:
-                                    zonePercent=1.0
-                            else:
-                                zonePercent=1.0
-                            ###########
-                            #Adding in ability to be able to target plants based on an attribute the plant has
-                            #STH 2026-0909 
-                            if "selection" in theDict:
-                                theSelectionDict=theDict['selection'][0]
-                                #make sure the selection array has all three needed elements
-                                if not ("attribute" and "logic" and "value") in theSelectionDict:
-                                    print("\n***WARNING: Selection array needs exactly three elements: attribute, logic, and value")
-                                    print("\n***Ignoring selection criteria")
-                                    zoneSelAttribute = "none"
-                                else:
-                                    zoneSelAttribute = theSelectionDict['attribute']
-                                    zoneSelLogic = theSelectionDict['logic']
-                                    zoneSelValue = theSelectionDict['value']
-                                    #some checks on data type
-                                    # if not isinstance(zoneSelValue, (int, float)):
-                                    #     print("***WARNING: value element must be a number")
-                                    #     print("***Ignoring selection criteria")
-                                    #     zoneSelAttribute = "none"
-                                    if zoneSelLogic not in ['<', '=', '==', '>']:
-                                        print("\n***WARNING: logic element must be <, =, ==, or >")
-                                        print("***Ignoring selection criteria")
-                                        zoneSelAttribute = "none"
-                                    if (zoneSelLogic in ['<', '>']) and (isinstance(zoneSelValue, (str))):
-                                        print("\n***WARNING: can't use '<' or '>' on a value element that is a string")
-                                        print("***Ignoring selection criteria")
-                                        zoneSelAttribute = "none"  
-                            else:
-                                zoneSelAttribute = "none"                              
-
-
-                            if zoneShape not in ['circle','square']:
-                                print("\n***WARNING: improper zone shape defined. Defaulting to square.***")
-                                zoneShape='square'
-                            zoneTarget=theDict['target']
-                            if zoneTarget not in ['all','plants','seeds']:
-                                print("\n***WARNING: improper zone target defined. Defaulting to all.***")
-                                zoneTarget='all'
-
-                            killThese=[]
-                            if zoneShape=='circle':
-                                for theObject in theGarden.soil:
-                                    if theObject.isSeed:
-                                        r=theObject.radiusSeed
-                                    else:
-                                        r=theObject.radiusStem
-                                    theResult=geometry_utils.checkOverlap(theObject.x, theObject.y, r, zoneX, zoneY, zoneSize)
-                                    if theResult>0 and aKey=='Killzone':
-                                        #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
-                                        #student requested addition to accept list of species. 0323-2023
-                                        #NOTE: this section is exact code in non-circle. Can be abstracted out into its own routine probably   
-                                        if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                       
-                                            if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
-                                                #Adding in ability to have chance of what happens in a zone
-                                                #STH 2026-0908
-                                                theChance=random.random()
-                                                if theChance<=zonePercent:
-                                                    #this means the object is a target
-                                                    if zoneSelAttribute != "none":
-                                                        #check whether the provided attribute is present on the object(plant/seed)
-                                                        if not hasattr(theObject, zoneSelAttribute):
-                                                            print("***WARNING: attribute does not exist on targeted species")
-                                                            print("***Ignoring selection criteria")
-                                                            zoneSelAttribute = "none"
-                                                        else:
-                                                            #print(getattr(theObject, zoneSelAttribute))
-                                                            if zoneSelLogic in ['=', '==']:
-                                                                if getattr(theObject, zoneSelAttribute) == zoneSelValue:
-                                                                    #print("equal to")
-                                                                    killThese.append(theObject) 
-                                                            if zoneSelLogic == '<':
-                                                                if getattr(theObject, zoneSelAttribute) < zoneSelValue:
-                                                                    #print("less than")
-                                                                    killThese.append(theObject) 
-                                                            if zoneSelLogic in '>':
-                                                                if getattr(theObject, zoneSelAttribute) > zoneSelValue:
-                                                                    #print("greater than")
-                                                                    killThese.append(theObject) 
-                                                    else:
-                                                        #print("it will die")
-                                                        killThese.append(theObject) 
-                                    elif aKey=='Safezone':
-                                        if theResult==0:
-                                            killThese.append(theObject)
-                                        elif theResult>0:
-                                            if (theObject.isSeed and zoneTarget=='plants') or (not theObject.isSeed and zoneTarget=='seeds'):
-                                                killThese.append(theObject)    
-                                                                                
-                            else:
-                                for theObject in theGarden.soil:
-                                    objectX=theObject.x
-                                    objectY=theObject.y
-                                    theResult=geometry_utils.pointInsideSquare(zoneX, zoneY, zoneSize, objectX, objectY)
-                                    if theResult>0 and aKey=='Killzone':
-                                        #if (zoneSpecies == 'all') or (theObject.nameSpecies == zoneSpecies):
-                                        #student requested addition to accept list of species. 0323-2023
-                                        #NOTE: this section is exact code in circle. Can be abstracted out into its own routine probably 
-                                        if (zoneSpecies == 'all') or (theObject.nameSpecies in zoneSpecies):                                       
-                                            if zoneTarget=='all' or (theObject.isSeed and zoneTarget=='seeds') or (not theObject.isSeed and zoneTarget=='plants'):
-                                                #Adding in ability to have chance of what happens in a zone
-                                                #STH 2026-0908
-                                                theChance=random.random()
-                                                if theChance<=zonePercent:
-                                                    #this means the object is a target
-                                                    if zoneSelAttribute != "none":
-                                                        #check whether the provided attribute is present on the object(plant/seed)
-                                                        if not hasattr(theObject, zoneSelAttribute):
-                                                            print("***WARNING: attribute does not exist on targeted species")
-                                                            print("***Ignoring selection criteria")
-                                                            zoneSelAttribute = "none"
-                                                        else:
-                                                            #print(getattr(theObject, zoneSelAttribute))
-                                                            if zoneSelLogic in ['=', '==']:
-                                                                if getattr(theObject, zoneSelAttribute) == zoneSelValue:
-                                                                    #print("equal to")
-                                                                    killThese.append(theObject) 
-                                                            if zoneSelLogic == '<':
-                                                                if getattr(theObject, zoneSelAttribute) < zoneSelValue:
-                                                                    #print("less than")
-                                                                    killThese.append(theObject) 
-                                                            if zoneSelLogic in '>':
-                                                                if getattr(theObject, zoneSelAttribute) > zoneSelValue:
-                                                                    #print("greater than")
-                                                                    killThese.append(theObject) 
-                                                    else:
-                                                        #print("it will die")
-                                                        killThese.append(theObject) 
-                                    elif aKey=='Safezone':
-                                        if theResult==0:
-                                            killThese.append(theObject)
-                                        elif theResult>0:
-                                            if (theObject.isSeed and zoneTarget=='plants') or (not theObject.isSeed and zoneTarget=='seeds'):
-                                                killThese.append(theObject)  
-
-                            for theObject in killThese:
-                                theObject.causeOfDeath="killzone"
-                                theGarden.kill(theObject)
-
+                            vevents.zoneEvent(theGarden, aKey, aItem[aKey][0], debug)
                         elif aKey=="Seed":
-                            if debug==1: print("debug: A seeding related event has been triggered.")   #
-                            theDict=aItem[aKey][0]                                            #
-                            seedingInfo=theDict.keys()                                        #
-                            for infoItem in seedingInfo:
-                                if infoItem=="number" and not seedPlacement=="fromFile": addPopulationSize=theDict[infoItem]
-                                if infoItem=="species_file": 
-                                    sList=theDict[infoItem]
-                                    if sList=="random": sList=[]
-                                if infoItem=="placement": seedPlacement=theDict[infoItem]
-                                if seedPlacement=="hexagon": seedPlacement="hex" #just make sure it is consistant
-                                if os.path.isfile(seedPlacement):
-                                    if debug == 1: print("debug: Confirming placement file exists....")
-                                    theFile=open(seedPlacement)
-                                    try:
-                                        sList=theFile.readlines()
-                                    finally:
-                                        theFile.close()
-                                    sList=checkSeedPlacementList(sList)
-                                    addPopulationSize=len(sList)
-                                    seedPlacement="fromFile"
-                                    if debug ==1: print("debug: Will place seeds from a file")
-                                    ###if a simulation is being reloaded from a pickle, that sim might not have saved
-                                    ###data on a new species being introduced. Load the new species and add it to the platonic list
-                                    ###so it can be added to theGarden
-                                    for j in sList:
-                                        jj=j[0]
-                                        #has_key was depreciated and removed from python 3
-                                        #STH 2026-0908
-                                        # if (sys.version_info.major)==2:
-                                        #     if not theGarden.platonicSeeds.has_key(jj):
-                                        #         speciesIsMissing==True
-                                        # else:
-                                        #     if not jj in theGarden.platonicSeeds:
-                                        #         speciesIsMissing==True
-                                        if not jj in theGarden.platonicSeeds:
-                                            speciesIsMissing==True
-                                        if speciesIsMissing==True:
-                                            if debug == 1: print("debug: Desired species missing from loaded simulation")
-                                            if debug == 1: print("debug: Adding species %s" % (jj))
-                                            theSeed=Species1()
-                                            fileLoc= "Species/"+jj
-                                            theSeed.importPrefs(fileLoc)
-                                            theSeed.name="Platonic %s" % jj
-                                            theGarden.platonicSeeds[jj]=theSeed
-
-                            if not seedPlacement=="fromFile" and not sList==[]:
-                                newList=[]
-                                for j in range(addPopulationSize):
-                                    newList.append(sList)
-                                ###if a simulation is being reloaded from a pickle, that sim might not have saved
-                                ###data on a new species being introduced. Load the new species and add it to the platonic list
-                                ###so it can be added to theGarden
-                                sList=newList
-                                newList=list(set(sList))
-                                for j in newList:
-                                    # if not theGarden.platonicSeeds.has_key(j):
-                                    #has_key was depreciated and removed from python 3
-                                    #STH 2026-0908
-                                    if not j in theGarden.platonicSeeds:
-                                        #print ("adding %s" % (j))
-                                        theSeed=Species1()
-                                        fileLoc= "Species/"+j
-                                        theSeed.importPrefs(fileLoc)
-                                        theSeed.name="Platonic %s" % j
-                                        theGarden.platonicSeeds[j]=theSeed
-
-                            theGarden.placeSeed(seedPlacement, sList, addPopulationSize, useDefaultYml, ymlList)
-                            ################
-                            #if there is a terrain file and water level then the initial placement of seeds 
-                            #should be checked to see if any of them are below water
-                            #STH 0328-2021
-                            if(theGarden.terrainImage != []):
-                                theGarden.checkSubmergedMortality()
-                            ################
-                            sList= [] #reset the sList to what it was when we started
-
+                            seedPlacement, sList, addPopulationSize = vevents.seedEvent(theGarden, aItem[aKey][0],
+                                seedPlacement, sList, addPopulationSize, useDefaultYml, ymlList, Species1, debug)
                         elif aKey=="Region":
-                            if debug: print("debug: Region event detected...")
-                            theDict=aItem[aKey][0] 
-                            regionAttrs=theDict.keys()
-                            theRegionName=str(theDict['name'])
-                            if debug: print("debug: Region %s event detected." % (theRegionName))
-                            regionNames=[]
-                            for i in theGarden.theRegions:
-                                regionNames.append(i.name)
-                            if theRegionName in regionNames:
-                                for j in theGarden.theRegions:
-                                    if j.name==theRegionName:
-                                        theRegion=j
-                                        break
-                                for aAttr in regionAttrs:
-                                    if not getattr(theRegion,aAttr,"does not exist")==theDict[aAttr]:
-                                        if debug: print("debug: Region %s has had a change in one or more attributes." % (theRegionName))
-                                        updatePlants=True
-                                        break
-                                #if (not theRegion.size==theDict["size"]) or (not theRegion.x==theDict["x"]) or (not theRegion.y==theDict["y"]) or (not theRegion.shape==theDict["shape"]):
-                                #    if debug:print "debug: a region has changed shape, size or location"
-                                #    updatePlants=True
-                                ##now just read in the values#
-                                if debug: print("debug: Updating attributes for region %s." % (theRegionName))
-                                for theRegionAttr in regionAttrs:                                 #
-                                    setattr(theRegion, theRegionAttr, theDict[theRegionAttr])     #
-                                if updatePlants:
-                                    if debug:print("debug: updating plants with changed region info")
-                                    for aPlant in theGarden.soil:
-                                        plantX=aPlant.x
-                                        plantY=aPlant.y
-                                        if theRegion.shape=='square':
-                                            inSubregion=geometry_utils.pointInsideSquare(theRegion.x, theRegion.y, theRegion.size, plantX, plantY)
-                                        elif theRegion.shape=='circle':
-                                            #size needs to be radius but region defines diameter
-                                            inSubregion=geometry_utils.pointInsideCircle(theRegion.x, theRegion.y, theRegion.size/2.0, plantX, plantY)
-                                        if inSubregion:
-                                            if not theRegion in aPlant.subregion:
-                                                aPlant.subregion.append(theRegion)
-                                                #print "\nX: %f  Y: %f  In region: %s" % (plantX, plantY, newRegion)
-
-                                #print theRegion.size
-                            else:
-                                newRegion=worldBasics.garden()
-                                newRegion.name=theRegionName
-                                ###these are default values###
-                                newRegion.x=0.0              #
-                                newRegion.y=0.0              #
-                                newRegion.worldSize=1.0      #
-                                newRegion.shape='square'     #
-                                ##############################
-                                ##now just read in the values#
-                                if debug: print("debug: Making attributes for region")
-                                for theRegionAttr in regionAttrs:                                 #
-                                    setattr(newRegion, theRegionAttr, theDict[theRegionAttr])     #
-                                theGarden.theRegions.append(newRegion)
-                                for aPlant in theGarden.soil:
-                                    plantX=aPlant.x
-                                    plantY=aPlant.y
-                                    if newRegion.shape=='square':
-                                        inSubregion=geometry_utils.pointInsideSquare(newRegion.x, newRegion.y, newRegion.size, plantX, plantY)
-                                    elif newRegion.shape=='circle':
-                                        #size needs to be radius but region defines diameter
-                                        inSubregion=geometry_utils.pointInsideCircle(newRegion.x, newRegion.y, newRegion.size/2.0, plantX, plantY)
-                                    if inSubregion:
-                                        if not newRegion in aPlant.subregion:
-                                            aPlant.subregion.append(newRegion)
-                                            #print "\nX: %f  Y: %f  In region: %s" % (plantX, plantY, newRegion)
-                                        
-                                newRegion=""
-                            
+                            updatePlants = vevents.regionEvent(theGarden, aItem[aKey][0], updatePlants, debug)
                         elif aKey=="Species":
-                            if debug: print("debug: Species event detected...")
-                            theDict = aItem[aKey][0]
-                            theSpeciesName = theDict['name']
-                            speciesAttrs = theDict.keys()
-                            #I'm not sure whether the user should be allowed to change the base species name
-                            #Why might this be useful? Species evolution/creation of a new subspecies?
-                            #STH 2019-0930
-                            if 'name' in speciesAttrs:
-                                speciesAttrs.remove('name')
-
-                            #Do we need to go through and modify all the "platonic seeds" in theGarden?
-                            #Might need to revisit this part of the code
-                            #STH 2019-0930
-                            for theObject in theGarden.soil:
-                                if theObject.nameSpecies == theSpeciesName:
-                                    for theSpeciesAttr in speciesAttrs:
-                                        if debug: print("       Attempting to set species '%s' property '%s' to %s" % (theObject.nameSpecies, theSpeciesAttr, theDict[theSpeciesAttr]))
-                                        setattr(theObject, theSpeciesAttr, theDict[theSpeciesAttr])
-
-                            speciesAttrs = ""
-                                    
-                        theDict=[]#just clear this to free up the memory
+                            vevents.speciesEvent(theGarden, aItem[aKey][0], debug)
             ###################################################################################
             theGarden.cycleNumber=cycleNumber
 
@@ -1294,7 +887,8 @@ if __name__ == '__main__':
     parser.add_argument('-dd',dest='debug2',action='store_true', required=False, help='Debug level 2')
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
-    parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')    
+    parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')
+    parser.add_argument('-seed', type=int, metavar='int', dest='randomSeed', required=False, help='Seed for the random numbers, so a run can be repeated exactly')    
     #more python2 to python3 fixes
     #STH 2026-0911
     # parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
@@ -1395,11 +989,7 @@ if __name__ == '__main__':
     if type(startPopulationSize)==list and os.path.isfile(startPopulationSize[0]) == True:
         theExtension=os.path.splitext(startPopulationSize[0])[1]
         if theExtension==".csv":
-            theFile = open(startPopulationSize[0])
-            sList=theFile.readlines()
-            #print(sList)
-            #print(type(sList))
-            sList=checkSeedPlacementList(sList)
+            sList=vplacement.readPlacementFile(startPopulationSize[0])
             startPopulationSize=len(sList)
             seedPlacement="fromFile"
     #print(startPopulationSize)

@@ -1,0 +1,26 @@
+description: >
+  Seed dispersal methods 0 (anywhere in the world), 1 (straight down) and 2
+  (within a circle around the seed), each from two plants placed from a
+  file. Stage 1 is on flat ground; stage 2 is on terrain, where the seeds
+  land at the height of the ground under them. Stage 3 uses a world with an
+  odd size, where half the width is not a whole number.
+species_variants:
+  Disperse0.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse random, seedDispersalMethod: [0]}
+  Disperse1.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse drop, seedDispersalMethod: [1]}
+  Disperse2.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Disperse circle, seedDispersalMethod: [2, 6]}
+files:
+  placement.csv: placement/disperse_0_1_2.csv
+  terrain.tif: terrain/emidalat_rgb_100x96.tif
+stages:
+  - seed: 1401
+    args: [-n, flat, -w, "20", -sf, placement.csv, -t, "20", -m, "150", -a, a, -f, a]
+  - seed: 1402
+    args: [-n, terrain, -w, "20", -sf, placement.csv, -t, "20", -m, "150", -i, terrain.tif, -imax, "30", -imin, "5", -a, a, -f, n]
+  - seed: 1403
+    args: [-n, odd, -w, "21", -sf, placement.csv, -t, "15", -m, "80", -a, a, -f, n]
