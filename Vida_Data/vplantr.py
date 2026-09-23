@@ -431,7 +431,7 @@ class genericPlant(object):
                 coordAdjust = theGarden.theWorldSize/2.0
                 ##get elevation from pixel value
                 thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-                theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
                 newZ = theElevation
                 theMax = theTestDist
                 if round(theMax,3) == round(theMin,3): break

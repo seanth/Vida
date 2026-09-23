@@ -185,6 +185,8 @@ Still open: the combined bottom + top + side view (`-g bts`) crashes with
 `initCFDGText` in `vgraphics.py` fills the side-view template, which needs
 six numbers, with only four. The `graphics_outputs` scenario pins this.
 
-Also noticed, but not crashes: in `disperseSeed`, the terrain binary search
-calls `elevationFromPixel(thePixelValue)` without `theGarden.maxElevation`,
-so it uses the default 50 m while the first lookup uses the real maximum.
+Also found, not a crash: in `disperseSeed`, the search for a seed's landing
+point on terrain called `elevationFromPixel(thePixelValue)` without
+`theGarden.maxElevation`, so it used the default 50 m range while the lookup
+just before it used the terrain's real range. Fixed; this changed the
+`terrain_water` recording.
