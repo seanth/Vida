@@ -1,0 +1,9 @@
+description: >
+  One species planted densely on a hexagonal grid (-sh), so canopies overlap
+  early. Exercises shading by one and by several taller neighbours (the
+  Monte Carlo branch), crushing of overlapping stems and seeds, seed growth
+  on the canopy and ballistic seed dispersal (method 4).
+species: [species/generic/Generic Angiosperm.yml]
+stages:
+  - seed: 202
+    args: [-n, hex, -w, "20", -sh, "30", -t, "25", -m, "150", -a, a, -f, a]

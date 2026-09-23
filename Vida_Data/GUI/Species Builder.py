@@ -49,7 +49,7 @@ class HelloWorld(object):
 
 	@cherrypy.expose
 	def submitData(*args, **kw):
-		theKeys=kw.keys()
+		theKeys=list(kw.keys())
 		theKeys.sort()
 		theOutput=[]
 		for aKey in theKeys:
@@ -72,7 +72,7 @@ class HelloWorld(object):
 		theFile=open(fileLoc, 'w')
 		theFile.writelines(theOutput)
 		theFile.close
-		print "File saved"
+		print("File saved")
 		return "saved"
 	
 		
