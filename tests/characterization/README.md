@@ -113,6 +113,8 @@ these tests; they only notice changes to the code.
 | `species_event` | "Species" events that change a species' parameters part way through a run. |
 | `seed_event_from_file` | A "Seed" event that adds seeds from a placement file part way through a run. |
 | `dispersal_methods_0_1_2` | Seed dispersal methods 0, 1 and 2, on flat ground and on terrain. |
+| `seed_option` | Two runs with the same `-seed` (see `test_seed_option_repeats_a_run_exactly`). |
+| `viewer_export` | The `-j` file for the web viewer, with terrain, water and a region. |
 
 The scenarios run about 80-93% of the lines in `vplantr.py`, `vworldr.py` and
 `Vida.py`. The main simulation paths *not* reached are immature seeds failing

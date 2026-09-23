@@ -62,6 +62,8 @@ OPTIONS SUMMARY
 	-x <integer>		number of times to rereun the simulation
 	-seed <integer>		seed for the random numbers. Two runs with the same seed and
 					settings give exactly the same results
+	-j			save every cycle to viewer.jsonl, which can be opened in the
+					web viewer (viewer/index.html)
 
 Seeding options:
 	Vida accepts a number of ways of placing seeds in a simulation

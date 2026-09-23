@@ -35,6 +35,7 @@ import vplantr as defaultSpecies
 import vgraphics as outputGraphics
 import list_utils as list_utils
 import vevents
+import vjson
 import vplacement
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
@@ -622,6 +623,10 @@ def main():
                     DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden)
         #######
 
+        ###-j: save each cycle for the web viewer (viewer/index.html)
+        if exportJSON==True:
+            viewerFile=vjson.ViewerFile(outputDirectory+"viewer.jsonl", theGarden, vidaVersion)
+
         cycleNumber=0
         print("\n***Running simulation.***")
         if not showProgressBar:
@@ -773,10 +778,15 @@ def main():
                 saveDataPoint(dataDirectory, fileName, theGarden)
 
             #print theGarden.deathNote
+            if exportJSON==True:
+                viewerFile.writeCycle(theGarden)
+
             theGarden.deathNote=[]        
             
             cycleNumber= cycleNumber+1
 
+        if exportJSON==True:
+            viewerFile.close()
         if archive=="e":
             fileName=simulationName+'-'+str(cycleNumber)+'.pickle'
             saveSimulationPoint(saveDirectory, fileName, theGarden)
@@ -853,6 +863,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')
+    parser.add_argument('-j', dest='exportJSON', action='store_true', required=False, help='Save each cycle for the web viewer (viewer/index.html)')
     parser.add_argument('-seed', type=int, metavar='int', dest='randomSeed', required=False, help='Seed for the random numbers, so a run can be repeated exactly')    
     #more python2 to python3 fixes
     #STH 2026-0911
