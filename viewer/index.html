@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vida viewer</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+<header class="top">
+  <h1>Vida viewer</h1>
+  <div class="file-controls">
+    <label class="button" for="file-input">Open viewer.jsonl…</label>
+    <input id="file-input" type="file" accept=".jsonl,.gz,.json,.txt">
+    <button id="sample-button" type="button">Load sample</button>
+    <button id="theme-button" type="button" aria-label="Switch between light and dark">Dark</button>
+  </div>
+</header>
+
+<main>
+  <p id="load-message" class="message" role="status"></p>
+
+  <section id="welcome" class="welcome">
+    <h2>Watch a Vida simulation</h2>
+    <p>Run Vida with <code>-j</code> to save every cycle, for example</p>
+    <pre>python Vida.py -n test -s 100 -t 60 -j</pre>
+    <p>then open <code>Output-test/viewer.jsonl</code> here (or drop it on this page).
+       Files ending in <code>.gz</code> work too. To try it straight away, use <strong>Load sample</strong>.</p>
+  </section>
+
+  <section id="viewer" class="viewer" hidden>
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+      <button id="play-button" type="button" aria-label="Play">Play</button>
+      <input id="cycle-slider" type="range" min="0" max="0" value="0" aria-label="Cycle">
+      <span id="cycle-label" class="cycle-label"></span>
+      <label>Speed
+        <select id="speed-select">
+          <option value="2">2 cycles/s</option>
+          <option value="5" selected>5 cycles/s</option>
+          <option value="10">10 cycles/s</option>
+          <option value="25">25 cycles/s</option>
+        </select>
+      </label>
+      <label>Colour by
+        <select id="colour-select">
+          <option value="species" selected>species</option>
+          <option value="light">light received</option>
+        </select>
+      </label>
+      <label>Highlight
+        <select id="highlight-select">
+          <option value="" selected>all species</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="views">
+      <figure class="card map-card">
+        <figcaption>From above</figcaption>
+        <div class="canvas-box square"><canvas id="map-canvas"></canvas></div>
+        <div class="legend" id="map-legend"></div>
+      </figure>
+      <figure class="card side-card">
+        <figcaption>From the side <span class="note">(every plant, seen from the south)</span></figcaption>
+        <div class="canvas-box"><canvas id="side-canvas"></canvas></div>
+      </figure>
+    </div>
+
+    <div class="charts">
+      <figure class="card">
+        <figcaption>Plants and seeds</figcaption>
+        <div class="canvas-box chart"><canvas id="population-canvas"></canvas></div>
+        <div class="legend" id="population-legend"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>Plants by species</figcaption>
+        <div class="canvas-box chart"><canvas id="species-canvas"></canvas></div>
+        <div class="legend" id="species-legend"></div>
+      </figure>
+    </div>
+
+    <details class="card tables">
+      <summary>Table view of this cycle</summary>
+      <div class="table-row">
+        <table id="species-table"><caption>Species</caption></table>
+        <table id="deaths-table"><caption>Died this cycle</caption></table>
+      </div>
+    </details>
+  </section>
+</main>
+
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+<div id="drop-overlay" class="drop-overlay" hidden>Drop viewer.jsonl here</div>
+
+<script src="viewer.js"></script>
+</body>
+</html>
