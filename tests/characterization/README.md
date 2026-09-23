@@ -108,7 +108,7 @@ these tests; they only notice changes to the code.
 | `events_regions_zones` | Regions (square and circle, created then changed), Garden changes, kill zones (by species, percent and attribute tests), a safe zone, seeding events. |
 | `placement_file` | A placement CSV with odd lines, stems growing into each other (crushing), senescence. |
 | `terrain_water` | Terrain from a folder with an `.xlsx` elevation table, rising water, water and drought tolerance, submerged seeds, seed dispersal over terrain; then a non-square RGB image with command-line elevation settings. |
-| `graphics_outputs` | The `.cfdg` (bottom + side view) and 3D `.dxf` files. |
+| `graphics_outputs` | The `.cfdg` files for every view, and the 3D `.dxf` files. |
 | `repeat_and_resume` | `-x 2` repeats, resuming with `-r`, and resuming with `-rl` (reloads world preferences). |
 | `species_event` | "Species" events that change a species' parameters part way through a run. |
 | `seed_event_from_file` | A "Seed" event that adds seeds from a placement file part way through a run. |
@@ -118,7 +118,6 @@ The scenarios run about 80-93% of the lines in `vplantr.py`, `vworldr.py` and
 `Vida.py`. The main simulation paths *not* reached are immature seeds failing
 to germinate, deaths from waterlogging or drought, slow-growth death inside a
 region, the unused `dieNow()`, and error branches that would crash anyway.
-Only the bottom + side and 3D views are checked among the graphics.
 
 ### Adding a scenario
 
@@ -178,6 +177,11 @@ been fixed since, and each now has a scenario that uses the feature.
 4. Fixed: dispersal method 0 passed floats to `random.randrange()`. That is
    a `TypeError` on Python 3.12+, and on 3.11 it was already a `ValueError`
    for worlds of odd size.
+
+Still open: the combined bottom + top + side view (`-g bts`) crashes with
+`TypeError: not enough arguments for format string`, because
+`initCFDGText` in `vgraphics.py` fills the side-view template, which needs
+six numbers, with only four. The `graphics_outputs` scenario pins this.
 
 Also noticed, but not crashes: in `disperseSeed`, the terrain binary search
 calls `elevationFromPixel(thePixelValue)` without `theGarden.maxElevation`,
