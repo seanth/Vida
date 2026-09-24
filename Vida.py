@@ -36,6 +36,7 @@ import vgraphics as outputGraphics
 import list_utils as list_utils
 import vevents
 import vjson
+import vsunmap
 import vplacement
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
@@ -748,8 +749,14 @@ def main():
             # ###flip the list so it's ordered tallest to shortest
             # theGarden.soil.reverse()
 
-            ###work out shading
-            worldBasics.determineShade(theGarden)
+            ###work out shading, the way shadingModel (-shade) says:
+            ###"classic" or "sunmap" (see vsunmap.py)
+            if shadingModel=="classic":
+                worldBasics.determineShade(theGarden)
+            elif shadingModel=="sunmap":
+                vsunmap.determineShade(theGarden, sunmapCellSize)
+            else:
+                raise ValueError("shadingModel is '%s'. It must be 'classic' or 'sunmap'." % (shadingModel))
 
             ###Calculate the amount of carbon each plant will have to start the next turn
             if theGarden.showProgressBar:
@@ -865,6 +872,8 @@ if __name__ == '__main__':
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')
     parser.add_argument('-j', dest='exportJSON', action='store_true', required=False, help='Save each cycle for the web viewer (viewer/index.html)')
     parser.add_argument('-seed', type=int, metavar='int', dest='randomSeed', required=False, help='Seed for the random numbers, so a run can be repeated exactly')    
+    parser.add_argument('-shade', type=str, dest='shadingModel', required=False, default='classic', choices=['classic', 'sunmap'], help='How shade is worked out: classic (overlap lists and random photons) or sunmap (a map of the sunlight, tallest plants first)')
+    parser.add_argument('-shadecell', type=float, metavar='float', dest='sunmapCellSize', required=False, default=0.05, help='Size in meters of the squares of the sunlight map (-shade sunmap)')
     #more python2 to python3 fixes
     #STH 2026-0911
     # parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')

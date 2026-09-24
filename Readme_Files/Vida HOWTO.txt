@@ -64,6 +64,10 @@ OPTIONS SUMMARY
 					settings give exactly the same results
 	-j			save every cycle to viewer.jsonl, which can be opened in the
 					web viewer (viewer/index.html)
+	-shade <word>		how shade is worked out: classic (the original way) or
+					sunmap (a map of the sunlight, tallest plants first; see
+					Vida_Data/vsunmap.py)
+	-shadecell <float>	size in meters of the squares of the sunlight map (0.05)
 
 Seeding options:
 	Vida accepts a number of ways of placing seeds in a simulation
