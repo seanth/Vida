@@ -1,0 +1,11 @@
+description: >
+  A "Seed" event that adds seeds from a placement file part way through a run
+  (cycle 3). The file names species that are loaded, "random", and a species
+  file that does not exist; the last two are given random species.
+species: [species/generic]
+files:
+  seed_file_event.yml: events/seed_file_event.yml
+  placement.csv: placement/mixed.csv
+stages:
+  - seed: 1301
+    args: [-n, seed_file_event, -w, "20", -s, "10", -t, "15", -e, seed_file_event.yml, -a, a, -f, a]

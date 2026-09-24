@@ -1,0 +1,18 @@
+description: >
+  Seeds placed from a CSV placement file (-sf). The file mixes named species,
+  "random", a species that does not exist, a blank line, delayed
+  germination, an extra fifth column and a whole-number coordinate (which
+  Vida rejects), so the parsing and error handling are pinned down too. Two pairs of seeds
+  are placed just far enough apart to germinate, so their stems later grow
+  into each other and the lighter plant is crushed. Random death is common,
+  so plants often die while carrying seeds (which drop to the ground), and
+  the slow-growth threshold is high enough that senescence kills plants too.
+species: [species/generic]
+world_preferences:
+  randomDeathPlant: 0.05
+  randomSlowGrowth: 0.9
+files:
+  placement.csv: placement/mixed.csv
+stages:
+  - seed: 606
+    args: [-n, placement, -w, "20", -sf, placement.csv, -t, "18", -a, a, -f, a]
