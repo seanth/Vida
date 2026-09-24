@@ -1,0 +1,23 @@
+description: >
+  A few widely spaced plants of a species whose seeds sometimes take more
+  than one cycle to fill. Kill zones at cycles 25 (the west half) and 27
+  (everything) kill plants while they carry partly grown seeds. A dying plant
+  drops those seeds (but Vida removes items from the seed list while looping
+  over it, so only every other seed is dropped), and the dropped seeds are
+  often too immature to germinate.
+species_variants:
+  Heavy.yml:
+    base: species/generic/Generic Angiosperm.yml
+    set: {nameSpecies: Heavy seeds, massSeedMax: 0.05}
+files:
+  placement.csv: placement/heavy_ring.csv
+events:
+  25:
+    - Killzone:
+        - {x: -7.5, y: 0.0, shape: square, size: 15, target: plants}
+  27:
+    - Killzone:
+        - {x: 0.0, y: 0.0, shape: square, size: 30, target: plants}
+stages:
+  - seed: 1101
+    args: [-n, dropped, -w, "30", -sf, placement.csv, -t, "30", -e, events.yml, -a, a, -f, a]
