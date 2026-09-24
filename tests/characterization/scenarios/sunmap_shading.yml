@@ -1,0 +1,18 @@
+description: >
+  Shade worked out with the sunlight map (-shade sunmap, see vsunmap.py) on
+  flat ground, with a darker region, a world-wide change in light, and a
+  bigger map cell size in the second stage. Plants crowd enough to shade
+  each other in layers.
+species: [species/generic]
+events:
+  0:
+    - Region:
+        - {name: shade, size: 12.0, shape: square, x: -5.0, y: 5.0, lightIntensity: 0.5}
+  8:
+    - Garden:
+        - {lightIntensity: 0.8}
+stages:
+  - seed: 2718
+    args: [-n, sunmap, -w, "30", -s, "80", -t, "16", -m, "400", -e, events.yml, -shade, sunmap, -a, a, -f, a]
+  - seed: 3141
+    args: [-n, sunmap_cells, -w, "20", -s, "50", -t, "10", -m, "300", -shade, sunmap, -shadecell, "0.2", -a, a, -f, n]
