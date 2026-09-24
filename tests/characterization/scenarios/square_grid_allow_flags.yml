@@ -1,0 +1,17 @@
+description: >
+  Two species on a square grid (-ss) with the physical-violation checks
+  switched off (overlaps, stems off the edge of the world and Euler-Greenhill
+  buckling are all allowed) and random and slow-growth death disabled.
+  Exercises the "allowed" branches of each mortality step. The population
+  grows quickly, so the run stops at the -m population cap.
+species: [species/generic]
+world_preferences:
+  allowOverlaps: true
+  allowOffWorld: true
+  allowEulerGreenhillViolations: true
+  allowRandomDeath: false
+  allowSlowGrowthDeath: false
+  maxSeedsPerPlant: 2
+stages:
+  - seed: 303
+    args: [-n, square, -w, "25", -ss, "25", -t, "20", -m, "150", -a, a, -f, a]

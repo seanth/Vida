@@ -16,6 +16,7 @@ import uuid
 ###append the path to basic data files
 sys.path.append("Vida_Data")
 import geometry_utils
+import list_utils
 import yaml
 
 ###experimental terrain import
@@ -24,6 +25,82 @@ import vterrainImport as terrain_utils
 import vworldr as worldBasics
 
 debug=0
+
+###What a new seed doesn't copy from its parent (see copyForNewSeed):
+###zeroSeedValues resets all of these anyway.
+NOT_COPIED_FOR_SEEDS=("motherPlant", "seedList", "overlapList", "subregion")
+
+###Values that can't be changed in place.
+PLAIN_TYPES=(float, int, bool, str, type(None))
+
+def isListOfPlainValues(value):
+    if type(value) is not list:
+        return False
+    for item in value:
+        if type(item) not in PLAIN_TYPES:
+            return False
+    return True
+
+###Species settings, shared by the plants of a species.
+###
+###The settings from Default_species.yml and a species file are the same for
+###every plant and seed of that species. Rather than every one of them
+###carrying its own copy of all ~100 settings, each species gets a class of
+###its own (a subclass of Species1, made by shareSpeciesSettings), and its
+###settings are attributes of that class. plant.photoConstant works just as
+###before: Python looks for an attribute on the plant first and then on its
+###class. A setting changed on one plant (a Species event does this) is kept
+###on that plant and hides the shared one, also just as before.
+###
+###Two species settings are lists that Vida changes inside each plant as it
+###runs (colourLeaf[2] shows how shaded the plant is, and makeSeed may
+###correct locSeedFormation), so every plant keeps its own copy of those.
+###Making a seed then copies only the plant's own ~30 values, and there are
+###far fewer objects for Python's garbage collector to look through.
+PER_PLANT_SETTINGS=("colourLeaf", "locSeedFormation")
+
+###the species classes made so far, so that each is only made once
+SPECIES_CLASSES={}
+
+def speciesClass(baseClass, speciesFile, shared):
+    ###the class for plants of one species: baseClass (Species1) with the
+    ###shared settings as class attributes
+    key=(baseClass, speciesFile, repr(sorted(shared.items())))
+    if key not in SPECIES_CLASSES:
+        className=str(shared.get("nameSpecies", speciesFile)).replace(".yml", "")
+        classAttributes=dict(shared)
+        classAttributes["sharedSpeciesFile"]=speciesFile
+        classAttributes["sharedSpeciesSettings"]=shared
+        SPECIES_CLASSES[key]=type(className, (baseClass,), classAttributes)
+    return SPECIES_CLASSES[key]
+
+def plantOfSpecies(baseClass, speciesFile, shared):
+    ###a new, empty plant of a species class (used when loading a saved one)
+    theClass=speciesClass(baseClass, speciesFile, shared)
+    return theClass.__new__(theClass)
+
+def defaultSettingNames():
+    ###the names of the settings in Vida_Data/Default_species.yml
+    theFile=open("Vida_Data/Default_species.yml")
+    theData=yaml.load(theFile, Loader=yaml.FullLoader)
+    theFile.close()
+    return list(theData)
+
+def shareSpeciesSettings(platonicSeed, speciesFile, settingNames):
+    ###Give back a copy of platonicSeed (a species' template seed) whose class
+    ###is the species' own class, holding the settings named in settingNames
+    ###(those read from the .yml files), apart from PER_PLANT_SETTINGS.
+    ###Everything else stays on the seed itself.
+    shared={}
+    for name in settingNames:
+        if name in platonicSeed.__dict__ and name not in PER_PLANT_SETTINGS:
+            shared[name]=platonicSeed.__dict__[name]
+    theClass=speciesClass(type(platonicSeed), speciesFile, shared)
+    theSeed=theClass.__new__(theClass)
+    for name, value in platonicSeed.__dict__.items():
+        if name not in shared:
+            theSeed.__dict__[name]=value
+    return theSeed
 
 #class genericPlant(object):
 class genericPlant(object):
@@ -105,11 +182,32 @@ class genericPlant(object):
     #self.importPrefs(fileLoc)
     
     def importPrefs(self, fileLoc):
+        ###read settings from a .yml file into this plant; gives back their names
         theFile=open(fileLoc)
         theData=yaml.load(theFile, Loader=yaml.FullLoader)
         theFile.close
         for key in theData:
             setattr(self, key, theData[key])
+        return list(theData)
+
+    def __copy__(self):
+        ###copy.copy(plant): a new plant with the same values (the values
+        ###themselves aren't copied). Written out so it's quick, and so it's
+        ###clear it doesn't copy the species settings a species class shares.
+        theCopy=type(self).__new__(type(self))
+        theCopy.__dict__.update(self.__dict__)
+        return theCopy
+
+    def __reduce_ex__(self, protocol):
+        ###How to save (pickle) a plant, and so also how copy.deepcopy copies it.
+        ###A plant of a species class (see shareSpeciesSettings) is saved as its
+        ###species (which pickle saves just once for all the plants of that
+        ###species) and its own values; the species class is made again when
+        ###it's loaded. Any other plant is saved the usual way.
+        theClass=type(self)
+        if "sharedSpeciesSettings" not in theClass.__dict__:
+            return object.__reduce_ex__(self, protocol)
+        return (plantOfSpecies, (theClass.__bases__[0], theClass.sharedSpeciesFile, theClass.sharedSpeciesSettings), self.__dict__)
     
     def dieNow(self, thePlant, theGarden):
         #die!
@@ -193,14 +291,40 @@ class genericPlant(object):
         self.prevHeightGrowthRate=self.heightStem
         while len(self.heightGrowthRate)>self.numYearsGrowthMemory:
             self.heightGrowthRate.pop(0)
-        self.avgHeightGrowthRate=sum(self.heightGrowthRate)/float(len(self.heightGrowthRate))
+        self.avgHeightGrowthRate=list_utils.sum_in_order(self.heightGrowthRate)/float(len(self.heightGrowthRate))
         if self.avgHeightGrowthRate>self.maxAvgHeightGrowthRate:
             self.maxAvgHeightGrowthRate=self.avgHeightGrowthRate
         self.age=self.age+1
     
     
+    def copyForNewSeed(self):
+        ###Copy this plant, to become one of its seeds (zeroSeedValues then
+        ###turns the copy into a seed).
+        ###This used to be copy.deepcopy(self), but that also copied everything
+        ###the plant refers to: its mother (and her mother, and so on), the seeds
+        ###on it and the plants shading it, each with their own families. That
+        ###took about half of Vida's running time, and zeroSeedValues resets all
+        ###of those anyway. So they are left out here, and everything else (the
+        ###species settings, including lists such as the colours) is copied
+        ###just as deepcopy did, so the seed has its own copies.
+        ###Numbers, strings, True/False and None can't be changed in place, so
+        ###deepcopy gives back the very same value for them: the seed can
+        ###simply share them (copy.copy already did that). A list of such
+        ###values (the colours, the growth records) gets a new list with the
+        ###same values in it, which is also what deepcopy made. Anything else
+        ###still goes through deepcopy.
+        theSeed=copy.copy(self)
+        for key, value in vars(self).items():
+            if type(value) in PLAIN_TYPES or key in NOT_COPIED_FOR_SEEDS:
+                continue
+            if isListOfPlainValues(value):
+                setattr(theSeed, key, list(value))
+            else:
+                setattr(theSeed, key, copy.deepcopy(value))
+        return theSeed
+
     def makeSeed(self, theSeed, theGarden):
-        theSeed=copy.deepcopy(self)
+        theSeed=self.copyForNewSeed()
         theSeed.zeroSeedValues()
         theNameList= theSeed.name.split()
         #if len(theNameList)<2:
@@ -297,8 +421,9 @@ class genericPlant(object):
         ###this dispersal method needs to be better
         if motherPlant.seedDispersalMethod[0]==0:
             ###This is just random anywhere in world###
-            newX =random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
-            newY =random.randrange(-(theGarden.theWorldSize/2),(theGarden.theWorldSize/2))+random.random()
+            #randrange needs whole numbers (the same as placeSeed in vworldr.py)
+            newX =random.randrange(-int(theGarden.theWorldSize/2),int(theGarden.theWorldSize/2))+random.random()
+            newY =random.randrange(-int(theGarden.theWorldSize/2),int(theGarden.theWorldSize/2))+random.random()
         elif motherPlant.seedDispersalMethod[0]==1:
             ###just drop the seed straight down###
             newX=theSeed.x
@@ -395,24 +520,28 @@ class genericPlant(object):
         else:
             theElevation = 0.0
         newZ = theElevation
-        theMin = 0.0
-        theMax = theDistance
-        while newZ>theSeed.z + motherPlant.elevation:
-            theTestDist = (theMin+theMax)/2.0
-            #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
-            #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
-            newX = (math.cos(theAngle)*theTestDist)
-            if theRun<0.0: newX=(0.0-newX)
-            newY = (math.sin(theAngle)*theTestDist)
-            newX=newX+theSeed.x
-            newY=newY+theSeed.y
-            coordAdjust = theGarden.theWorldSize/2.0
-            ##get elevation from pixel value
-            thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
-            newZ = theElevation
-            theMax = theTestDist
-            if round(theMax,3) == round(theMin,3): break
+        #The search moves the landing point back towards the plant, along the
+        #direction the seed was thrown. Only methods 3 and 4 throw seeds in a
+        #direction (theAngle and theDistance), so it is only done for them.
+        if motherPlant.seedDispersalMethod[0]==3 or motherPlant.seedDispersalMethod[0]==4:
+            theMin = 0.0
+            theMax = theDistance
+            while newZ>theSeed.z + motherPlant.elevation:
+                theTestDist = (theMin+theMax)/2.0
+                #theSeed.radiusSeedMultiplier = 20.0            #visual debugging
+                #theSeed.colourSeedDispersed = [0.0, 0.0, 0.0] #visual debugging
+                newX = (math.cos(theAngle)*theTestDist)
+                if theRun<0.0: newX=(0.0-newX)
+                newY = (math.sin(theAngle)*theTestDist)
+                newX=newX+theSeed.x
+                newY=newY+theSeed.y
+                coordAdjust = theGarden.theWorldSize/2.0
+                ##get elevation from pixel value
+                thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+                newZ = theElevation
+                theMax = theTestDist
+                if round(theMax,3) == round(theMin,3): break
 
         #print "********seed %s be being placed at %f, %f" % (theSeed.name, newX, newY)
         ###Place the seed in xyz space correctly
@@ -616,7 +745,7 @@ class genericPlant(object):
  
     def makeSomeSeeds(self, maxSeedsPerPlant, theGarden):
         #make a seed on yourself if you don't have the max number of seeds
-        theNum=float(sum(self.massFixedRecord))
+        theNum=float(list_utils.sum_in_order(self.massFixedRecord))
         theDenom=float(len(self.massFixedRecord))
         ###this addresses a rare bug where theDenom==0.0
         if theDenom<=0:

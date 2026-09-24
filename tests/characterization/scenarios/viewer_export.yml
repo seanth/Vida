@@ -1,0 +1,20 @@
+description: >
+  The -j option, which saves every cycle to viewer.jsonl for the web viewer.
+  Uses terrain, a rising water level and a region, so every part of the
+  file is filled in. The file itself is pinned by its hash.
+species: [species/generic, species/terrain/Acer_rubrum_species14.yml]
+world_preferences:
+  useWaterTol: true
+  useDroughtTol: true
+files:
+  terrain: terrain/catland_with_xlsx
+events:
+  0:
+    - Region:
+        - {name: shade, size: 20.0, shape: circle, x: 5.0, y: 5.0, lightIntensity: 0.6}
+  6:
+    - Garden:
+        - {waterLevel: 2.0}
+stages:
+  - seed: 1701
+    args: [-n, viewer, -w, "40", -s, "40", -t, "12", -m, "150", -i, terrain, -iwater, "1.0", -e, events.yml, -j, -a, a, -f, n]
