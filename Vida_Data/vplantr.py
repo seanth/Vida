@@ -41,6 +41,67 @@ def isListOfPlainValues(value):
             return False
     return True
 
+###Species settings, shared by the plants of a species.
+###
+###The settings from Default_species.yml and a species file are the same for
+###every plant and seed of that species. Rather than every one of them
+###carrying its own copy of all ~100 settings, each species gets a class of
+###its own (a subclass of Species1, made by shareSpeciesSettings), and its
+###settings are attributes of that class. plant.photoConstant works just as
+###before: Python looks for an attribute on the plant first and then on its
+###class. A setting changed on one plant (a Species event does this) is kept
+###on that plant and hides the shared one, also just as before.
+###
+###Two species settings are lists that Vida changes inside each plant as it
+###runs (colourLeaf[2] shows how shaded the plant is, and makeSeed may
+###correct locSeedFormation), so every plant keeps its own copy of those.
+###Making a seed then copies only the plant's own ~30 values, and there are
+###far fewer objects for Python's garbage collector to look through.
+PER_PLANT_SETTINGS=("colourLeaf", "locSeedFormation")
+
+###the species classes made so far, so that each is only made once
+SPECIES_CLASSES={}
+
+def speciesClass(baseClass, speciesFile, shared):
+    ###the class for plants of one species: baseClass (Species1) with the
+    ###shared settings as class attributes
+    key=(baseClass, speciesFile, repr(sorted(shared.items())))
+    if key not in SPECIES_CLASSES:
+        className=str(shared.get("nameSpecies", speciesFile)).replace(".yml", "")
+        classAttributes=dict(shared)
+        classAttributes["sharedSpeciesFile"]=speciesFile
+        classAttributes["sharedSpeciesSettings"]=shared
+        SPECIES_CLASSES[key]=type(className, (baseClass,), classAttributes)
+    return SPECIES_CLASSES[key]
+
+def plantOfSpecies(baseClass, speciesFile, shared):
+    ###a new, empty plant of a species class (used when loading a saved one)
+    theClass=speciesClass(baseClass, speciesFile, shared)
+    return theClass.__new__(theClass)
+
+def defaultSettingNames():
+    ###the names of the settings in Vida_Data/Default_species.yml
+    theFile=open("Vida_Data/Default_species.yml")
+    theData=yaml.load(theFile, Loader=yaml.FullLoader)
+    theFile.close()
+    return list(theData)
+
+def shareSpeciesSettings(platonicSeed, speciesFile, settingNames):
+    ###Give back a copy of platonicSeed (a species' template seed) whose class
+    ###is the species' own class, holding the settings named in settingNames
+    ###(those read from the .yml files), apart from PER_PLANT_SETTINGS.
+    ###Everything else stays on the seed itself.
+    shared={}
+    for name in settingNames:
+        if name in platonicSeed.__dict__ and name not in PER_PLANT_SETTINGS:
+            shared[name]=platonicSeed.__dict__[name]
+    theClass=speciesClass(type(platonicSeed), speciesFile, shared)
+    theSeed=theClass.__new__(theClass)
+    for name, value in platonicSeed.__dict__.items():
+        if name not in shared:
+            theSeed.__dict__[name]=value
+    return theSeed
+
 #class genericPlant(object):
 class genericPlant(object):
     ###define the props on this object
@@ -121,11 +182,32 @@ class genericPlant(object):
     #self.importPrefs(fileLoc)
     
     def importPrefs(self, fileLoc):
+        ###read settings from a .yml file into this plant; gives back their names
         theFile=open(fileLoc)
         theData=yaml.load(theFile, Loader=yaml.FullLoader)
         theFile.close
         for key in theData:
             setattr(self, key, theData[key])
+        return list(theData)
+
+    def __copy__(self):
+        ###copy.copy(plant): a new plant with the same values (the values
+        ###themselves aren't copied). Written out so it's quick, and so it's
+        ###clear it doesn't copy the species settings a species class shares.
+        theCopy=type(self).__new__(type(self))
+        theCopy.__dict__.update(self.__dict__)
+        return theCopy
+
+    def __reduce_ex__(self, protocol):
+        ###How to save (pickle) a plant, and so also how copy.deepcopy copies it.
+        ###A plant of a species class (see shareSpeciesSettings) is saved as its
+        ###species (which pickle saves just once for all the plants of that
+        ###species) and its own values; the species class is made again when
+        ###it's loaded. Any other plant is saved the usual way.
+        theClass=type(self)
+        if "sharedSpeciesSettings" not in theClass.__dict__:
+            return object.__reduce_ex__(self, protocol)
+        return (plantOfSpecies, (theClass.__bases__[0], theClass.sharedSpeciesFile, theClass.sharedSpeciesSettings), self.__dict__)
     
     def dieNow(self, thePlant, theGarden):
         #die!

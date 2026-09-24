@@ -240,8 +240,10 @@ class Recorder:
             self.species_by_name.setdefault(seed.nameSpecies, seed)
         for key, seed in getattr(g, "platonicSeeds", {}).items():
             if key not in self.platonic:
-                self.platonic[key] = {k: self.value(v) for k, v in sorted(vars(seed).items())
-                                      if k in self.species_keys}
+                # getattr, not vars(): a species' settings may be kept on its
+                # class rather than on each seed (see shareSpeciesSettings)
+                self.platonic[key] = {k: self.value(getattr(seed, k)) for k in sorted(self.species_keys)
+                                      if hasattr(seed, k)}
         terrain = getattr(g, "terrainImage", [])
         self.cycles.append(
             {

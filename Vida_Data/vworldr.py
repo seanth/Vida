@@ -293,12 +293,17 @@ class garden(object):
             setattr(self, key, theData[key])
     
     def makePlatonicSeedDict(self, ymlList, Species1):
+        ###(imported here, not at the top: vplantr imports this file)
+        import vplantr
         theGarden=self
         i=0
         for s in ymlList:
             theSeed=Species1()
             fileLoc= "Species/"+ymlList[i]
-            theSeed.importPrefs(fileLoc)
+            settingNames=theSeed.importPrefs(fileLoc)
+            ###the species' settings are kept once, on a class of its own
+            ###(see shareSpeciesSettings in vplantr.py)
+            theSeed=vplantr.shareSpeciesSettings(theSeed, ymlList[i], vplantr.defaultSettingNames()+settingNames)
             #theSeed.name="Platonic %s" % (ymlList[i])
             theGarden.platonicSeeds[ymlList[i]]=theSeed
             i=i+1
