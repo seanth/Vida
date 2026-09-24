@@ -38,6 +38,7 @@ import list_utils as list_utils
 import vevents
 import vjson
 import vplacement
+import vsoil
 
 from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/project/dxfwrite/
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
@@ -511,6 +512,9 @@ def main():
         #simulationFile=open(simulationFile, 'r')
         theGarden=pickle.load(simulationFile)
         #simulationFile.close()
+        if not isinstance(theGarden.soil, vsoil.Soil):
+            ###a simulation saved before the soil kept track of where things are
+            theGarden.soil=vsoil.Soil(theGarden.soil)
         theWorldSize=theGarden.theWorldSize
         print("***Resuming Simulation: %s as %s***" % (theGarden.name, simulationName))
         theGarden.name=simulationName
@@ -875,7 +879,7 @@ def main():
                     time.sleep(1)
         print("\n*****Simulation Complete*****\n\n\n\n\n")
         #clear the values
-        theGarden.soil=[]
+        theGarden.soil=vsoil.Soil()
         theGarden.deathNote=[]
         theGarden.cycleNumber=0
         for aRegion in theGarden.theRegions:
