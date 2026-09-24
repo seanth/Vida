@@ -1,0 +1,8 @@
+description: >
+  The 19 southern pine forest species that were active in the repository (the
+  .yml files directly in Species/) when these tests were written, seeds scattered
+  at random. This is the plain "python Vida.py" run, scaled down.
+species: [species/southern_pine]
+stages:
+  - seed: 101
+    args: [-n, southern_pine, -w, "40", -s, "40", -t, "40", -m, "150", -a, a, -f, a]

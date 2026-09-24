@@ -192,7 +192,7 @@ if __name__ == '__main__':
 
     if theLastChar=="/":
         theOutputFolder=os.path.abspath(fileOrFolder[0])+"/"
-        fileOrFolder=os.listdir(theOutputFolder)
+        fileOrFolder=sorted(os.listdir(theOutputFolder))
         fileOrFolder=[i for i in fileOrFolder if not i.startswith('.')]	
 
     if len(fileOrFolder)>0:
@@ -359,7 +359,7 @@ if __name__ == '__main__':
                             theColumn=[float(theRow) for theRow in theColumn]
                             theColumnMin=min(theColumn)
                             theColumnMax=max(theColumn)
-                            theColumnSum=sum(theColumn)
+                            theColumnSum=list_utils.sum_in_order(theColumn)
                             theColumnAvg=theColumnSum/float(len(theColumn))
                             theOutput[0].extend(["min "+theColumnTitle, "max "+theColumnTitle, "ave "+theColumnTitle])
                             theOutput[1].extend([theColumnMin, theColumnMax, theColumnAvg])
@@ -454,7 +454,7 @@ if __name__ == '__main__':
 
                     for theName in theSpeciesNames:
                         theOutput[0].append(("Total Functional Area of %s") % theName)
-                        theOutput[1].append(sum(theSpeciesDict[theName]))
+                        theOutput[1].append(list_utils.sum_in_order(theSpeciesDict[theName]))
 
 
                     #allSpeciesFunctionalArea = dict(zip(theColumn,theData))
@@ -518,7 +518,7 @@ if __name__ == '__main__':
         concatFileName="merged_"+theSimName
         theOutput=open(theStatsFolder+concatFileName+".csv",'w')
         print("***Merging files....")
-        fileList=glob.glob(theOutputFolder+"*.csv")
+        fileList=sorted(glob.glob(theOutputFolder+"*.csv")) #sorted so the merged file is the same on every computer
         theHeader=""
         for aFile in fileList:
             if theHeader=="":

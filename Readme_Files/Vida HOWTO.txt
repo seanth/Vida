@@ -60,6 +60,10 @@ OPTIONS SUMMARY
 	-a <characters>		save a simulation state
 	-f <characters>		save statistical data
 	-x <integer>		number of times to rereun the simulation
+	-seed <integer>		seed for the random numbers. Two runs with the same seed and
+					settings give exactly the same results
+	-j			save every cycle to viewer.jsonl, which can be opened in the
+					web viewer (viewer/index.html)
 
 Seeding options:
 	Vida accepts a number of ways of placing seeds in a simulation
@@ -171,6 +175,12 @@ BASIC USAGE
 		python Vida.py -n 8example -w 100 -s 10 -t 200 -m 550 -f a -x 3
 
 	As should be obvious, this simulation is essentially the same as example 1 with the exception that data files will be generated for each iteration. In addition to data files, a statistical summary file will be made. This simulation will run a total of 3 times, with the name of the output folder having a numerical suffix appended to it. <have an example screen shot of this>
+
+	The -x repeats run one after another. To use every core of the computer instead, tools/run_many.py runs several simulations at once, each as its own copy of Vida, so each gives exactly the same results as it would on its own:
+
+		python tools/run_many.py -seeds 1-8 -jobs 4 -- -n 9example -w 100 -s 10 -t 200
+
+	This runs example 1 with the random seeds 1 to 8, four at a time, in folders named "Output-9example-seed1" and so on, with what each prints saved in "Output-9example-seed1.log". It can also run a list of different simulations from a file; see python tools/run_many.py -h.
 	
 
 ADVANCED OPTIONS
