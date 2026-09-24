@@ -21,6 +21,7 @@ import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 import progressBarClass
 import spatial_grid
 import vsoil
+import voverlap
 
 ###experimental terrain import
 ###STH & EKT 05 Feb 2020
@@ -148,7 +149,22 @@ def determineShade(theGarden):
     for anObject in theGarden.soil:
         if anObject.r>largestRadius:
             largestRadius=anObject.r
-    grid=spatial_grid.SpatialGrid(theGarden.soil, max(2.0*largestRadius, 1.0))
+    cellSize=max(2.0*largestRadius, 1.0)
+    ###Which objects overlap which plant, worked out for all the plants at
+    ###once with numpy (see voverlap.py); None if it can't be, and then the
+    ###loop below works it out plant by plant with a spatial grid, as before.
+    ###Both give exactly the same answers.
+    plantPlaces=[]
+    reaches=[]
+    place=0
+    for plantOne in theGarden.soil:
+        if plantOne.isSeed==0 or (plantOne.isSeed and plantOne.minimumLightForGermination>0.0):
+            plantPlaces.append(place)
+            reaches.append((plantOne.r+largestRadius)*1.000001+0.000001)
+        place=place+1
+    overlaps=voverlap.findEarlierOverlaps(theGarden.soil, plantPlaces, reaches, cellSize)
+    if overlaps is None:
+        grid=spatial_grid.SpatialGrid(theGarden.soil, cellSize)
     ###populate the overlap list
     theIndex=0
     for plantOne in theGarden.soil:
@@ -168,14 +184,18 @@ def determineShade(theGarden):
             ###where theIndex is the number of plants done so far. The grid gives
             ###just the ones of those near enough to overlap (a little further, to
             ###be safe with rounding), in the same order.
-            reach=(plantOne.r+largestRadius)*1.000001+0.000001
-            for plantTwo in grid.near(plantOne.x, plantOne.y, reach, theIndex):
-                ###is plant two overlapping you?
-                overlapStatus=geometry_utils.checkOverlap(plantOne.x, plantOne.y, plantOne.r, plantTwo.x, plantTwo.y, plantTwo.r)
-                if overlapStatus>0:
-                    if not plantTwo in plantOne.overlapList:
-                        if not plantTwo==plantOne:
-                            plantOne.overlapList.append(plantTwo)
+            if overlaps is not None:
+                for place in overlaps[theIndex]:
+                    plantOne.overlapList.append(theGarden.soil[place])
+            else:
+                reach=(plantOne.r+largestRadius)*1.000001+0.000001
+                for plantTwo in grid.near(plantOne.x, plantOne.y, reach, theIndex):
+                    ###is plant two overlapping you?
+                    overlapStatus=geometry_utils.checkOverlap(plantOne.x, plantOne.y, plantOne.r, plantTwo.x, plantTwo.y, plantTwo.r)
+                    if overlapStatus>0:
+                        if not plantTwo in plantOne.overlapList:
+                            if not plantTwo==plantOne:
+                                plantOne.overlapList.append(plantTwo)
             ###sort the overlap list by height of the plants. Ordered shortest to tallest
             #plantOne.overlapList = list_utils.sort_by_attr(plantOne.overlapList, "heightStem")
             ###use absHeightStem, which is stem heigh + elevetion
