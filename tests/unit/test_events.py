@@ -44,6 +44,15 @@ def test_a_zone_without_a_selection_selects_everything():
     assert vevents.readZoneSelection({})[0] == "none"
 
 
+def test_a_selection_missing_a_part_is_ignored():
+    # Each of attribute, logic and value is needed. Only value used to be
+    # checked, so a selection without attribute or logic crashed.
+    for missing in ["attribute", "logic", "value"]:
+        selection = {"attribute": "heightStem", "logic": ">", "value": 2.0}
+        del selection[missing]
+        assert vevents.readZoneSelection({"selection": [selection]})[0] == "none"
+
+
 def test_a_selection_with_bad_logic_is_ignored():
     zone = {"selection": [{"attribute": "heightStem", "logic": "!=", "value": 2.0}]}
     assert vevents.readZoneSelection(zone)[0] == "none"

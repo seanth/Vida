@@ -187,7 +187,9 @@ def initCFDGText(theGarden, displayType, percentTimeStamp, maxHeightPlant):
 		worldTypeRule=worldTypeRule+CFDGTopWorldRule
 		worldTypeRule=worldTypeRule % (worldX+(worldX*0.3), worldY1+(worldY1*0.3), worldX, worldY1, worldX-1, worldY1-1)
 		worldTypeRule=worldTypeRule+CFDGSideWorldRule
-		worldTypeRule=worldTypeRule % (worldX, worldY2, worldX-1, worldY2-1)
+		###the side view's rule takes six numbers, as in the other side views
+		###(it used to be given four, which crashed)
+		worldTypeRule=worldTypeRule % (worldX+(worldX*0.3), worldY2+(worldY1*0.3), worldX, worldY2, worldX-1, worldY2-1)
 
 	if percentTimeStamp>0.0:
 		timeStampCode= CFDGTimeStamp

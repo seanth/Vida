@@ -125,7 +125,9 @@ def readZoneSelection(theDict):
     if "selection" in theDict:
         theSelectionDict=theDict['selection'][0]
         #make sure the selection array has all three needed elements
-        if not ("attribute" and "logic" and "value") in theSelectionDict:
+        #(each one checked: ("attribute" and "logic" and "value") is just
+        #"value", so only that one used to be checked)
+        if not ("attribute" in theSelectionDict and "logic" in theSelectionDict and "value" in theSelectionDict):
             print("\n***WARNING: Selection array needs exactly three elements: attribute, logic, and value")
             print("\n***Ignoring selection criteria")
             zoneSelAttribute = "none"
