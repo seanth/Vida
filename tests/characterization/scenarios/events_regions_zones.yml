@@ -1,0 +1,65 @@
+description: >
+  An event file that uses every event type that works on Python 3: regions
+  with their own light and gravity (created, then changed), world ("Garden")
+  changes (including a one-cycle spike in random death, so plants die while
+  carrying seeds and drop them), kill zones (circle and square, by species, by percent chance and
+  by attribute tests using < and =), a circular safe zone, and seeding events
+  (named species on a hex grid, random species at random positions).
+species: [species/generic]
+world_preferences:
+  # Fewer seeds per plant keeps the population small enough for every event
+  # to happen before the -m cap stops the run.
+  maxSeedsPerPlant: 1
+events:
+  0:
+    - Region:
+        - {name: north_west, size: 12.0, shape: square, x: -6.0, y: 6.0, lightIntensity: 0.5}
+    - Region:
+        - {name: centre, size: 10.0, shape: circle, x: 0.0, y: 0.0, lightIntensity: 0.8, gravity: 12.0}
+  6:
+    - Garden:
+        - {lightIntensity: 0.9}
+  10:
+    - Killzone:
+        - x: 5.0
+          y: -5.0
+          shape: circle
+          size: 6
+          target: plants
+          percent: 0.5
+          species_name: Generic Angiosperm
+          selection: [{attribute: radiusStem, logic: '<', value: 0.02}]
+  12:
+    - Killzone:
+        - x: -5.0
+          y: -5.0
+          shape: square
+          size: 10
+          target: all
+          selection: [{attribute: isMature, logic: '=', value: true}]
+  14:
+    - Seed:
+        - {species_file: Generic Gymnosperm.yml, placement: hex, number: 16}
+  16:
+    - Region:
+        - {name: north_west, lightIntensity: 0.25}
+    - Region:
+        - {name: centre, lightIntensity: 0.6}
+  18:
+    - Seed:
+        - {species_file: random, placement: random, number: 10}
+  20:
+    - Garden:
+        - {randomDeathPlant: 0.3}
+  21:
+    - Garden:
+        - {randomDeathPlant: 0.0075}
+  22:
+    - Safezone:
+        - {x: 0.0, y: 0.0, shape: circle, size: 9, target: plants}
+  26:
+    - Killzone:
+        - {x: 0.0, y: 0.0, shape: square, size: 6, target: all}
+stages:
+  - seed: 505
+    args: [-n, events, -w, "24", -s, "30", -t, "30", -m, "250", -e, events.yml, -a, a, -f, a]
