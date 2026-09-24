@@ -98,6 +98,35 @@ def determineDroughtTol(theGarden):
                     #print("here")
                     theGarden.kill(obj)
 
+def countPhotonsGettingThrough(x, y, r, numbPhotons, covers):
+    ###Drop numbPhotons photons at random on a plant at (x, y) with radius r,
+    ###and count how many get through the canopies above it. covers is a list
+    ###of (x, y, radius, transmittance) for those canopies, in the order of the
+    ###plant's overlap list.
+    hitCount=0
+    twoPi=math.pi*2
+    for photon in range(numbPhotons):
+        ###pick uniformly distributed point in a circle
+        randr=random.random()*r #random between 0 and the radius
+        randAngle=random.random()*twoPi
+        #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
+        randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
+        photonX = (randr*math.cos(randAngle))+x
+        photonY = (randr*math.sin(randAngle))+y
+        ###The photon stops at the first canopy it lands in (in the order of
+        ###the overlap list), unless it gets through that canopy. Either way it
+        ###isn't checked against the rest. (The distance is worked out as in
+        ###geometry_utils.pointInsideCircle.)
+        blocked=False
+        for coverX, coverY, coverR, coverTransmittance in covers:
+            if math.hypot(coverX-photonX, coverY-photonY)<=coverR:
+                if random.random() > coverTransmittance:
+                    blocked=True
+                break
+        if not blocked:
+            hitCount=hitCount+1
+    return hitCount
+
 def determineShade(theGarden):
     if theGarden.showProgressBar:
         print("***Generating lists of overlapping plants. This could take a while...***")
@@ -190,28 +219,12 @@ def determineShade(theGarden):
                     numbPhotons= numbPhotons*100
                     if numbPhotons>750: #we don't need monster numbers
                         numbPhotons=750
-                    hitCount=0
-                    for photon in range(numbPhotons):
-                        #####consider moving this to geometry_utils
-                        ###pick uniformly distributed point in a circle
-                        randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
-                        twoPi=math.pi*2
-                        randAngle=random.random()*twoPi
-                        #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
-                        randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
-                        photonX = (randr*math.cos(randAngle))+plant.x
-                        photonY = (randr*math.sin(randAngle))+plant.y
-                        ######
-                        for overPlant in plant.overlapList:
-                            if not photonX=="gone":
-                                if geometry_utils.pointInsideCircle(overPlant.x, overPlant.y, overPlant.r, photonX, photonY):
-                                    randomValue=random.random()
-                                    if randomValue > overPlant.canopyTransmittance:
-                                        ###these points are where the overlap is
-                                        photonX="gone"
-                                    break
-                        if not photonX=="gone":
-                            hitCount=hitCount+1
+                    ###The canopies above, as (x, y, radius, transmittance), looked
+                    ###up once here rather than for every photon.
+                    covers=[]
+                    for overPlant in plant.overlapList:
+                        covers.append((overPlant.x, overPlant.y, overPlant.r, overPlant.canopyTransmittance))
+                    hitCount=countPhotonsGettingThrough(plant.x, plant.y, plant.r, numbPhotons, covers)
                     if numbPhotons ==0:
                         fractionExposed=0.0
                     else:
@@ -333,7 +346,16 @@ class garden(object):
     
     def kill(self, theObject):
         theGarden=self
-        if theObject in self.soil:
+        ###Find where theObject is in the soil just once: the soil is a long
+        ###list, and this used to look through it twice (to see whether
+        ###theObject was there, and again to remove it). Planting the dropped
+        ###seeds below only adds to the end of the soil, so the place stays
+        ###right.
+        try:
+            place=self.soil.index(theObject)
+        except ValueError:
+            place=None
+        if place is not None:
             #die!
             if len(theObject.seedList)>0:
                 for theSeed in theObject.seedList:
@@ -349,7 +371,7 @@ class garden(object):
             else:
                 self.numbPlants=self.numbPlants-1
             self.deathNote.append(theObject)
-            self.soil.remove(theObject)
+            del self.soil[place]
     
     def calcEulerGreenhill(self, plant):
         theGarden=self

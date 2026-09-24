@@ -26,6 +26,21 @@ import vworldr as worldBasics
 
 debug=0
 
+###What a new seed doesn't copy from its parent (see copyForNewSeed):
+###zeroSeedValues resets all of these anyway.
+NOT_COPIED_FOR_SEEDS=("motherPlant", "seedList", "overlapList", "subregion")
+
+###Values that can't be changed in place.
+PLAIN_TYPES=(float, int, bool, str, type(None))
+
+def isListOfPlainValues(value):
+    if type(value) is not list:
+        return False
+    for item in value:
+        if type(item) not in PLAIN_TYPES:
+            return False
+    return True
+
 #class genericPlant(object):
 class genericPlant(object):
     ###define the props on this object
@@ -210,10 +225,20 @@ class genericPlant(object):
         ###of those anyway. So they are left out here, and everything else (the
         ###species settings, including lists such as the colours) is copied
         ###just as deepcopy did, so the seed has its own copies.
+        ###Numbers, strings, True/False and None can't be changed in place, so
+        ###deepcopy gives back the very same value for them: the seed can
+        ###simply share them (copy.copy already did that). A list of such
+        ###values (the colours, the growth records) gets a new list with the
+        ###same values in it, which is also what deepcopy made. Anything else
+        ###still goes through deepcopy.
         theSeed=copy.copy(self)
-        for key in vars(self):
-            if key not in ["motherPlant", "seedList", "overlapList", "subregion"]:
-                setattr(theSeed, key, copy.deepcopy(getattr(self, key)))
+        for key, value in vars(self).items():
+            if type(value) in PLAIN_TYPES or key in NOT_COPIED_FOR_SEEDS:
+                continue
+            if isListOfPlainValues(value):
+                setattr(theSeed, key, list(value))
+            else:
+                setattr(theSeed, key, copy.deepcopy(value))
         return theSeed
 
     def makeSeed(self, theSeed, theGarden):
