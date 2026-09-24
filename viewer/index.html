@@ -33,6 +33,12 @@
     <div class="stats" id="stats"></div>
 
     <div class="controls">
+      <label>View
+        <select id="view-select">
+          <option value="plan" selected>map and side view</option>
+          <option value="scene">natural scene (3D)</option>
+        </select>
+      </label>
       <button id="play-button" type="button" aria-label="Play">Play</button>
       <input id="cycle-slider" type="range" min="0" max="0" value="0" aria-label="Cycle">
       <span id="cycle-label" class="cycle-label"></span>
@@ -56,6 +62,34 @@
         </select>
       </label>
     </div>
+
+    <figure class="card scene-card" id="scene-card" hidden>
+      <figcaption>Natural scene <span class="note">(drag to turn, scroll or pinch to zoom, right-drag or two fingers to move, double-click to start again)</span></figcaption>
+      <div class="scene-controls">
+        <label>Sun
+          <input id="sun-slider" type="range" min="5.75" max="18.75" step="0.25" value="10.5" aria-label="Time of day">
+          <span id="sun-label" class="sun-label">10:30</span>
+        </label>
+        <label><input id="sun-overhead" type="checkbox"> overhead, as Vida's light is</label>
+        <label>Quality
+          <select id="quality-select">
+            <option value="high">high</option>
+            <option value="medium">medium</option>
+            <option value="low">low</option>
+          </select>
+        </label>
+        <label>Crowns
+          <select id="crown-select">
+            <option value="genus">shaped by genus</option>
+            <option value="vida">as Vida draws them</option>
+          </select>
+        </label>
+        <label><input id="motion-check" type="checkbox" checked> wind and water</label>
+        <button id="tour-button" type="button" aria-pressed="false">Tour</button>
+      </div>
+      <div class="canvas-box scene-box" id="scene-box"></div>
+      <p class="note scene-note" id="scene-note">Drawn to scale from the simulation: where each plant stands, its stem, the height and width of its crown, the ground and the water. Leaves are darker where a plant got less light, and the ground is darker and the grass thinner where the canopies shade it (straight down, as in Vida). Everything else is decoration: the outline of each crown shaped by its genus (or choose Crowns: as Vida draws them), leaves, bark, grass and flowers, sky, clouds, water, birds, the woods and mountains far off, and the time of day.</p>
+    </figure>
 
     <div class="views">
       <figure class="card map-card">

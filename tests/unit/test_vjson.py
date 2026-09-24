@@ -23,6 +23,9 @@ class Thing:
         self.colourStem = [20.0, 0.9, 0.5]
         self.canopyTransmittance = 0.02
         self.causeOfDeath = "lack of light"
+        if species == "Oak":
+            self.crownShape = "PARA"
+            self.boleHeight = 80
 
 
 class Region:
@@ -67,6 +70,11 @@ def test_viewer_file(tmp_path):
 
     # species are numbered as they first appear, and only described once
     assert [species["name"] for species in first["newSpecies"]] == ["Oak", "Pine"]
+    # the crown shape is passed on; species files without one get a hemisphere
+    assert first["newSpecies"][0]["crownShape"] == "PARA"
+    assert first["newSpecies"][0]["boleHeight"] == 80
+    assert first["newSpecies"][1]["crownShape"] == "ELIP"
+    assert first["newSpecies"][1]["boleHeight"] is None
     assert second["newSpecies"] == []
 
     oak = dict(zip(header["plantFields"], first["plants"][0]))
