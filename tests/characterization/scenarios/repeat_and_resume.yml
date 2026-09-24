@@ -1,0 +1,15 @@
+description: >
+  Stage 1 runs the same simulation twice in one invocation (-x 2); the
+  second run reuses the same world object, which carries some state over.
+  Stage 2 resumes from a saved state (-r) written by stage 1 and runs on.
+  Stage 3 resumes from an earlier saved state with -rl, which also reloads
+  the world preferences file (here with a different random death rate).
+species: [species/generic]
+stages:
+  - seed: 909
+    args: [-n, repeat, -w, "20", -s, "15", -t, "8", -x, "2", -a, a, -f, n]
+  - seed: 910
+    args: [-n, resumed, -r, Output-repeat1/Save_points/repeat-8.pickle, -t, "6", -a, a, -f, e]
+  - seed: 911
+    args: [-n, reloaded, -rl, Output-repeat/Save_points/repeat-5.pickle, -t, "6", -a, a, -f, n]
+    world_preferences: {randomDeathPlant: 0.2}

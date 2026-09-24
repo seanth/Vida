@@ -1,0 +1,11 @@
+description: >
+  "Species" events change a species' parameters part way through a run. At
+  cycle 8 Generic Angiosperm stops making seeds and gets weaker wood; at
+  cycle 14 Generic Gymnosperm seeds start failing to germinate. The change
+  applies to the plants and seeds of that species already in the world.
+species: [species/generic]
+files:
+  species_event.yml: events/species_event.yml
+stages:
+  - seed: 1201
+    args: [-n, species_event, -w, "20", -s, "20", -t, "20", -m, "150", -e, species_event.yml, -a, a, -f, a]

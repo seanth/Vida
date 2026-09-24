@@ -1,0 +1,29 @@
+description: >
+  Terrain from a greyscale image. Stage 1 loads a folder holding a .tif and
+  the .xlsx elevation table (so the scaling comes from the table), sets a
+  water level, turns on water and drought tolerance, and raises the water
+  with events. Stage 2 loads a single .tif with the elevation range and
+  scale given on the command line. That image is RGB and not square, so it is
+  converted and cropped; its higher ground is dry enough for drought
+  tolerance to limit growth. Generic Angiosperm is included because it
+  matures early, so seeds are made and dispersed over the terrain.
+species: [species/terrain, species/generic/Generic Angiosperm.yml]
+world_preferences:
+  useWaterTol: true
+  useDroughtTol: true
+  allowSubmerged: false
+files:
+  terrain: terrain/catland_with_xlsx
+  single.tif: terrain/emidalat_rgb_100x96.tif
+events:
+  8:
+    - Garden:
+        - {waterLevel: 2.0}
+  16:
+    - Garden:
+        - {waterLevel: 4.0}
+stages:
+  - seed: 707
+    args: [-n, terrain, -w, "50", -s, "40", -t, "25", -i, terrain, -iwater, "1.0", -e, events.yml, -a, a, -f, a]
+  - seed: 708
+    args: [-n, single_tif, -w, "40", -s, "40", -t, "25", -m, "100", -i, single.tif, -imax, "30", -imin, "5", -iscale, "0.5", -iwater, "2.0", -a, a, -f, n]
