@@ -21,10 +21,15 @@ def getPixelValue(x,y,theImage):
     theX = x
     theY = y
 
+    #situations where objects with negative coordinates get looped around
     theX = int(round(theX,0))
+    if theX<0: theX=0
     if theX>=theImage[1][0]:theX=theImage[1][0]-1
+
     theY = int(round(theY,0))
+    if theY<0: theY=0
     if theY>=theImage[1][1]:theY=theImage[1][1]-1
+
 
     #convert the stored image data into something usable
     #format of theImage is [mode, size tuple, image as bytes] STH 0212-2020
