@@ -60,8 +60,9 @@ OPTIONS SUMMARY
 	-a <characters>		save a simulation state
 	-f <characters>		save statistical data
 	-x <integer>		number of times to rereun the simulation
-	-runid <integer>	run id. Two runs with the same run id and the same settings
-					give exactly the same results
+	-rngstart <integer>	starting value for the random number generator. Two runs
+					with the same value and the same settings give exactly the
+					same results
 
 Seeding options:
 	Vida accepts a number of ways of placing seeds in a simulation

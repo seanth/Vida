@@ -67,7 +67,7 @@ a few things from the outside before starting `Vida.py`:
 
 | Patched | Why |
 |---|---|
-| `random` starts from each stage's `runid` | Vida is stochastic. |
+| `random` starts from each stage's `rngstart` | Vida is stochastic. |
 | `time.time()` returns 1, 2, 3, ... | Vida records when each seed was planted and uses it to break ties between overlapping objects of equal mass. |
 | `uuid.uuid4()` returns a counter | Object names are uuids. |
 | `os.listdir()` and `glob.glob()` are sorted | Directory order depends on the file system, and Vida picks "random" species by their position in the list of files in `Species/`. |
@@ -136,7 +136,7 @@ world_preferences: {allowOverlaps: true}   # changes to Vida World Preferences.y
 files: {placement.csv: placement/mixed.csv} # copied from inputs/ into the run folder
 events: {10: [{Garden: [{lightIntensity: 0.5}]}]}   # written to events.yml
 stages:                      # one or more runs of Vida.py, in the same folder
-  - runid: 1
+  - rngstart: 1
     args: [-n, name, -w, "20", -s, "10", -t, "10", -a, a, -f, a]
 ```
 

@@ -4,5 +4,5 @@ description: >
   contents are pinned. The external cfdg and ffmpeg programs are not run.
 species: [species/generic]
 stages:
-  - runid: 808
+  - rngstart: 808
     args: [-n, graphics, -w, "20", -s, "12", -t, "6", -g, bs, 3d, -c, -a, a, -f, n]
