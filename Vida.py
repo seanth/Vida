@@ -23,6 +23,7 @@ import io
 # else:
 import configparser as ConfigParser
 import pathlib
+import operator
 
 
 import copy
@@ -1213,10 +1214,12 @@ def main():
 
 
             ########This routine is done in worldBasics.determineShade
-            # ###sort the garden.soil by height of the plants.Ordered shortest to tallest
-            # theGarden.soil= list_utils.sort_by_attr(theGarden.soil, "heightStem")
-            # ###flip the list so it's ordered tallest to shortest
-            # theGarden.soil.reverse()
+            ###sort the garden.soil by absolute height (stem height + elevation) so that
+            ###determineShade(), which only lets a plant be shaded by plants earlier in
+            ###the soil, can't have short plants shading tall ones
+            theGarden.soil.sort(key=operator.attrgetter("absHeightStem"))
+            ###flip the list so it's ordered tallest to shortest
+            theGarden.soil.reverse()
 
             ###work out shading
             worldBasics.determineShade(theGarden)
