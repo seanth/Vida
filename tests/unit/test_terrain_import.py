@@ -40,8 +40,10 @@ def test_pixel_lookup_beyond_the_far_edge_uses_the_last_pixel():
 def test_pixel_lookup_with_negative_coordinates_wraps_around():
     # Negative coordinates count back from the far edge, like negative list
     # indexes in Python (this is Pillow's behaviour), so -1 is the last column.
-    assert vterrainImport.getPixelValue(-1, 0, IMAGE) == 3
+    assert vterrainImport.getPixelValue(-1, 0, IMAGE) == 0
     assert vterrainImport.getPixelValue(-4, 0, IMAGE) == 0
+    assert vterrainImport.getPixelValue(-1, -1, IMAGE) == 0
+    assert vterrainImport.getPixelValue(2, -5, IMAGE) == 2
 
 
 def test_elevation_is_proportional_to_the_pixel_value():
