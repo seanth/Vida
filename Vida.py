@@ -461,7 +461,19 @@ def main():
                 print("      Size is: %s x %s" % (tmp.size[0], tmp.size[1]))
                 print("      Resizing image to %ix%i..." % (theWorldSize, theWorldSize))
             tmp=tmp.resize((theWorldSize,theWorldSize))
-            
+
+            #find the darkest and brightest pixels in the resized image. These
+            #become imin and imax. Use the same channel that elevationFromPixel()
+            #uses (the first one) for colour images
+            #STH 2026-0923
+            if tmp.mode in ("RGB", "RGBA"):
+                theBand = tmp.getchannel(0)
+            else:
+                theBand = tmp
+            theGarden.terrainPixelRange = theBand.getextrema()
+            print("      Terrain image mode: %s" % (tmp.mode))
+            print("      Terrain pixel range: %s - %s (mapped to elevation 0 - (imax-imin)*terrainScale)" % (theGarden.terrainPixelRange[0], theGarden.terrainPixelRange[1]))
+
             #store the image size
             theGarden.terrainImage[1]=tmp.size
             
@@ -478,7 +490,8 @@ def main():
                 tmpPath = os.path.join(terrainFile,'*.xlsx') #assumes file suffix is 'xlsx'
                 matchFiles = glob.glob(tmpPath)
                 if matchFiles:
-                    #9/28/2020 ET-test of default absMax and absMin values from vida.ini                				
+                    print("      NOTE: values from the xlsx file replace -imax, -imin, and -iscale")
+                    #9/28/2020 ET-test of default absMax and absMin values from vida.ini
                     theExcelFile = matchFiles[0] #no matter what, grab the first item in the list
                     if len(matchFiles)==1:
                         print("      xlsx file found")
@@ -1307,10 +1320,10 @@ if __name__ == '__main__':
 
 
     #default max and min elevation for a grayscale image given no elevation data)
-    parser.add_argument('-imax', type=int, metavar='int', dest='absMax', required=False, help='Max default elevation value for an imported grayscale terrain image')
-    parser.add_argument('-imin', type=int, metavar='int', dest='absMin', required=False, help='Min default elevation value for an imported grayscale terrain image')
+    parser.add_argument('-imax', type=float, metavar='float', dest='absMax', required=False, help='Elevation of the brightest pixel in an imported grayscale terrain image. Replaced by values from an xlsx file if one is in the terrain folder')
+    parser.add_argument('-imin', type=float, metavar='float', dest='absMin', required=False, help='Elevation of the darkest pixel in an imported grayscale terrain image. Replaced by values from an xlsx file if one is in the terrain folder')
     parser.add_argument('-iscale', type=float, metavar='float', dest='terrainScale', required=False, help='The fractional value (0 to 1) to scale the elevation by')
-    parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Elevation at which water exists on terrain')
+    parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Water level, measured as height above the lowest point of the terrain (the darkest pixel)')
 
     ###options that use a code action
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    

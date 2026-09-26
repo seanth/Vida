@@ -102,12 +102,13 @@ def initDXFBlocks(theGarden):
 
     #only do this if there is a terrain image to use
     if(terrainImage!=[]):
-        theData = makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta)
+        thePixelRange = terrain_utils.getPixelRange(theGarden)
+        theData = makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta, thePixelRange)
 
     return theData
 
     
-def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
+def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta, thePixelRange=(0, 255)):
     ##using assimp to make other 3d file types and
     ##assimp doesn't render mesh correctly
     ##Keep in case assimp changes and it can read meshes correctly
@@ -133,16 +134,19 @@ def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
         aRow=[]
         for y in range(ySize):
             thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
-            z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+            z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta, thePixelRange)
             aRow.append((x,y,z))
         theMesh.append(aRow)
     aRow = None
 
     theFaceList=[]
+    #range(xSize-1) rather than range(xSize-2) so the last strip of
+    #the terrain is not dropped
+    #STH 2026-0923
     for theRowNumb in range(ySize-1):
         i=0
         j=2
-        for theColNumb in range(xSize-2):
+        for theColNumb in range(xSize-1):
             #Starting with the mesh, which is a series of coordinates for each point
             #we need to convert that into grouping of 4 coordinates defining a box
             #for the 3dface. The creation needs to be done widdershins, starting in

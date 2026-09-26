@@ -710,7 +710,7 @@ class garden(object):
                 theAdjX = theSeed.x + coordAdjust
                 theAdjY = theSeed.y + coordAdjust
                 thePixelValue = terrain_utils.getPixelValue(theAdjX,theAdjY,theGarden.terrainImage)
-                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation, terrain_utils.getPixelRange(theGarden))
                 #print("%s seedX: %s seedY: %s coordAdjust: %s xpixel: %s thePixelValue: %s theElevation: %s" % (theGarden.terrainImage[1], theSeed.x, theSeed.y, coordAdjust, (theSeed.x-coordAdjust), thePixelValue, theElevation))
             else:
                 theElevation = 0.0
