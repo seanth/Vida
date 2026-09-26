@@ -390,8 +390,12 @@ class genericPlant(object):
         if theGarden.terrainImage!=[]:
             coordAdjust = theGarden.theWorldSize/2.0
             #thePixelValue = terrain_utils.getPixelValue(newX,newY,theGarden.terrainImage)
-            thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-            theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+            #world coords are centred on 0, pixel coords start at 0, so add half the world
+            #size (as vworldr.py and vdxfGraphics.py do). Subtracting only worked because
+            #Pillow wraps negative pixel indices
+            #STH 2026-0923
+            thePixelValue = terrain_utils.getPixelValue(newX+coordAdjust,newY+coordAdjust,theGarden.terrainImage)
+            theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation, terrain_utils.getPixelRange(theGarden))
         else:
             theElevation = 0.0
         newZ = theElevation
@@ -408,8 +412,10 @@ class genericPlant(object):
             newY=newY+theSeed.y
             coordAdjust = theGarden.theWorldSize/2.0
             ##get elevation from pixel value
-            thePixelValue = terrain_utils.getPixelValue(newX-coordAdjust,newY-coordAdjust,theGarden.terrainImage)
-            theElevation = terrain_utils.elevationFromPixel(thePixelValue)
+            #previously called without maxElevation, so it used the 0-50 m default scale
+            #STH 2026-0923
+            thePixelValue = terrain_utils.getPixelValue(newX+coordAdjust,newY+coordAdjust,theGarden.terrainImage)
+            theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation, terrain_utils.getPixelRange(theGarden))
             newZ = theElevation
             theMax = theTestDist
             if round(theMax,3) == round(theMin,3): break

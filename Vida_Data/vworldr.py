@@ -156,11 +156,13 @@ def determineShade(theGarden):
                 if len(plant.overlapList)==1: ###if you are covered by just 1 other, do a direct calc
                     overPlant =plant.overlapList[0]
                     areaCovered=geometry_utils.areaOverlappingCircles(plant.x, plant.y, plant.r, overPlant.x, overPlant.y, overPlant.r)
-                    areaCovered=areaCovered-(areaCovered*plantTwo.canopyTransmittance)
+                    ####This is a verb old bug
+                    #STH 26 Sept 2026
+                    #areaCovered=areaCovered-(areaCovered*plantTwo.canopyTransmittance)
+                    areaCovered=areaCovered-(areaCovered*overPlant.canopyTransmittance)
+                    ####
                     thePlantAreaExposed=thePlantAreaTotal-areaCovered
-                    #plant.areaCovered=areaCovered
                     fractionExposed= thePlantAreaExposed/thePlantAreaTotal
-                    #fractionExposed=fractionExposed*theGarden.lightIntensity #try and take into account overall world light intensity
                     fractionExposed=fractionExposed*theRegion.lightIntensity #try and take into account overall world light intensity
                     thePlantAreaExposed= thePlantAreaTotal*fractionExposed
                     plant.areaCovered=thePlantAreaTotal-thePlantAreaExposed
@@ -176,7 +178,8 @@ def determineShade(theGarden):
                         #####consider moving this to geometry_utils
                         ###pick uniformly distributed point in a circle
                         randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
-                        twoPi=math.pi*2
+                        # twoPi=math.pi*2
+                        twoPi=3.14*2
                         randAngle=random.random()*twoPi
                         #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
                         randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
@@ -694,9 +697,16 @@ class garden(object):
             theSeed.massSeed=theSeed.massSeedMax
             #convert mass to volume and the get the radius
             j= theSeed.massSeed/theSeed.densitySeed #this is volume in m^3
-            j=j/(4.0/3.0)
-            j=j/(math.pi)
-            j=math.pow(j, 1.0/3.0)
+            ###Marginally faster to not call math.pi 
+            ###and hardcode the division calcs.
+            ###STH 26 Sept 2026
+            #j=j/(4.0/3.0)
+            #j=j/(math.pi)
+            #j=math.pow(j, 1.0/3.0)
+            j=j/(1.3333)
+            j=j/(3.14)
+            j=j**0.3333
+            ########
             #print terrainFile
             theSeed.radiusSeed=j
             theSeed.z= theSeed.radiusSeed
@@ -710,7 +720,7 @@ class garden(object):
                 theAdjX = theSeed.x + coordAdjust
                 theAdjY = theSeed.y + coordAdjust
                 thePixelValue = terrain_utils.getPixelValue(theAdjX,theAdjY,theGarden.terrainImage)
-                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation)
+                theElevation = terrain_utils.elevationFromPixel(thePixelValue, theGarden.maxElevation, terrain_utils.getPixelRange(theGarden))
                 #print("%s seedX: %s seedY: %s coordAdjust: %s xpixel: %s thePixelValue: %s theElevation: %s" % (theGarden.terrainImage[1], theSeed.x, theSeed.y, coordAdjust, (theSeed.x-coordAdjust), thePixelValue, theElevation))
             else:
                 theElevation = 0.0

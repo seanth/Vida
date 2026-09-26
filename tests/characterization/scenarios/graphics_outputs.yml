@@ -5,4 +5,4 @@ description: >
 species: [species/generic]
 stages:
   - seed: 808
-    args: [-n, graphics, -w, "20", -s, "12", -t, "6", -g, bs, 3d, -c, -a, a, -f, n]
+    args: [-n, graphics, -w, "20", -s, "12", -t, "6", -g, bs, dxf, -c, -a, a, -f, n]

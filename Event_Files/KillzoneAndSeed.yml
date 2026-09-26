@@ -1,0 +1,14 @@
+2:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 50
+       target: plants
+       species_name: Liquidambar_styraciflua
+       percent: 1.0
+       selection:
+        - attribute: massStem
+          logic: '>'
+          value: 2.4e-05
+   

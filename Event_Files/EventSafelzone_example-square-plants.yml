@@ -1,0 +1,42 @@
+0:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+5:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+10:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+15:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+20:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all
+25:
+   - Safezone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 30
+       target: all

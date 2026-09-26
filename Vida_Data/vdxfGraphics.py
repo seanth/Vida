@@ -102,12 +102,13 @@ def initDXFBlocks(theGarden):
 
     #only do this if there is a terrain image to use
     if(terrainImage!=[]):
-        theData = makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta)
+        thePixelRange = terrain_utils.getPixelRange(theGarden)
+        theData = makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta, thePixelRange)
 
     return theData
 
     
-def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
+def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta, thePixelRange=(0, 255)):
     ##using assimp to make other 3d file types and
     ##assimp doesn't render mesh correctly
     ##Keep in case assimp changes and it can read meshes correctly
@@ -133,16 +134,19 @@ def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
         aRow=[]
         for y in range(ySize):
             thePixelValue = terrain_utils.getPixelValue(x,y,terrainImage)
-            z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta)
+            z = terrain_utils.elevationFromPixel(thePixelValue, theElevDelta, thePixelRange)
             aRow.append((x,y,z))
         theMesh.append(aRow)
     aRow = None
 
     theFaceList=[]
+    #range(xSize-1) rather than range(xSize-2) so the last strip of
+    #the terrain is not dropped
+    #STH 2026-0923
     for theRowNumb in range(ySize-1):
         i=0
         j=2
-        for theColNumb in range(xSize-2):
+        for theColNumb in range(xSize-1):
             #Starting with the mesh, which is a series of coordinates for each point
             #we need to convert that into grouping of 4 coordinates defining a box
             #for the 3dface. The creation needs to be done widdershins, starting in
@@ -177,7 +181,7 @@ def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta):
 
 
 
-def makeDXF(theGarden, theBlockData):
+def makeDXF(theGarden, theBlockData, waterStyle="solid"):
     ###Important note about colour
     #as of 2026.0716 assimp is not correctly seeing that individual block data can have its own color. The inserted
     #dxf objects keep the colour that the original 3dface has defined
@@ -189,8 +193,13 @@ def makeDXF(theGarden, theBlockData):
 
     if len(theGarden.terrainImage)==3:
         theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=27))
-        if(theGarden.waterLevel>0.0):
+        #waterStyle: "solid" fills from 0 up to the water level, "thranslucent" is a thin
+        #sheet at the water level (DXF has no transparency), "none" draws no water
+        #STH 2026-0926
+        if(theGarden.waterLevel>0.0) and waterStyle=="solid":
             theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0, color=90))
+        elif(theGarden.waterLevel>0.0) and waterStyle=="translucent":
+            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),theGarden.waterLevel-0.01), xscale=theWorldSize, yscale=theWorldSize, zscale=0.01, rotation=0, color=90))
 
     #dictColoursUsed={}
     for obj in theGarden.soil:
@@ -215,7 +224,11 @@ def makeDXF(theGarden, theBlockData):
             theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
             #adding in speckled species colours to the canopy
             #STH 2026-0911
-            canopyRotation = random.uniform(0, 360)
+            #the rotation is now worked out from the plant's name, so it stays the same
+            #from cycle to cycle and does not use the simulation's random numbers
+            #(random.uniform() here changed the simulation's results when DXF output was on)
+            #STH 2026-0926
+            canopyRotation = getCanopyRotation(obj)
             canopyBlock = getOrMakeSpeckledCanopyBlock(theBlockData, 'CANOPY', getCanopyFaceList, aicLeaf, aicSpecies, obj.borderImagePercent)
 
             if (obj.crownShape == "PARA"):
@@ -238,6 +251,13 @@ def makeDXF(theGarden, theBlockData):
                 theSeedRadius= attachedSeed.radiusSeed* attachedSeed.radiusSeedMultiplier
                 theBlockData.add(dxf.insert(blockname='SEED', insert=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedAttached))
     return theBlockData
+
+def getCanopyRotation(thePlant):
+    #a canopy rotation (degrees) that is fixed for a plant and that does not
+    #draw from, or change, the simulation's random number sequence
+    #STH 2026-0926
+    theRNG = random.Random(str(thePlant.name))
+    return theRNG.uniform(0, 360)
 
 def writeDXF(outputDirectory, fileName, theData):
     ###writes the files to a destination folder

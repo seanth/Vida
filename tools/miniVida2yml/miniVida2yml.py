@@ -28,31 +28,31 @@ if __name__ == "__main__":
     #Ms=B1*Mt^a1
     B1=firstSheet.cell(2,2).value
     A1=firstSheet.cell(3,2).value
-    # print B1
-    # print A1
+    print(type(B1))
+    print(type(A1))
 
     #Canopy mass(young) from woody mass
     #Mlyoung=B2*Ms^a2
     B2=firstSheet.cell(6,2).value
     A2=firstSheet.cell(7,2).value
-    # print B2
-    # print A2
+    print(type(B2))
+    print(type(A2))
 
 
     #Canopy mass(mature) from woody mass
     #Mlmature=B3*Ms^a3
     B3=firstSheet.cell(10,2).value
     A3=firstSheet.cell(11,2).value
-    # print B3
-    # print A3
+    print(type(B3))
+    print(type(A3))
 
 
     #Woody diameter from woody mass
     #Ds=B4*Ms^a4
     B4=firstSheet.cell(14,2).value
     A4=firstSheet.cell(15,2).value
-    # print B4
-    # print A4
+    print(B4)
+    print(A4)
 
 
     #Tree height(young) from woody diameter
@@ -60,58 +60,58 @@ if __name__ == "__main__":
     B5=firstSheet.cell(18,2).value
     A5=firstSheet.cell(19,2).value
     B6=firstSheet.cell(20,2).value
-    # print B5
-    # print A5
-    # print B6
+    print(B5)
+    print(A5)
+    print(B6)
 
 
     #Tree height(mature) from woody diameter
     #Hsmature=B7 + B8 ln Ds
     B7=firstSheet.cell(23,2).value
     B8=firstSheet.cell(24,2).value
-    # print B7
-    # print B8
+    print(B7)
+    print(B8)
 
 
     #Total growth from projected area and canopy mass
     #Gt=Alprojected*[B9*(Ml^a6)]
     B9 = firstSheet.cell(27,2).value
     A6 = firstSheet.cell(28,2).value
-    # print B9
-    # print A6
+    print(B9)
+    print(A6)
 
 
     #IdealSeedlingMass
     seedMass = firstSheet.cell(30,2).value
-    # print seedMass
+    print(seedMass)
 
     #DensityLeaf:
     densityLeaf = firstSheet.cell(31,2).value
-    # print densityLeaf
+    print(densityLeaf)
 
     #DensityStem:
     densityStem = firstSheet.cell(32,2).value
-    # print densityStem
+    print(densityStem)
 
     #YoungsModStem:
     youngsModulusStem = firstSheet.cell(33,2).value
-    # print youngsModulusStem
+    print(youngsModulusStem)
 
     #HeightLeaf:
     heightLeaf = firstSheet.cell(34,2).value
-    # print heightLeaf
+    print(heightLeaf)
 
     #fractStem@germ:
     fractStem = firstSheet.cell(36,2).value
-    # print fractStem
+    print(fractStem)
 
     #waterlogging:
     waterloggingTol = firstSheet.cell(38,2).value
-    #print(waterloggingTol)
+    print(type(waterloggingTol))
 
     #drought tolerance:
     droughtTol = firstSheet.cell(39,2).value
-    #print(droughtTol)
+    print(type(droughtTol))
 
 
     theYear = datetime.date.today().year
@@ -123,8 +123,7 @@ if __name__ == "__main__":
     shortBaseName = os.path.splitext(os.path.basename(inFileName))[0]
     scriptName = os.path.basename(__file__)
 
-    ymlTempTxt = ymlTempTxt % (shortBaseName, scriptName, theBaseName, theCreationDate, densityStem, densityLeaf, densityStem/2.0, heightLeaf, B7, youngsModulusStem, 
-    	B9, A6, fractStem, B1, A1, B2, A2, B3, A3, B4, A4, B6, B5, A5, B8, waterloggingTol, droughtTol)
+    ymlTempTxt = ymlTempTxt % (shortBaseName, scriptName, theBaseName, theCreationDate, densityStem, densityLeaf, densityStem/2.0, heightLeaf, B7, youngsModulusStem, B9, A6, fractStem, B1, A1, B2, A2, B3, A3, B4, A4, B6, B5, A5, B8, waterloggingTol, droughtTol)
     #print ymlTempTxt
 
     theOutFile = open(args.outFile, "w")

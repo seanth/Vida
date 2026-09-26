@@ -1,0 +1,16 @@
+100:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 200
+       target: all
+       species: Winter is coming
+101:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 200
+       target: all
+       species: Winter is coming

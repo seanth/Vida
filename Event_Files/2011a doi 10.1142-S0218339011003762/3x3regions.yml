@@ -1,0 +1,66 @@
+#3x3world 09.02.03
+0:
+   - Region:
+     - name: reg1
+       size: 33.3
+       shape: square #circle or square
+       x: -33.3
+       y: 33.3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg2
+       size: 33.3
+       shape: square #circle or square
+       x: 0.0
+       y: 33.3
+       lightIntensity: 0.25
+   - Region:
+     - name: reg3
+       size: 33.3
+       shape: square #circle or square
+       x: 33.3
+       y: 33.3
+       lightIntensity: 0.75
+   - Region:
+     - name: reg4
+       size: 33.3
+       shape: square #circle or square
+       x: -33.3
+       y: 0.0
+       lightIntensity: 0.25
+   - Region:
+     - name: reg5
+       size: 33.4
+       shape: square #circle or square
+       x: 0.0
+       y: 0.0
+       lightIntensity: 1.0
+   - Region:
+     - name: reg6
+       size: 33.3
+       shape: square #circle or square
+       x: 33.3
+       y: 0.0
+       lightIntensity: 0.75
+   - Region:
+     - name: reg7
+       size: 33.3
+       shape: square #circle or square
+       x: -33.3
+       y: -33.3
+       lightIntensity: 0.5
+   - Region:
+     - name: reg8
+       size: 33.3
+       shape: square #circle or square
+       x: 0.0
+       y: -33.3
+       lightIntensity: 1.0
+   - Region:
+     - name: reg9
+       size: 33.3
+       shape: square #circle or square
+       x: 33.3
+       y: -33.3
+       lightIntensity: 0.5
+
