@@ -61,5 +61,5 @@ events:
     - Killzone:
         - {x: 0.0, y: 0.0, shape: square, size: 6, target: all}
 stages:
-  - rngstart: 505
+  - runid: 505
     args: [-n, events, -w, "24", -s, "30", -t, "30", -m, "250", -e, events.yml, -a, a, -f, a]

@@ -5,5 +5,5 @@ description: >
   on the canopy and ballistic seed dispersal (method 4).
 species: [species/generic/Generic Angiosperm.yml]
 stages:
-  - rngstart: 202
+  - runid: 202
     args: [-n, hex, -w, "20", -sh, "30", -t, "25", -m, "150", -a, a, -f, a]

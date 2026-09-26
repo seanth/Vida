@@ -9,8 +9,7 @@ separate Python process::
 Nothing in Vida itself is changed. Instead, before Vida.py starts, this driver
 removes the sources of run-to-run variation from the outside:
 
-* ``random`` starts from the stage's ``rngstart`` (the random number
-  generator's starting value).
+* ``random`` starts from the stage's run id (``runid`` in the scenario).
 * ``time.time`` returns an increasing counter. Vida stores the time a seed
   was planted and uses it to break ties between overlapping objects of equal
   mass, so wall-clock time would make runs unrepeatable.
@@ -113,10 +112,10 @@ def _sorted_glob(*args: Any, **kwargs: Any) -> list[str]:
     return sorted(_REAL_GLOB(*args, **kwargs))
 
 
-def install_patches(rng_start: int) -> None:
+def install_patches(runid: int) -> None:
     """Make the next run of Vida repeatable. Called before each stage."""
     global _clock, _uuid_counter
-    random.seed(rng_start)
+    random.seed(runid)
     _clock = Counter()
     _uuid_counter = Counter()
     time.time = _fake_time
@@ -300,7 +299,7 @@ def normalised_file_hashes(names: Recorder) -> dict[str, str]:
 
 def run_script(args: list[str]) -> None:
     """Run another Vida script (vextract.py) with the same sorted listings."""
-    install_patches(rng_start=0)
+    install_patches(runid=0)
     sys.argv = args
     runpy.run_path(args[0], run_name="__main__")
 
@@ -322,7 +321,7 @@ def main(scenario_path: str, recording_path: str) -> None:
     for stage in scenario["stages"]:
         if stage.get("world_preferences"):
             update_world_preferences(stage["world_preferences"])
-        install_patches(stage["rngstart"])
+        install_patches(stage["runid"])
         sys.argv = ["Vida.py", *stage["args"]]
         first_cycle = len(recorder.cycles)
         error = None

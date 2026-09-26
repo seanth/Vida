@@ -1,0 +1,10 @@
+description: >
+  Two runs with the same -runid. Before each run the test driver starts the
+  random numbers differently, so the two runs only match because -runid
+  starts them again. test_runid_option_repeats_a_run_exactly checks they match.
+species: [species/generic]
+stages:
+  - runid: 1601
+    args: [-n, first, -w, "20", -s, "15", -t, "15", -m, "100", -runid, "42", -a, a, -f, n]
+  - runid: 1602
+    args: [-n, second, -w, "20", -s, "15", -t, "15", -m, "100", -runid, "42", -a, a, -f, n]

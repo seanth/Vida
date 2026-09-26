@@ -23,7 +23,7 @@ events:
     - Garden:
         - {waterLevel: 4.0}
 stages:
-  - rngstart: 707
+  - runid: 707
     args: [-n, terrain, -w, "50", -s, "40", -t, "25", -i, terrain, -iwater, "1.0", -e, events.yml, -a, a, -f, a]
-  - rngstart: 708
+  - runid: 708
     args: [-n, single_tif, -w, "40", -s, "40", -t, "25", -m, "100", -i, single.tif, -imax, "30", -imin, "5", -iscale, "0.5", -iwater, "2.0", -a, a, -f, n]

@@ -7,5 +7,5 @@ species: [species/generic]
 files:
   species_event.yml: events/species_event.yml
 stages:
-  - seed: 1201
+  - runid: 1201
     args: [-n, species_event, -w, "20", -s, "20", -t, "20", -m, "150", -e, species_event.yml, -a, a, -f, a]

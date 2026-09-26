@@ -14,5 +14,5 @@ world_preferences:
 files:
   placement.csv: placement/mixed.csv
 stages:
-  - rngstart: 606
+  - runid: 606
     args: [-n, placement, -w, "20", -sf, placement.csv, -t, "18", -a, a, -f, a]

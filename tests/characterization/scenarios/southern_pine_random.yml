@@ -4,5 +4,5 @@ description: >
   at random. This is the plain "python Vida.py" run, scaled down.
 species: [species/southern_pine]
 stages:
-  - rngstart: 101
+  - runid: 101
     args: [-n, southern_pine, -w, "40", -s, "40", -t, "40", -m, "150", -a, a, -f, a]

@@ -359,11 +359,11 @@ def main():
     
     print("*********Vida version: %s *********" % (vidaVersion))
 
-    ###Seeding the random number generator makes a run repeatable:
-    ###the same seed and the same settings give exactly the same results.
-    if randomSeed!=None:
-        random.seed(randomSeed)
-        print("     Random seed: %i" % (randomSeed))
+    ###Starting the random numbers from a run id makes a run repeatable:
+    ###the same run id and the same settings give exactly the same results.
+    if theRunid!=None:
+        random.seed(theRunid)
+        print("     Run id: %i" % (theRunid))
 
     CFDGtext=""
     CFDGtextDict={}
@@ -1337,7 +1337,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')
-    parser.add_argument('-seed', type=int, metavar='int', dest='randomSeed', required=False, help='Seed for the random numbers, so a run can be repeated exactly')    
+    parser.add_argument('-runid', type=int, metavar='int', dest='theRunid', required=False, help='Run id: two runs with the same run id and settings give exactly the same results')    
     #more python2 to python3 fixes
     #STH 2026-0911
     # parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')

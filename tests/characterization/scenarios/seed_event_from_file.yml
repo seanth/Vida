@@ -7,5 +7,5 @@ files:
   seed_file_event.yml: events/seed_file_event.yml
   placement.csv: placement/mixed.csv
 stages:
-  - seed: 1301
+  - runid: 1301
     args: [-n, seed_file_event, -w, "20", -s, "10", -t, "15", -e, seed_file_event.yml, -a, a, -f, a]

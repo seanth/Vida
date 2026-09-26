@@ -19,5 +19,5 @@ events:
     - Killzone:
         - {x: 0.0, y: 0.0, shape: square, size: 30, target: plants}
 stages:
-  - rngstart: 1101
+  - runid: 1101
     args: [-n, dropped, -w, "30", -sf, placement.csv, -t, "30", -e, events.yml, -a, a, -f, a]
