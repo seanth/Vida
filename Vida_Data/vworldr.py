@@ -178,7 +178,8 @@ def determineShade(theGarden):
                         #####consider moving this to geometry_utils
                         ###pick uniformly distributed point in a circle
                         randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
-                        twoPi=math.pi*2
+                        # twoPi=math.pi*2
+                        twoPi=3.14*2
                         randAngle=random.random()*twoPi
                         #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
                         randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
@@ -696,9 +697,16 @@ class garden(object):
             theSeed.massSeed=theSeed.massSeedMax
             #convert mass to volume and the get the radius
             j= theSeed.massSeed/theSeed.densitySeed #this is volume in m^3
-            j=j/(4.0/3.0)
-            j=j/(math.pi)
-            j=math.pow(j, 1.0/3.0)
+            ###Marginally faster to not call math.pi 
+            ###and hardcode the division calcs.
+            ###STH 26 Sept 2026
+            #j=j/(4.0/3.0)
+            #j=j/(math.pi)
+            #j=math.pow(j, 1.0/3.0)
+            j=j/(1.3333)
+            j=j/(3.14)
+            j=j**0.3333
+            ########
             #print terrainFile
             theSeed.radiusSeed=j
             theSeed.z= theSeed.radiusSeed
