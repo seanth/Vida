@@ -13,5 +13,5 @@ world_preferences:
   allowSlowGrowthDeath: false
   maxSeedsPerPlant: 2
 stages:
-  - runid: 303
+  - rngstart: 303
     args: [-n, square, -w, "25", -ss, "25", -t, "20", -m, "150", -a, a, -f, a]

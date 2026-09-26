@@ -34,5 +34,5 @@ world_preferences:
   maxSeedsPerPlant: 2
   randomDeathPlant: 0.04
 stages:
-  - runid: 404
+  - rngstart: 404
     args: [-n, dispersal, -w, "30", -s, "30", -t, "30", -m, "220", -a, a, -f, a]

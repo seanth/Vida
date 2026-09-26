@@ -6,10 +6,10 @@ description: >
   the world preferences file (here with a different random death rate).
 species: [species/generic]
 stages:
-  - runid: 909
+  - rngstart: 909
     args: [-n, repeat, -w, "20", -s, "15", -t, "8", -x, "2", -a, a, -f, n]
-  - runid: 910
+  - rngstart: 910
     args: [-n, resumed, -r, Output-repeat1/Save_points/repeat-8.pickle, -t, "6", -a, a, -f, e]
-  - runid: 911
+  - rngstart: 911
     args: [-n, reloaded, -rl, Output-repeat/Save_points/repeat-5.pickle, -t, "6", -a, a, -f, n]
     world_preferences: {randomDeathPlant: 0.2}

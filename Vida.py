@@ -359,11 +359,12 @@ def main():
     
     print("*********Vida version: %s *********" % (vidaVersion))
 
-    ###Starting the random numbers from a run id makes a run repeatable:
-    ###the same run id and the same settings give exactly the same results.
-    if theRunid!=None:
-        random.seed(theRunid)
-        print("     Run id: %i" % (theRunid))
+    ###Starting the random number generator from a given value makes a run
+    ###repeatable: the same -rngstart and the same settings give exactly the
+    ###same results.
+    if rngStart!=None:
+        random.seed(rngStart)
+        print("     RNG start: %i" % (rngStart))
 
     CFDGtext=""
     CFDGtextDict={}
@@ -1337,7 +1338,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', dest='deleteCfdgFiles', action='store_false', required=False, help='Keep cfdg files')
     parser.add_argument('-p', dest='deletePngFiles', action='store_true', required=False, help='Delete png files')
     parser.add_argument('-b', dest='showProgressBar', action='store_true', required=False, help='Show progress bars')
-    parser.add_argument('-runid', type=int, metavar='int', dest='theRunid', required=False, help='Run id: two runs with the same run id and settings give exactly the same results')    
+    parser.add_argument('-rngstart', type=int, metavar='int', dest='rngStart', required=False, help='Starting value for the random number generator: two runs with the same value and settings give exactly the same results')    
     #more python2 to python3 fixes
     #STH 2026-0911
     # parser.add_argument('-r', type=open, metavar='file', dest='resumeSim', required=False, help='Load a saved simulation and continue')
