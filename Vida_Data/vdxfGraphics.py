@@ -181,7 +181,7 @@ def makeTerrainMesh(theData, theWorldSize, terrainImage, theElevDelta, thePixelR
 
 
 
-def makeDXF(theGarden, theBlockData):
+def makeDXF(theGarden, theBlockData, waterStyle="solid"):
     ###Important note about colour
     #as of 2026.0716 assimp is not correctly seeing that individual block data can have its own color. The inserted
     #dxf objects keep the colour that the original 3dface has defined
@@ -193,8 +193,13 @@ def makeDXF(theGarden, theBlockData):
 
     if len(theGarden.terrainImage)==3:
         theBlockData.add(dxf.insert(blockname='MESHTERRAIN', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), rotation=0, color=27))
-        if(theGarden.waterLevel>0.0):
+        #waterStyle: "solid" fills from 0 up to the water level, "thranslucent" is a thin
+        #sheet at the water level (DXF has no transparency), "none" draws no water
+        #STH 2026-0926
+        if(theGarden.waterLevel>0.0) and waterStyle=="solid":
             theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),0), xscale=theWorldSize, yscale=theWorldSize, zscale=theGarden.waterLevel, rotation=0, color=90))
+        elif(theGarden.waterLevel>0.0) and waterStyle=="translucent":
+            theBlockData.add(dxf.insert(blockname='WATER', insert=(0-(theWorldSize/2.0),0-(theWorldSize/2.0),theGarden.waterLevel-0.01), xscale=theWorldSize, yscale=theWorldSize, zscale=0.01, rotation=0, color=90))
 
     #dictColoursUsed={}
     for obj in theGarden.soil:
@@ -219,7 +224,11 @@ def makeDXF(theGarden, theBlockData):
             theLeafRadius=obj.radiusLeaf*obj.radiusLeafMultiplier
             #adding in speckled species colours to the canopy
             #STH 2026-0911
-            canopyRotation = random.uniform(0, 360)
+            #the rotation is now worked out from the plant's name, so it stays the same
+            #from cycle to cycle and does not use the simulation's random numbers
+            #(random.uniform() here changed the simulation's results when DXF output was on)
+            #STH 2026-0926
+            canopyRotation = getCanopyRotation(obj)
             canopyBlock = getOrMakeSpeckledCanopyBlock(theBlockData, 'CANOPY', getCanopyFaceList, aicLeaf, aicSpecies, obj.borderImagePercent)
 
             if (obj.crownShape == "PARA"):
@@ -242,6 +251,13 @@ def makeDXF(theGarden, theBlockData):
                 theSeedRadius= attachedSeed.radiusSeed* attachedSeed.radiusSeedMultiplier
                 theBlockData.add(dxf.insert(blockname='SEED', insert=(x,y,z),xscale=theSeedRadius,yscale=theSeedRadius,zscale=theSeedRadius, rotation=0, color=aicSeedAttached))
     return theBlockData
+
+def getCanopyRotation(thePlant):
+    #a canopy rotation (degrees) that is fixed for a plant and that does not
+    #draw from, or change, the simulation's random number sequence
+    #STH 2026-0926
+    theRNG = random.Random(str(thePlant.name))
+    return theRNG.uniform(0, 360)
 
 def writeDXF(outputDirectory, fileName, theData):
     ###writes the files to a destination folder

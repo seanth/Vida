@@ -40,6 +40,10 @@ from dxfwrite import DXFEngine as dxf #pip install dxfwrite #https://pypi.org/pr
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 
 import progressBarClass
+
+#graphical views that produce 3d model files rather than cfdg/png images
+#STH 2026-0926
+THREE_D_VIEWS = ("dxf", "glb")
 ###append the path to where species are
 sys.path.append("Species")
 
@@ -620,8 +624,10 @@ def main():
     if produceGraphics==True: 
         print("     Graphical output will be produced.")
         for aView in graphicalView:
-            if aView=="3d":
-                print("       Graphical output will be 3d.")
+            if aView=="dxf":
+                print("       3d graphical output will be DXF files.")
+            if aView=="glb":
+                print("       3d graphical output will be GLB files.")
             if aView==1:
                 print("       Graphical output will be a bottom-up view.")
             if aView==2:
@@ -638,6 +644,10 @@ def main():
                 print("       Graphical output will be a combined bottom-up and side view.")
             if aView==123:
                 print("       Graphical output will be a combination bottom-up, top-down and side view.")
+        for aView in graphicalView:
+            if aView in THREE_D_VIEWS and terrainFile!=None:
+                print("       Water in 3d output will be drawn as: %s" % (waterStyle))
+                break
         if produceVideo==True:
             print("       Graphical output will include a %s frame/second video." % (framesPerSecond))
 
@@ -676,8 +686,10 @@ def main():
             makeDirectory(baseGraphicsDirectory)
             outputGraphicsDirectoryDict={}
             for aView in graphicalView:
-                if aView=='3d':
+                if aView=='dxf':
                     outputGraphicsDirectory = baseGraphicsDirectory +"DXF/"
+                if aView=='glb':
+                    outputGraphicsDirectory = baseGraphicsDirectory +"GLB/"
                 if aView==1:
                     outputGraphicsDirectory = baseGraphicsDirectory +"bottom-up/"
                 if aView==2:
@@ -721,12 +733,15 @@ def main():
 
         if produceGraphics==True and CFDGtextDict=={}:
             for aView in graphicalView:
-                if aView!="3d":
-                    #Only call this once to save time in making 2d graphics
-                    CFDGtextDict[aView]=outputGraphics.initCFDGText(theGarden, aView, percentTimeStamp, 50.0)
-                else:
+                if aView=="dxf":
                     #Only call this once to save time in making 3d graphics
                     DXFBlockDefs = vdxfGraphics.initDXFBlocks(theGarden)
+                elif aView=="glb":
+                    #Only call this once. Builds the shapes and the terrain mesh
+                    GLBContext = vglbGraphics.initGLB(theGarden)
+                else:
+                    #Only call this once to save time in making 2d graphics
+                    CFDGtextDict[aView]=outputGraphics.initCFDGText(theGarden, aView, percentTimeStamp, 50.0)
         #######
 
         cycleNumber=0
@@ -1117,17 +1132,22 @@ def main():
             if produceGraphics==True:
                 theView=list(graphicalView)#copy graphicalView list to theView
                 ##############################################################
-                if "3d" in graphicalView:
-                    theIndex=theView.index("3d")
+                if "dxf" in graphicalView:
+                    theIndex=theView.index("dxf")
                     theView.pop(theIndex)
                     ###A init call to generate the blocks and, more importantly
                     ###make the terrain mesh (if needed) should have been called already
                     ###2021-0306 STH
                     dxfObject= dxf.drawing()
                     dxfObject.blocks = DXFBlockDefs.blocks #had problems with assignment overwriting what I want to be immutable STH 2021-0307
-                    theDXFData=vdxfGraphics.makeDXF(theGarden, dxfObject)
+                    theDXFData=vdxfGraphics.makeDXF(theGarden, dxfObject, waterStyle)
                     theFileName= simulationName+str(cycleNumber)
-                    vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["3d"], theFileName, theDXFData)
+                    vdxfGraphics.writeDXF(outputGraphicsDirectoryDict["dxf"], theFileName, theDXFData)
+                if "glb" in graphicalView:
+                    theIndex=theView.index("glb")
+                    theView.pop(theIndex)
+                    theFileName= simulationName+str(cycleNumber)
+                    vglbGraphics.writeGLB(outputGraphicsDirectoryDict["glb"], theFileName, theGarden, GLBContext, waterStyle)
 
                 ##############################################################
                 if len(theView)!=0:
@@ -1266,7 +1286,7 @@ def main():
         ###final graphics calls
         if produceGraphics==True:
              for aView in graphicalView:
-                if aView!="3d":
+                if aView not in THREE_D_VIEWS:
                     print("\nProducing PNG files...")
                     #print outputGraphicsDirectoryDict[aView]
                     outputGraphics.outputPNGs(outputGraphicsDirectoryDict[aView], outputGraphicsDirectoryDict[aView])
@@ -1278,7 +1298,7 @@ def main():
         if produceVideo==True and produceGraphics==True:
             print("Producing video file...")
             for aView in graphicalView:
-                if aView!="3d":
+                if aView not in THREE_D_VIEWS:
                     outputGraphics.outputMOV(outputGraphicsDirectoryDict[aView], simulationName, framesPerSecond)
                     time.sleep(1)
         print("\n*****Simulation Complete*****\n\n\n\n\n")
@@ -1324,10 +1344,11 @@ if __name__ == '__main__':
     parser.add_argument('-imin', type=float, metavar='float', dest='absMin', required=False, help='Elevation of the darkest pixel in an imported grayscale terrain image. Replaced by values from an xlsx file if one is in the terrain folder')
     parser.add_argument('-iscale', type=float, metavar='float', dest='terrainScale', required=False, help='The fractional value (0 to 1) to scale the elevation by')
     parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Water level, measured as height above the lowest point of the terrain (the darkest pixel)')
+    parser.add_argument('-iwaterstyle', type=str, dest='waterStyle', required=False, choices=['solid','translucent','none'], help='How water is drawn in dxf/glb output: solid (solid from 0 to the water level), translucent (a sheet at the water level; translucent in glb), or none')
 
     ###options that use a code action
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
-    parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','3d' ], help='Graphical view desired')    
+    parser.add_argument('-g', nargs='*', type=str, action=parseAction, dest='produceGraphics', required=False, choices=['b','t','s','ts','st','bs','sb','bt','tb','bts','dxf','glb' ], help='Graphical view(s) desired. dxf and glb produce 3d model files')    
     # parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with')
     parser.add_argument('-s', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted randomly')
     parser.add_argument('-ss', type=int, metavar='int', nargs='?', dest='startPopulationSize', action=parseAction, help='Number of seeds to start simulation with, planted in a square')
@@ -1356,14 +1377,12 @@ if __name__ == '__main__':
     ###parse the graphic options a bit more
     if type(produceGraphics)==list:
         graphicalView=produceGraphics[1]
-        if "3d" in graphicalView:
-            import vdxfGraphics
         produceGraphics=produceGraphics[0]    
     if type(graphicalView)!=list:
         graphicalView=[graphicalView]#make sure the graphicalView is a list
     #now convert the letter code into the number code used
     for i in range(len(graphicalView)):
-        if graphicalView[i]!='3d':
+        if graphicalView[i] not in THREE_D_VIEWS:
             graphicalView[i]=graphicalView[i].replace('b','1')
             graphicalView[i]=graphicalView[i].replace('t','2')
             graphicalView[i]=graphicalView[i].replace('s','3')
@@ -1372,6 +1391,13 @@ if __name__ == '__main__':
             graphicalView[i]=graphicalView[i].replace('32','23')
             graphicalView[i]=int(graphicalView[i])
     graphicalView=list_utils.remove_duplicates(graphicalView)
+    if "dxf" in graphicalView:
+        import vdxfGraphics
+    if "glb" in graphicalView:
+        import vglbGraphics
+    if waterStyle not in ("solid", "translucent", "none"):
+        print("***Warning: waterStyle '%s' not recognised. Using 'solid'" % (waterStyle))
+        waterStyle="solid"
     
     ###parse the video options a bit more
     if type(produceVideo)==list:
@@ -1382,8 +1408,12 @@ if __name__ == '__main__':
             print("***Warning: A video output was desired, but a graphical option was not specified\n   Graphical output has been set to the default")
             produceGraphics=True
             graphicalView=[theDefaults['graphicalView']]
-        if graphicalView==['3d']:
-            print("***Warning: A video can not be auto generated from the '3d' graphical option\n   Video output turned off")
+        onlyThreeD=True
+        for aView in graphicalView:
+            if aView not in THREE_D_VIEWS:
+                onlyThreeD=False
+        if onlyThreeD:
+            print("***Warning: A video can not be auto generated from the 'dxf' or 'glb' graphical options\n   Video output turned off")
             produceVideo=False
 
     ##parse resume sim option a bit more
