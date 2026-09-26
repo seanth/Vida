@@ -156,11 +156,13 @@ def determineShade(theGarden):
                 if len(plant.overlapList)==1: ###if you are covered by just 1 other, do a direct calc
                     overPlant =plant.overlapList[0]
                     areaCovered=geometry_utils.areaOverlappingCircles(plant.x, plant.y, plant.r, overPlant.x, overPlant.y, overPlant.r)
-                    areaCovered=areaCovered-(areaCovered*plantTwo.canopyTransmittance)
+                    ####This is a verb old bug
+                    #STH 26 Sept 2026
+                    #areaCovered=areaCovered-(areaCovered*plantTwo.canopyTransmittance)
+                    areaCovered=areaCovered-(areaCovered*overPlant.canopyTransmittance)
+                    ####
                     thePlantAreaExposed=thePlantAreaTotal-areaCovered
-                    #plant.areaCovered=areaCovered
                     fractionExposed= thePlantAreaExposed/thePlantAreaTotal
-                    #fractionExposed=fractionExposed*theGarden.lightIntensity #try and take into account overall world light intensity
                     fractionExposed=fractionExposed*theRegion.lightIntensity #try and take into account overall world light intensity
                     thePlantAreaExposed= thePlantAreaTotal*fractionExposed
                     plant.areaCovered=thePlantAreaTotal-thePlantAreaExposed
