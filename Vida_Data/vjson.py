@@ -75,6 +75,11 @@ class ViewerFile(object):
                 "leafColour": colourList(thing.colourLeaf),
                 "stemColour": colourList(thing.colourStem),
                 "canopyTransmittance": number(thing.canopyTransmittance),
+                #the shape of the crown, as in Vida's 3D (.dxf) files: "PARA" is
+                #a dome from boleHeight percent of the way down the tree to the
+                #top; anything else is a hemisphere of the canopy's radius
+                "crownShape": str(getattr(thing, "crownShape", "ELIP")),
+                "boleHeight": number(getattr(thing, "boleHeight", None)),
             })
         return self.speciesNumbers[name]
 

@@ -191,6 +191,13 @@ figcaption, summary { font-weight: 600; margin-bottom: 6px; }
 .side-card .canvas-box { flex: 1 1 auto; min-height: 320px; }
 .canvas-box.square { aspect-ratio: 1 / 1; height: auto; }
 .canvas-box.chart { height: 220px; }
+.scene-card { margin-bottom: 12px; }
+.canvas-box.scene-box { height: min(72vh, 680px); min-height: 320px; border-radius: 6px; overflow: hidden; background: #d9e6ef; }
+.scene-note { margin: 8px 0 0; font-size: 13px; max-width: 80ch; }
+.scene-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 4px 0 10px; color: var(--ink-2); font-size: 13px; }
+.scene-controls label { display: inline-flex; align-items: center; gap: 6px; }
+.scene-controls input[type="range"] { width: 150px; accent-color: var(--accent); }
+.sun-label { font-variant-numeric: tabular-nums; min-width: 5em; color: var(--ink); }
 .canvas-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
 .legend {
