@@ -1,0 +1,11 @@
+description: >
+  Two runs with the same -rngstart. Before each run the test driver starts
+  the random numbers differently, so the two runs only match because
+  -rngstart starts them again. test_rngstart_option_repeats_a_run_exactly
+  checks they match.
+species: [species/generic]
+stages:
+  - rngstart: 1601
+    args: [-n, first, -w, "20", -s, "15", -t, "15", -m, "100", -rngstart, "42", -a, a, -f, n]
+  - rngstart: 1602
+    args: [-n, second, -w, "20", -s, "15", -t, "15", -m, "100", -rngstart, "42", -a, a, -f, n]
