@@ -177,12 +177,20 @@ def determineShade(theGarden):
                     for photon in range(numbPhotons):
                         #####consider moving this to geometry_utils
                         ###pick uniformly distributed point in a circle
-                        randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
-                        # twoPi=math.pi*2
                         twoPi=3.14*2
                         randAngle=random.random()*twoPi
-                        #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
-                        randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
+                        #####
+                        ###This is apparently a very old bug dating back to 2009
+                        ###The way it is written the points cluster toward the center
+                        ###which is exactly what the comments mention it is trying to avoid
+                        ###STH 26 Sept 2026
+                        
+                        # randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
+                        # #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
+                        # randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
+                        randr=plant.r*(random.random()**0.5)   #r*sqrt(u) spreads photons evenly over the canopy
+                        #####
+
                         photonX = (randr*math.cos(randAngle))+plant.x
                         photonY = (randr*math.sin(randAngle))+plant.y
                         ######
