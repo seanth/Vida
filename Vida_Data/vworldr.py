@@ -20,6 +20,7 @@ import list_utils
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 import progressBarClass
 import spatial_grid
+import vsoil
 
 ###experimental terrain import
 ###STH & EKT 05 Feb 2020
@@ -270,7 +271,7 @@ class garden(object):
         super(garden, self).__init__()
         self.name = ""
         self.theWorldSize = 0
-        self.soil = []
+        self.soil = vsoil.Soil() #every plant and seed, in planting order (see vsoil.py)
         self.numbSeeds = 0
         self.numbPlants = 0
         self.deathNote = []
@@ -296,12 +297,17 @@ class garden(object):
             setattr(self, key, theData[key])
     
     def makePlatonicSeedDict(self, ymlList, Species1):
+        ###(imported here, not at the top: vplantr imports this file)
+        import vplantr
         theGarden=self
         i=0
         for s in ymlList:
             theSeed=Species1()
             fileLoc= "Species/"+ymlList[i]
-            theSeed.importPrefs(fileLoc)
+            settingNames=theSeed.importPrefs(fileLoc)
+            ###the species' settings are kept once, on a class of its own
+            ###(see shareSpeciesSettings in vplantr.py)
+            theSeed=vplantr.shareSpeciesSettings(theSeed, ymlList[i], vplantr.defaultSettingNames()+settingNames)
             #theSeed.name="Platonic %s" % (ymlList[i])
             theGarden.platonicSeeds[ymlList[i]]=theSeed
             i=i+1
@@ -350,16 +356,9 @@ class garden(object):
     
     def kill(self, theObject):
         theGarden=self
-        ###Find where theObject is in the soil just once: the soil is a long
-        ###list, and this used to look through it twice (to see whether
-        ###theObject was there, and again to remove it). Planting the dropped
-        ###seeds below only adds to the end of the soil, so the place stays
-        ###right.
-        try:
-            place=self.soil.index(theObject)
-        except ValueError:
-            place=None
-        if place is not None:
+        ###(finding and removing theObject in the soil is quick, however big
+        ###the soil is: see vsoil.py)
+        if theObject in self.soil:
             #die!
             if len(theObject.seedList)>0:
                 for theSeed in theObject.seedList:
@@ -375,7 +374,7 @@ class garden(object):
             else:
                 self.numbPlants=self.numbPlants-1
             self.deathNote.append(theObject)
-            del self.soil[place]
+            self.soil.remove(theObject)
     
     def calcEulerGreenhill(self, plant):
         theGarden=self
