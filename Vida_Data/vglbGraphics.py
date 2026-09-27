@@ -14,7 +14,7 @@
 #   Vida (root node, rotates Vida's z-up world into glTF's y-up convention)
 #     ground            the thin garden slab (same as THEGARDEN in the DXF)
 #     terrain           one mesh built from the terrain image (if any)
-#     water             solid, translucent surface, or nothing (waterStyle)
+#     water             a solid or see-through block up to the water level, or nothing (waterStyle)
 #     plants
 #       <species> <name>   one node per plant, with plant data in "extras"
 #         stem
@@ -45,7 +45,7 @@ WATER_STYLES = ("solid", "translucent", "none")
 GROUND_RGB = (0.6, 0.6, 0.6)
 TERRAIN_RGB = (104/255.0, 78/255.0, 69/255.0) #ACI 27, the colour used in the DXF
 WATER_RGB = (0.15, 0.3, 0.9)
-WATER_SURFACE_ALPHA = 0.55
+WATER_TRANSLUCENT_ALPHA = 0.5
 
 #glTF constants
 FLOAT = 5126
@@ -362,9 +362,9 @@ def makeTerrainGeometry(theGarden):
 ###########################################################################
 #one file per cycle
 
-def writeGLB(outputDirectory, fileName, theGarden, context, waterStyle="surface"):
+def writeGLB(outputDirectory, fileName, theGarden, context, waterStyle="solid"):
     if waterStyle not in WATER_STYLES:
-        waterStyle = "surface"
+        waterStyle = "solid"
     builder = GLBBuilder()
     theWorldSize = theGarden.theWorldSize
     half = theWorldSize/2.0
@@ -387,18 +387,15 @@ def writeGLB(outputDirectory, fileName, theGarden, context, waterStyle="surface"
 
         theWaterLevel = theGarden.waterLevel
         if isinstance(theWaterLevel, (int, float)) and theWaterLevel > 0.0 and waterStyle != "none":
+            #both styles are a block of water from 0 up to the water level;
+            #"translucent" makes it see-through so the flooded terrain shows
+            #STH 2026-0926
             if waterStyle == "solid":
-                waterMesh = builder.addMesh("water", [(boxAttr, boxIdx, builder.material(WATER_RGB))])
-                children.append(builder.addNode(trsNode("water", waterMesh, (-half, -half, 0.0), (theWorldSize, theWorldSize, theWaterLevel))))
+                waterMaterial = builder.material(WATER_RGB)
             else:
-                w = half
-                planePos = np.array([(-w, -w, 0), (w, -w, 0), (w, w, 0), (-w, w, 0)], dtype=np.float32)
-                planeNrm = np.array([(0, 0, 1)]*4, dtype=np.float32)
-                planeIdx = np.array([0, 1, 2, 0, 2, 3], dtype=np.uint32)
-                pAttr, pIdx = builder.addGeometry(planePos, planeNrm, planeIdx)
-                waterMesh = builder.addMesh("water", [(pAttr, pIdx, builder.material(WATER_RGB, WATER_SURFACE_ALPHA))])
-                children.append(builder.addNode({"name": "water", "mesh": waterMesh,
-                                                 "translation": [0.0, 0.0, float(theWaterLevel)]}))
+                waterMaterial = builder.material(WATER_RGB, WATER_TRANSLUCENT_ALPHA)
+            waterMesh = builder.addMesh("water", [(boxAttr, boxIdx, waterMaterial)])
+            children.append(builder.addNode(trsNode("water", waterMesh, (-half, -half, 0.0), (theWorldSize, theWorldSize, theWaterLevel))))
 
     #plants (one node each) and seeds (merged by colour)
     stemMeshes = {}
