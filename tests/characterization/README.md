@@ -180,10 +180,11 @@ been fixed since, and each now has a scenario that uses the feature.
    a `TypeError` on Python 3.12+, and on 3.11 it was already a `ValueError`
    for worlds of odd size.
 
-Still open: the combined bottom + top + side view (`-g bts`) crashes with
-`TypeError: not enough arguments for format string`, because
-`initCFDGText` in `vgraphics.py` fills the side-view template, which needs
-six numbers, with only four. The `graphics_outputs` scenario pins this.
+5. Fixed: the combined bottom + top + side view (`-g bts`) crashed with
+   `TypeError: not enough arguments for format string`, because
+   `initCFDGText` in `vgraphics.py` filled the side-view template, which
+   needs six numbers, with only four. The `graphics_outputs` scenario now
+   makes that view too.
 
 Also found, not a crash: in `disperseSeed`, the search for a seed's landing
 point on terrain called `elevationFromPixel(thePixelValue)` without

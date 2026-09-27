@@ -23,8 +23,9 @@ def test_whole_number_coordinates_are_rejected():
     assert lines == [["random", 1.0, 2.0, 0]]
 
 
-def test_after_a_bad_line_the_next_line_is_not_checked():
-    # The check deletes bad lines from the list while looping over it, so the
-    # line after a deleted one is skipped: here the second bad line is kept.
-    lines = vplacement.checkSeedPlacementList(["a.yml, 1, 2.0, 0", "b.yml, 3, 4.0, 0", "c.yml, 5.0, 6.0, 0"])
-    assert lines == [["b.yml", 3, 4.0, 0], ["c.yml", 5.0, 6.0, 0]]
+def test_every_bad_line_is_left_out_and_every_good_line_kept():
+    # This used to delete bad lines from the list while looping over it, which
+    # skipped the line after each deleted one: the second bad line was kept.
+    lines = vplacement.checkSeedPlacementList(
+        ["a.yml, 1, 2.0, 0", "b.yml, 3, 4.0, 0", "c.yml, 5.0, 6.0, 0", "d.yml, 7, 8.0, 0", "e.yml, 9.0, 1.0, 2"])
+    assert lines == [["c.yml", 5.0, 6.0, 0], ["e.yml", 9.0, 1.0, 2]]

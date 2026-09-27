@@ -47,15 +47,19 @@ def checkSeedPlacementList(seedPlacementList):
         aLine = [correctType(x) for x in aLine]
         seedPlacementList[i]=aLine
         i=i+1
-    i=0
+    ###keep the lines that are a species name, x, y and a whole number of
+    ###cycles. (This used to delete the bad lines from the list while going
+    ###through it, which skipped the line after each one it deleted.)
+    goodLines=[]
     printErrorMessage=0
     for aLine in seedPlacementList:
         if type(aLine[3])==float:
             aLine[3]=int(aLine[3])
         if (type(aLine[0])!=str) or (type(aLine[1])!=float) or (type(aLine[2])!=float) or (type(aLine[3])!=int):
             printErrorMessage=1
-            del seedPlacementList[i]
-        i=i+1
+        else:
+            goodLines.append(aLine)
+    seedPlacementList=goodLines
     if printErrorMessage:
         print("***Improper seeding file format...")
         print("     Questionable lines will be ignored.")
