@@ -1347,7 +1347,7 @@ if __name__ == '__main__':
     parser.add_argument('-imin', type=float, metavar='float', dest='absMin', required=False, help='Elevation of the darkest pixel in an imported grayscale terrain image. Replaced by values from an xlsx file if one is in the terrain folder')
     parser.add_argument('-iscale', type=float, metavar='float', dest='terrainScale', required=False, help='The fractional value (0 to 1) to scale the elevation by')
     parser.add_argument('-iwater', type=float, metavar='float', dest='waterLevel', required=False, help='Water level, measured as height above the lowest point of the terrain (the darkest pixel)')
-    parser.add_argument('-iwaterstyle', type=str, dest='waterStyle', required=False, choices=['solid','translucent','none'], help='How water is drawn in dxf/glb output: solid (solid from 0 to the water level), translucent (a sheet at the water level; translucent in glb), or none')
+    parser.add_argument('-iwaterstyle', type=str, dest='waterStyle', required=False, choices=['solid','translucent','none'], help='How water is drawn in dxf/glb output: solid (solid from 0 to the water level), translucent (the same block, but see-through in glb files), or none')
 
     ###options that use a code action
     parser.add_argument('-v', type=int, metavar='int', nargs='?', action=parseAction, dest='produceVideo', required=False, help='Produce a video from images. Optional frames/second')    
