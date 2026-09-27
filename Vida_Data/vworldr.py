@@ -20,6 +20,7 @@ import list_utils
 import yaml #pip install PyYAML #https://pypi.org/project/PyYAML/
 import progressBarClass
 import spatial_grid
+import vsoil
 
 ###experimental terrain import
 ###STH & EKT 05 Feb 2020
@@ -97,6 +98,43 @@ def determineDroughtTol(theGarden):
                     obj.causeOfDeath="drought"
                     #print("here")
                     theGarden.kill(obj)
+
+def countPhotonsGettingThrough(x, y, r, numbPhotons, covers):
+    ###Drop numbPhotons photons at random on a plant at (x, y) with radius r,
+    ###and count how many get through the canopies above it. covers is a list
+    ###of (x, y, radius, transmittance) for those canopies, in the order of the
+    ###plant's overlap list.
+    hitCount=0
+    twoPi=3.14*2
+    for photon in range(numbPhotons):
+        ###pick uniformly distributed point in a circle
+        randAngle=random.random()*twoPi
+        #####
+        ###This is apparently a very old bug dating back to 2009
+        ###The way it is written the points cluster toward the center
+        ###which is exactly what the comments mention it is trying to avoid
+        ###STH 26 Sept 2026
+
+        # randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
+        # #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
+        # randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
+        randr=r*(random.random()**0.5)   #r*sqrt(u) spreads photons evenly over the canopy
+        #####
+        photonX = (randr*math.cos(randAngle))+x
+        photonY = (randr*math.sin(randAngle))+y
+        ###The photon stops at the first canopy it lands in (in the order of
+        ###the overlap list), unless it gets through that canopy. Either way it
+        ###isn't checked against the rest. (The distance is worked out as in
+        ###geometry_utils.pointInsideCircle.)
+        blocked=False
+        for coverX, coverY, coverR, coverTransmittance in covers:
+            if math.hypot(coverX-photonX, coverY-photonY)<=coverR:
+                if random.random() > coverTransmittance:
+                    blocked=True
+                break
+        if not blocked:
+            hitCount=hitCount+1
+    return hitCount
 
 def determineShade(theGarden):
     if theGarden.showProgressBar:
@@ -186,37 +224,12 @@ def determineShade(theGarden):
                     numbPhotons= numbPhotons*100
                     if numbPhotons>750: #we don't need monster numbers
                         numbPhotons=750
-                    hitCount=0
-                    for photon in range(numbPhotons):
-                        #####consider moving this to geometry_utils
-                        ###pick uniformly distributed point in a circle
-                        twoPi=3.14*2
-                        randAngle=random.random()*twoPi
-                        #####
-                        ###This is apparently a very old bug dating back to 2009
-                        ###The way it is written the points cluster toward the center
-                        ###which is exactly what the comments mention it is trying to avoid
-                        ###STH 26 Sept 2026
-                        
-                        # randr=(random.random()*(plant.r-0))+0 #random between 0 and the radius
-                        # #randr =math.sqrt(randr) #if you don't use sqrt, you get clustering in the center
-                        # randr =randr**0.5 #if you don't use sqrt, you get clustering in the center
-                        randr=plant.r*(random.random()**0.5)   #r*sqrt(u) spreads photons evenly over the canopy
-                        #####
-
-                        photonX = (randr*math.cos(randAngle))+plant.x
-                        photonY = (randr*math.sin(randAngle))+plant.y
-                        ######
-                        for overPlant in plant.overlapList:
-                            if not photonX=="gone":
-                                if geometry_utils.pointInsideCircle(overPlant.x, overPlant.y, overPlant.r, photonX, photonY):
-                                    randomValue=random.random()
-                                    if randomValue > overPlant.canopyTransmittance:
-                                        ###these points are where the overlap is
-                                        photonX="gone"
-                                    break
-                        if not photonX=="gone":
-                            hitCount=hitCount+1
+                    ###The canopies above, as (x, y, radius, transmittance), looked
+                    ###up once here rather than for every photon.
+                    covers=[]
+                    for overPlant in plant.overlapList:
+                        covers.append((overPlant.x, overPlant.y, overPlant.r, overPlant.canopyTransmittance))
+                    hitCount=countPhotonsGettingThrough(plant.x, plant.y, plant.r, numbPhotons, covers)
                     if numbPhotons ==0:
                         fractionExposed=0.0
                     else:
@@ -258,7 +271,7 @@ class garden(object):
         super(garden, self).__init__()
         self.name = ""
         self.theWorldSize = 0
-        self.soil = []
+        self.soil = vsoil.Soil() #every plant and seed, in planting order (see vsoil.py)
         self.numbSeeds = 0
         self.numbPlants = 0
         self.deathNote = []
@@ -338,6 +351,8 @@ class garden(object):
     
     def kill(self, theObject):
         theGarden=self
+        ###(finding and removing theObject in the soil is quick, however big
+        ###the soil is: see vsoil.py)
         if theObject in self.soil:
             #die!
             if len(theObject.seedList)>0:
