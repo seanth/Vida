@@ -1,0 +1,32 @@
+gravity: 9.81
+atmosphere: 1.0 #unused
+lightIntensity: 1.0
+maxSeedsPerPlant: 5
+###Mortality settings###
+allowOffWorld: FALSE
+##experimental mortality##
+allowSubmerged: FALSE
+maxSubmerged: 0.05 #0.5 means 50% of the tree height is submerged
+##########################
+ignoreGermDeathAtStart: TRUE
+allowRandomDeath: TRUE
+randomDeathPlant: 0.0075
+randomDeathSeed: 0.0075
+allowSlowGrowthDeath: TRUE
+randomSlowGrowth: 0.05
+##experimental mortality##
+allowDistanceFromMother: FALSE
+janzenConnell: 0.5
+##########################
+allowEulerGreenhillViolations: FALSE
+allowOverlaps: FALSE
+##########################
+useWaterTol: FALSE
+useDroughtTol: FALSE
+
+
+
+###To be removed/relocated###
+fractionWorldGraphicEdgeSpacer: 0.3 #to be moved
+fractionWorldBetweenLRGraphicsSpacer: 0.0 #to be moved
+fractionWorldBetweenTBGraphicsSpacer: 0.5 #to be moved
