@@ -65,10 +65,10 @@ speciesExponent7: 1.000000 #[12]
 speciesConstant8: 5.817100 #[13]
 
 ###waterlogging
-waterTolerance: 0.000000 #watertol value #[14]
+waterTolerance: 1.840000 #watertol value #[14]
 
 ###drought tolerance
-droughtTolerance: 0.000000 #droughtTol value #[14]
+droughtTolerance: 3.080000 #droughtTol value #[14]
 
 #[1] https://www.wood-database.com/red-maple/
 #[2] set the 50 percent densityStem

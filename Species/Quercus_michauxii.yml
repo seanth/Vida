@@ -65,10 +65,10 @@ speciesExponent7: 1.000000 #[12]
 speciesConstant8: 8.015000 #[13]
 
 ###waterlogging
-waterTolerance: 0.000000 #watertol value #[14]
+waterTolerance: 3.350000 #watertol value #[14]
 
 ###drought tolerance
-droughtTolerance: 0.000000 #droughtTol value #[14]
+droughtTolerance: 2.580000 #droughtTol value #[14]
 
 #[1] https://www.wood-database.com/swamp-chestnut-oak/
 #[2] set the 50 percent densityStem

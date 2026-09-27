@@ -65,10 +65,10 @@ speciesExponent7: 1.000000 #[12]
 speciesConstant8: 7.302800 #[13]
 
 ###waterlogging
-waterTolerance: 0.000000 #watertol value #[14]
+waterTolerance: 4.500000 #watertol value #[14]
 
 ###drought tolerance
-droughtTolerance: 0.000000 #droughtTol value #[14]
+droughtTolerance: 1.500000 #droughtTol value #[14]
 
 #[1] https://www.wood-database.com/post-oak/
 #[2] set the 50 percent densityStem

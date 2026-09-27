@@ -65,10 +65,10 @@ speciesExponent7: 1.000000 #[12]
 speciesConstant8: 9.525200 #[13]
 
 ###waterlogging
-waterTolerance: 0.000000 #watertol value #[14]
+waterTolerance: 1.000000 #watertol value #[14]
 
 ###drought tolerance
-droughtTolerance: 0.000000 #droughtTol value #[14]
+droughtTolerance: 3.940000 #droughtTol value #[14]
 
 #[1] https://www.srs.fs.usda.gov/pubs/rp/rp_so186.pdf
 #[2] set the 50 percent densityStem

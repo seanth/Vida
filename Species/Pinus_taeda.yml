@@ -33,12 +33,12 @@ radiusLeafMultiplier: 1
 radiusSeedMultiplier: 1
 borderImagePercent: 25
 colourSpecies: [0.0, 0.0, 0.0] #black
-colourLeaf: [116.6, 1.0, 1.0]
+colourLeaf: [397, 1.0, 1.0]
 colourStem: [20.0, 0.9 , 0.5]
 colourSeedDispersed: [240.0, 0.343, 0.5]
 colourSeedAttached: [300.0, 0.9, 0.5]
 ###testing different canopy shapes in 3d output
-crownShape: PARA #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
+crownShape: ELIP #from maestra: cone, elip, para, round, cyl. Only ELIP and PARA work right now
 boleHeight: 80 #used only when the 3dCrownShape is not ELIP. Percent of total plant height
 
 ###Photosynthesis
@@ -65,10 +65,10 @@ speciesExponent7: 1.000000 #[12]
 speciesConstant8: 9.426700 #[13]
 
 ###waterlogging
-waterTolerance: 0.000000 #watertol value #[14]
+waterTolerance: 4.500000 #watertol value #[14]
 
 ###drought tolerance
-droughtTolerance: 0.000000 #droughtTol value #[14]
+droughtTolerance: 1.080000 #droughtTol value #[14]
 
 #[1] https://www.wood-database.com/loblolly-pine/
 #[2] set the 50 percent densityStem
