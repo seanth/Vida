@@ -387,3 +387,26 @@ def test_a_stressed_plant_puts_all_its_spare_carbon_into_seeds(plant, garden):
     plant.makeSomeSeeds(10, garden)
 
     assert len(plant.seedList) == 3  # int(0.35 / 0.1), not int(0.175 / 0.1)
+
+
+def test_a_new_seed_copies_the_species_settings_but_not_the_family(plant, garden):
+    mother = vplantr.genericPlant()
+    plant.motherPlant = mother
+    plant.seedList = [vplantr.genericPlant()]
+    plant.photoConstant = 2.5
+    plant.radiusLeaf = 1.0
+
+    seed = plant.copyForNewSeed()
+
+    assert seed.photoConstant == 2.5
+    # Lists are the seed's own copies, so changing one does not change the other.
+    assert seed.colourLeaf == plant.colourLeaf
+    assert seed.colourLeaf is not plant.colourLeaf
+    seed.colourLeaf[2] = 0.25
+    assert plant.colourLeaf[2] != 0.25
+    # The family is not copied; zeroSeedValues() resets it for the new seed.
+    assert seed.motherPlant is mother
+    seed.zeroSeedValues()
+    assert seed.motherPlant == 0
+    assert seed.seedList == []
+    assert len(plant.seedList) == 1
