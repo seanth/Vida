@@ -1,0 +1,218 @@
+<html>
+<title>Prototype Species builder</title>
+<body onLoad=preloadImages()>
+
+<style type="text/css">
+div.spacer {
+  clear: both;
+  }
+
+div.row {
+  clear: both;
+  padding-top: 5px;
+  }
+
+div.row span.lable{
+	float: left;
+	width:200px;
+	text-align: right;
+}
+
+div.row span.formw{
+	float: right;
+	width: 200px;
+	text-align: left;
+}
+</style>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+
+function init() {
+	$(document.dropDown.dropDownControl).load('loadSpeciesNames');
+	theOptions=new Array();
+	theOptions[0]="Allometry";
+	theOptions[1]="Basic";
+	theOptions[2]="Evolution";
+	theOptions[3]="Graphics";
+	theOptions[4]="All";
+	theOptions[5]="Photosynthesis";
+	theOptions[6]="Reproduction";
+	for (var theIndex=0; theIndex< theOptions.length; theIndex=theIndex+1){
+		$("#tab"+theOptions[theIndex]).hide();	
+		$("#tab"+ theOptions[theIndex]).attr("src", "interfaceGraphics/speciesBuilder/fillerButtonDim.jpg");	
+	}
+
+}
+$(document).ready(init)
+
+function saveForm(){
+	//this is where some form validation would go
+	//would also check filenames
+	document.formSpeciesValues.submit();
+	document.getElementById("saveButton").value="Saved";
+	document.getElementById("saveButton").disabled=true;
+}
+
+function iframeChange(){
+	$(document.dropDown.dropDownControl).load('loadSpeciesNames');
+	var theSpeciesName=document.getElementById("nameSpecies").value+".yml";
+	for (var theIndex=0; theIndex<document.getElementById("dropDownControl").options.length; theIndex=theIndex+1){
+		if (document.getElementById("dropDownControl").options[theIndex].value==theSpeciesName){
+			//why doesn't this work?
+			document.getElementById("dropDownControl").options[theIndex].selected=true;
+		}
+	}
+}
+
+function enableSaveButton(){
+	document.getElementById("saveButton").value="Save now";
+	document.getElementById("saveButton").disabled=false;
+}
+
+function displayFormData(theFileName){
+	//theFileName is the yml file in Species Folder we want to load	
+	$(document.formSpeciesValues).load('loadSpeciesYMLFile', {theFileName: theFileName});
+	fadeOutAllTabs();
+	setAllTabsToDim();
+	$("#tabAll").attr("src", "interfaceGraphics/speciesBuilder/fillerButton.jpg");
+	fadeInAllTabs();
+	changeHeaderImage("Species Builder");
+}
+
+function fadeOutAllTabs(){
+	theOptions[0]="Allometry";
+	theOptions[1]="Basic";
+	theOptions[2]="Evolution";
+	theOptions[3]="Graphics";
+	theOptions[4]="All";
+	theOptions[5]="Photosynthesis";
+	theOptions[6]="Reproduction";
+	for (var theIndex=0; theIndex< theOptions.length; theIndex=theIndex+1){
+		$("#tab"+theOptions[theIndex]).fadeOut();
+	}
+}
+
+function fadeOutAllTabs(){
+	theOptions[0]="Allometry";
+	theOptions[1]="Basic";
+	theOptions[2]="Evolution";
+	theOptions[3]="Graphics";
+	theOptions[4]="All";
+	theOptions[5]="Photosynthesis";
+	theOptions[6]="Reproduction";
+	for (var theIndex=0; theIndex< theOptions.length; theIndex=theIndex+1){
+		$("#tab"+theOptions[theIndex]).fadeIn();
+	}
+}
+
+function setAllTabsToDim(){
+	theOptions[0]="Allometry";
+	theOptions[1]="Basic";
+	theOptions[2]="Evolution";
+	theOptions[3]="Graphics";
+	theOptions[4]="All";
+	theOptions[5]="Photosynthesis";
+	theOptions[6]="Reproduction";
+	for (var theIndex=0; theIndex< theOptions.length; theIndex=theIndex+1){
+		$("#tab"+theOptions[theIndex]).attr("src", "interfaceGraphics/speciesBuilder/fillerButtonDim.jpg");
+	}
+}
+
+function preloadImages() {
+	var thePath="interfaceGraphics/speciesBuilder/header";
+	var thePics=new Array();
+	thePics[0]="Allometry.jpg";
+	thePics[1]="Basic.jpg";
+	thePics[2]="Evolution.jpg";
+	thePics[3]="Graphics.jpg";
+	thePics[4]="All.jpg";
+	thePics[5]="Photosynthesis.jpg";
+	thePics[6]="Reproduction.jpg";
+	var theWidth = 760;
+	var theHeight = 173;	
+        var theImages = new Array();
+        for (var picIndex=0; picIndex< thePics.length; picIndex=picIndex+1) {
+		theImages[picIndex] = new Image(theWidth,theHeight);
+		theImages[picIndex].src = (thePath + thePics[picIndex]);
+        }
+}
+
+
+function changeHeaderImage(theFileName){
+	theOptions=new Array();
+	theOptions[0]="Allometry";
+	theOptions[1]="Basic";
+	theOptions[2]="Evolution";
+	theOptions[3]="Graphics";
+	theOptions[4]="All";
+	theOptions[5]="Photosynthesis";
+	theOptions[6]="Reproduction";
+	var theTabName="tab"+theFileName;
+	var theFormName="form"+theFileName;
+	var basePath="interfaceGraphics/speciesBuilder/";
+	for (var theIndex=0; theIndex< theOptions.length; theIndex=theIndex+1){
+		if (theTabName=="tabAll"){
+			$("#tab"+ theOptions[theIndex]).attr("src", "interfaceGraphics/speciesBuilder/fillerButtonDim.jpg");
+			$("#section"+theOptions[theIndex]).fadeIn();
+		}else{
+			if (("tab"+ theOptions[theIndex])!=theTabName){
+				$("#tab"+ theOptions[theIndex]).attr("src", "interfaceGraphics/speciesBuilder/fillerButtonDim.jpg");	
+				$("#section"+theOptions[theIndex]).hide();	
+			}else{
+				$("#tab"+ theOptions[theIndex]).attr("src", "interfaceGraphics/speciesBuilder/fillerButton.jpg");
+				$("#section"+theOptions[theIndex]).fadeIn();
+			}
+		}
+	if (theTabName=="tabAll"){
+		$("#tabAll").attr("src", "interfaceGraphics/speciesBuilder/fillerButton.jpg");
+	}
+
+	}
+	$("#headerImage").hide();
+	basePath=basePath+"header";
+	$("#headerImage").attr("background", basePath+ theFileName +".jpg");
+	$("#headerImage").fadeIn();
+	document.all("headerText").innerText=theFileName;
+}
+
+
+
+</script>
+<center>
+<table width=760 height=1000 border=0 cellpadding=0 cellspacing=0>
+<tr bgcolor=black><td id="headerImage" valign=top align=right background="interfaceGraphics/speciesBuilder/headerBasic.jpg" colspan=8 height=172>
+<font id="headerText" size=10 color=#7894B9>Species Builder  </font> 
+</td>
+</tr>
+<tr bgcolor=black>
+<td valign=bottom>
+<font color=#7894B9>Species:</span><span class="formw"></font><br>
+<form align=right name='dropDown' id='dropDown'>
+<select name='dropDownControl' id='dropDownControl' STYLE="width: 100px" onChange=displayFormData(this.options[selectedIndex].value)>
+<option></option>
+</select>
+</form>
+</td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('All')"><img id="tabAll" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('Basic')"><img id="tabBasic" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('Allometry')"><img id="tabAllometry" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('Graphics')"><img id="tabGraphics" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('Photosynthesis')"><img id="tabPhotosynthesis" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('Reproduction')"><img id="tabReproduction" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+<td width=92 height=40 valign=bottom  align=left><a href="javascript:changeHeaderImage('Evolution')"><img id="tabEvolution" src="interfaceGraphics/speciesBuilder/fillerButton.jpg" alt="tab"></a></td>
+</tr>
+<tr><td colspan=8 bgcolor=#7894B9 valign=top>
+<br>
+<form id="formSpeciesValues" name="formSpeciesValues" action="submitData" onSubmit="saveForm()" method="post" target="doNothingPlease">
+<div style='width: 450px; background-color: #ccc; border: 1px solid #333; padding: 5px; margin: 0px auto;'>
+Please select a species to begin.
+</div>
+</form>
+
+</td></tr>
+</table>
+<!--this exists just to throw the form reply to-->
+<iframe name="doNothingPlease" src="about:blank" style="display:none; width:100px; height:100px" onLoad="iframeChange()"></iframe>
+</center>
+</html>
