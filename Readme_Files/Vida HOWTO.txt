@@ -108,26 +108,27 @@ KEY IDEAS (READ THIS FIRST)
 OPTION SUMMARY
 --------------
 	General
-		-n <text>		name of the simulation (used for the output folder and file names)
+		-n <text>			name of the simulation (used for the output folder and file names)
 		-w <integer>		world size in meters (the world is square)
 		-t <integer>		maximum number of cycles to run
 		-m <integer>		stop early if the population reaches this size
 		-x <integer>		run the whole simulation this many times
-		-b			show progress bars
-		-d			turn on basic debugging messages
-		-dd			turn on detailed debugging messages
+		-runid <integer>	run id. Two runs with the same run id and the same settings give exactly the same results
+		-b					show progress bars
+		-d					turn on basic debugging messages
+		-dd					turn on detailed debugging messages
 
 	Planting seeds at the start
 		-s <integer>		plant this many seeds at random positions
 		-ss <integer>		plant this many seeds in a square grid
 		-sh <integer>		plant this many seeds in a hexagonal pattern
-		-sf <file>		plant seeds listed in a placement file (species, x, y, delay)
+		-sf <file>			plant seeds listed in a placement file (species, x, y, delay)
 
 	Graphics
 		-g [<views>]		produce graphics; one or more of: s t b bs sb ts st bt tb bts dxf glb
-		-c			keep the .cfdg files used to draw 2d images
-		-p			delete the .png images after a video is made (currently has no effect)
-		-l <number>		size of the time stamp on 2d images, as a percent (default 2.5)
+		-c					keep the .cfdg files used to draw 2d images
+		-p					delete the .png images after a video is made (currently has no effect)
+		-l <number>			size of the time stamp on 2d images, as a percent (default 2.5)
 		-v [<integer>]		make an MP4 video from the 2d images, optionally at this many frames/second
 
 	Terrain and water
@@ -141,8 +142,8 @@ OPTION SUMMARY
 	Saving and resuming
 		-a <a|s|e|n>		save simulation states: all cycles, start only, end only, or none
 		-f <a|s|e|n>		save data files: all cycles, start only, end only, or none
-		-r <file>		resume a saved simulation
-		-rl <file>		resume a saved simulation, but reload "Vida World Preferences.yml" first
+		-r <file>			resume a saved simulation
+		-rl <file>			resume a saved simulation, but reload "Vida World Preferences.yml" first
 
 	Events
 		-e <file>		load an event file that scripts changes during the run
@@ -310,7 +311,7 @@ TERRAIN AND WATER
 	How water is drawn in 3d files
 		-iwaterstyle (or waterStyle in Vida.ini) controls how water appears in .glb and .dxf files:
 			solid		a solid block from the ground up to the water level
-			translucent	a see-through sheet at the water level, so the flooded ground stays visible (in DXF files, which cannot be see-through, this is a thin sheet)
+			translucent	the same block, but see-through, so the flooded ground stays visible (in DXF files, which cannot be see-through, this is a thin sheet at the water level)
 			none		no water drawn (water still affects the simulation)
 
 		This only changes the pictures, not the simulation.
