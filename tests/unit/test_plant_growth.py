@@ -410,3 +410,19 @@ def test_a_new_seed_copies_the_species_settings_but_not_the_family(plant, garden
     assert seed.motherPlant == 0
     assert seed.seedList == []
     assert len(plant.seedList) == 1
+
+
+def test_a_new_seed_gets_its_own_copy_of_anything_that_is_not_a_plain_list(plant):
+    # Lists of numbers are copied with list(); anything else (a list of
+    # lists, a dictionary) still goes through deepcopy, all the way down.
+    plant.pairs = [[1, 2], [3, 4]]
+    plant.table = {"a": [1, 2]}
+
+    seed = plant.copyForNewSeed()
+
+    assert seed.pairs == plant.pairs
+    assert seed.pairs[0] is not plant.pairs[0]
+    assert seed.table == plant.table
+    assert seed.table["a"] is not plant.table["a"]
+    # numbers and strings are shared, as deepcopy shared them too
+    assert seed.nameSpecies is plant.nameSpecies
