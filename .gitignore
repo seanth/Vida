@@ -1,5 +1,3 @@
 *.DS_Store
 *.pyc
 Output-*
-__pycache__/
-.pytest_cache/
