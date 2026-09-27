@@ -113,7 +113,7 @@ OPTION SUMMARY
 		-t <integer>		maximum number of cycles to run
 		-m <integer>		stop early if the population reaches this size
 		-x <integer>		run the whole simulation this many times
-		-runid <integer>	run id. Two runs with the same run id and the same settings give exactly the same results
+		-rngstart <integer>	starting value for the random numbers: two runs with the same value and settings give exactly the same results
 		-b					show progress bars
 		-d					turn on basic debugging messages
 		-dd					turn on detailed debugging messages
@@ -340,6 +340,13 @@ SAVING, RESUMING AND REPEATING SIMULATIONS
 		*	The terrain and water level come from the saved state.
 
 		-rl works the same way but reloads "Vida World Preferences.yml" first, so changes you have made to it since the original run take effect.
+
+	Repeatable runs
+		Vida uses random numbers for seed placement, dispersal, germination, shading and death, so two runs with the same settings normally turn out differently. To get exactly the same results again, give a starting value for the random numbers:
+
+			python Vida.py -n sameEveryTime -w 100 -s 20 -t 50 -rngstart 42
+
+		Running this command again, with the same settings and the same files, gives identical results: every plant grows, disperses and dies in the same way. The only difference is the plants' ID names (the long random codes in the "plant name" columns), which are made fresh each run. Any whole number can be used; different numbers give different (but each repeatable) runs. The default comes from rngStart in Vida.ini, where None means a different run each time.
 
 	Repeating
 		-x <n> runs the whole simulation n times. Each run gets its own output folder (Output-<name>, Output-<name>1, ...). This is useful for getting statistics across several runs of the same setup.

@@ -42,12 +42,12 @@ def test_sum_in_order_adds_first_to_last():
 def test_hsv_colours_map_to_autocad_colour_numbers():
     # HSV here is [hue in degrees, saturation 0-1, brightness 0-1].
     assert colour_utils.HSV_to_ACI([0.0, 0.0, 0.0]) == 0  # black
-    # Pure red, green and blue appear twice in the colour table, and the
-    # later entry wins, so they map to 10, 90 and 170 rather than 1, 3 and 5.
-    assert colour_utils.HSV_to_ACI([0.0, 1.0, 1.0]) == 10
-    assert colour_utils.HSV_to_ACI([120.0, 1.0, 1.0]) == 90
-    assert colour_utils.HSV_to_ACI([240.0, 1.0, 1.0]) == 170
-    assert colour_utils.HSV_to_ACI([0.0, 0.0, 1.0]) == 255  # white
+    # The standard colours 1-7 are listed once in the colour table, so pure
+    # red, green, blue and white map to 1, 3, 5 and 7.
+    assert colour_utils.HSV_to_ACI([0.0, 1.0, 1.0]) == 1
+    assert colour_utils.HSV_to_ACI([120.0, 1.0, 1.0]) == 3
+    assert colour_utils.HSV_to_ACI([240.0, 1.0, 1.0]) == 5
+    assert colour_utils.HSV_to_ACI([0.0, 0.0, 1.0]) == 7  # white
 
 
 def test_colours_not_in_the_table_use_the_closest_entry():
