@@ -14,7 +14,7 @@
 #   Vida (root node, rotates Vida's z-up world into glTF's y-up convention)
 #     ground            the thin garden slab (same as THEGARDEN in the DXF)
 #     terrain           one mesh built from the terrain image (if any)
-#     water             slab, translucent surface, or nothing (waterStyle)
+#     water             solid, translucent surface, or nothing (waterStyle)
 #     plants
 #       <species> <name>   one node per plant, with plant data in "extras"
 #         stem
@@ -40,7 +40,7 @@ from PIL import Image
 import vterrainImport as terrain_utils
 import vdxfGraphics #for the Cube() and Sphere() shape definitions
 
-WATER_STYLES = ("slab", "surface", "none")
+WATER_STYLES = ("solid", "translucent", "none")
 
 GROUND_RGB = (0.6, 0.6, 0.6)
 TERRAIN_RGB = (104/255.0, 78/255.0, 69/255.0) #ACI 27, the colour used in the DXF
@@ -387,7 +387,7 @@ def writeGLB(outputDirectory, fileName, theGarden, context, waterStyle="surface"
 
         theWaterLevel = theGarden.waterLevel
         if isinstance(theWaterLevel, (int, float)) and theWaterLevel > 0.0 and waterStyle != "none":
-            if waterStyle == "slab":
+            if waterStyle == "solid":
                 waterMesh = builder.addMesh("water", [(boxAttr, boxIdx, builder.material(WATER_RGB))])
                 children.append(builder.addNode(trsNode("water", waterMesh, (-half, -half, 0.0), (theWorldSize, theWorldSize, theWaterLevel))))
             else:
