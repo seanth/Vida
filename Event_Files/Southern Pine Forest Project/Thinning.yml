@@ -1,0 +1,750 @@
+1:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: plants
+       percent: 0.75
+       species_name: Pinus_taeda, Acer_rubrum, Nyssa_sylvatica, Liquidambar_styraciflua, Pinus_ellottii
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2
+   - Seed:
+     - species_file: Pinus_palustris.yml
+       placement: random
+       number: 1000
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 300
+       target: plants
+       percent: 0.25
+       species_name: Quercus_nigra, Quercus_phellos, Quercus_stellata
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2  
+2:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+4:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+6:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+8:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+10:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+12:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+14:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+16:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+18:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+20:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+22:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+24:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+26:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+28:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2          
+30:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: plants
+       percent: 0.75
+       species_name: Pinus_taeda, Acer_rubrum, Nyssa_sylvatica, Liquidambar_styraciflua, Pinus_ellottii
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2
+   - Seed:
+     - species_file: Pinus_palustris.yml
+       placement: random
+       number: 1000
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 300
+       target: plants
+       percent: 0.25
+       species_name: Quercus_nigra, Quercus_phellos, Quercus_stellata
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2 
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+32:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+34:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+36:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+38:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+40:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+42:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2
+44:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+46:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+48:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2           
+50:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: plants
+       percent: 0.75
+       species_name: Pinus_taeda, Acer_rubrum, Nyssa_sylvatica, Liquidambar_styraciflua, Pinus_ellottii
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2
+   - Seed:
+     - species_file: Pinus_palustris.yml
+       placement: random
+       number: 1000
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 300
+       target: plants
+       percent: 0.25
+       species_name: Quercus_nigra, Quercus_phellos, Quercus_stellata
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2 
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+52:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+54:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+56:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+58:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+60:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2  
+62:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+64:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+66:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+68:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2           
+70:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 150
+       target: plants
+       percent: 0.75
+       species_name: Pinus_taeda, Acer_rubrum, Nyssa_sylvatica, Liquidambar_styraciflua, Pinus_ellottii
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2
+   - Seed:
+     - species_file: Pinus_palustris.yml
+       placement: random
+       number: 1000
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: square
+       size: 300
+       target: plants
+       percent: 0.25
+       species_name: Quercus_nigra, Quercus_phellos, Quercus_stellata
+       selection:
+        - attribute: radiusStem
+          logic: '>'
+          value: 0.2
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+72:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+74:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2  
+76:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+78:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+80:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+82:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+84:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+86:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+88:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2  
+90:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+92:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+94:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+96:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2 
+98:
+   - Killzone:
+     - x: 0.0
+       y: 0.0
+       shape: circle
+       size: 300
+       target: plants
+       percent: 0.5
+       species_name: Acer_rubrum, Carya_glabra, Cornus_florida, Liquidambar_styraciflua, Magnolia_virginiana, Nyssa_sylvatica, Pinus_echinata, Pinus_ellottii, Pinus_taeda, Prunus_serotina, Quercus_alba, Quercus_falcata, Quercus_marilandica, Quercus_michauxii, Quercus_nigra, Quercus_phellos, Quercus_stellata, Quercus_texana
+       selection:
+        - attribute: radiusStem
+          logic: '<'
+          value: 0.2                                                 
