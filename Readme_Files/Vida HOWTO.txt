@@ -224,6 +224,12 @@ BASIC USAGE
 
 		Runs the same setup three times, giving Output-repeatTest, Output-repeatTest1 and Output-repeatTest2. Because seeds, dispersal and death are random, each run turns out differently, which lets you look at the spread of outcomes.
 
+	Example 9: running several simulations at once
+
+		python tools/run_many.py -rngstarts 1-8 -jobs 4 -- -n example9 -w 100 -s 10 -t 200 -m 550
+
+		The -x repeats of example 8 run one after another. To use every core of the computer instead, tools/run_many.py runs several simulations at once, each as its own copy of Vida, so each gives exactly the same results as it would on its own. This runs example 1 (without the images) eight times, with -rngstart 1 to 8, four at a time, in folders named "Output-example9-rng1" and so on, with what each prints saved in "Output-example9-rng1.log". It can also run a list of different simulations from a file; see python tools/run_many.py -h.
+
 
 GRAPHICS, VIDEOS AND 3D FILES
 -----------------------------
