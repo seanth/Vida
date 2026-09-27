@@ -25,6 +25,7 @@ import random
 
 import geometry_utils
 import vworldr as worldBasics
+import vplantr
 import vplacement
 
 
@@ -238,7 +239,10 @@ def loadSpecies(theGarden, fileName, speciesClass):
     ###the template that new seeds of that species are copied from
     theSeed=speciesClass()
     fileLoc= "Species/"+fileName
-    theSeed.importPrefs(fileLoc)
+    settingNames=theSeed.importPrefs(fileLoc)
+    ###the species' settings are kept once, on a class of its own
+    ###(see shareSpeciesSettings in vplantr.py)
+    theSeed=vplantr.shareSpeciesSettings(theSeed, fileName, vplantr.defaultSettingNames()+settingNames)
     theSeed.name="Platonic %s" % fileName
     theGarden.platonicSeeds[fileName]=theSeed
 
